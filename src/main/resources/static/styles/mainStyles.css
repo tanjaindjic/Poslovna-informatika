@@ -1,0 +1,23 @@
+.navbar-background{
+    background: #0b5c7c;
+}
+
+.nav-link, .navbar-left, .nav-item {
+    color:#f8ff95;
+    font-size: 18px;
+    text-shadow: 1px 1px 1px #383535;
+}
+
+.navbar-brand {
+    color: #fff566;
+    font-size: 22px;
+    text-shadow: 1px 1px 1px #383535;
+}
+
+.navbar-right{
+    margin-top:20px; 
+}
+
+#dropdownCombo {
+    background: #fff06a;
+}
