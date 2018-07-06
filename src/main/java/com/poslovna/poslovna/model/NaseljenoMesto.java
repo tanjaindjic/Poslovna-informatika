@@ -1,12 +1,14 @@
 package com.poslovna.poslovna.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class NaseljenoMesto {
     @Id
+    @GeneratedValue
     private long id;
 
     private String naziv;

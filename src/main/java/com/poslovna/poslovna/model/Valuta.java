@@ -1,9 +1,6 @@
 package com.poslovna.poslovna.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -11,6 +8,7 @@ import java.util.List;
 public class Valuta {
 
     @Id
+    @GeneratedValue
     private long id;
 
     @Size(min = 3, max = 3)

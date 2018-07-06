@@ -11,6 +11,7 @@ import java.sql.Date;
 public class AnalitikaIzvoda {
 
     @Id
+    @GeneratedValue
     private long id;
 
     private String nalogodavac;
@@ -51,6 +52,7 @@ public class AnalitikaIzvoda {
 
     private boolean medjubankarski;
 
+    @ManyToOne
     private NaseljenoMesto mestoPrijema;
 
     @ManyToOne

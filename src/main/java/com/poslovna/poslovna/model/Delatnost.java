@@ -1,6 +1,7 @@
 package com.poslovna.poslovna.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
@@ -10,6 +11,7 @@ import java.util.List;
 public class Delatnost {
 
     @Id
+    @GeneratedValue
     private long id;
 
     @Size(min=1, max = 4)

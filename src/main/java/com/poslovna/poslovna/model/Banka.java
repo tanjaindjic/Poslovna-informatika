@@ -3,12 +3,14 @@ package com.poslovna.poslovna.model;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Size;
 
 @Entity
 public class Banka {
     @Id
+    @GeneratedValue
     private long id;
 
     @Size(min = 3, max = 3)

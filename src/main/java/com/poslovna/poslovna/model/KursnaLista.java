@@ -1,9 +1,7 @@
 package com.poslovna.poslovna.model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
 
@@ -11,6 +9,7 @@ import java.util.List;
 public class KursnaLista {
 
     @Id
+    @GeneratedValue
     private long id;
 
     private Date datum;
@@ -19,6 +18,7 @@ public class KursnaLista {
 
     private Date vaziOd;
 
+    @ManyToOne
     private Banka zaBanku;
 
     @OneToMany

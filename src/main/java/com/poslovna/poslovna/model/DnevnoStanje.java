@@ -1,8 +1,6 @@
 package com.poslovna.poslovna.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
 
@@ -10,6 +8,7 @@ import java.util.List;
 public class DnevnoStanje {
 
     @Id
+    @GeneratedValue
     private long id;
 
     private Date datumPrometa;
@@ -25,6 +24,7 @@ public class DnevnoStanje {
     @ManyToOne
     private Racun zaRacun;
 
+    @ManyToMany
     private List<AnalitikaIzvoda> izvodi;
 
     public DnevnoStanje() {

@@ -1,8 +1,6 @@
 package com.poslovna.poslovna.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -10,6 +8,7 @@ import java.util.List;
 public class Drzava {
 
     @Id
+    @GeneratedValue
     private long id;
 
     @Size(min = 1, max = 3)
@@ -17,7 +16,7 @@ public class Drzava {
 
     private String naziv;
 
-    @OneToMany
+    @ManyToMany
     private List<NaseljenoMesto> naseljenaMesta;
 
     public List<NaseljenoMesto> getNaseljenaMesta() {

@@ -10,6 +10,7 @@ import java.util.List;
 public class Klijent {
 
     @Id
+    @GeneratedValue
     private long id;
 
     @Enumerated(EnumType.STRING)

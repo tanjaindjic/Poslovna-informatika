@@ -1,6 +1,7 @@
 package com.poslovna.poslovna.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -8,6 +9,7 @@ import javax.persistence.ManyToOne;
 public class KursUValuti {
 
     @Id
+    @GeneratedValue
     private long id;
 
     private Float kupovni;

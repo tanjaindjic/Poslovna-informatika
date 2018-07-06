@@ -1,6 +1,7 @@
 package com.poslovna.poslovna.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.sql.Date;
@@ -9,6 +10,7 @@ import java.sql.Date;
 public class Ukidanje {
 
     @Id
+    @GeneratedValue
     private long id;
 
     private Date datumUkidanja;

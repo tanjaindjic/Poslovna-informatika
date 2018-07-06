@@ -1,9 +1,6 @@
 package com.poslovna.poslovna.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.sql.Date;
 import java.util.List;
@@ -13,6 +10,7 @@ import java.util.List;
 public class Racun {
 
     @Id
+    @GeneratedValue
     private long id;
 
     @Size(min=5, max=18)
