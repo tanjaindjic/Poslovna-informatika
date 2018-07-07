@@ -1,5 +1,7 @@
 package com.poslovna.poslovna.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -16,6 +18,7 @@ public class Drzava {
 
     private String naziv;
 
+    @JsonBackReference
     @ManyToMany
     private List<NaseljenoMesto> naseljenaMesta;
 
