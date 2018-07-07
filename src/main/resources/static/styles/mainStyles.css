@@ -21,3 +21,27 @@
 #dropdownCombo {
     background: #fff06a;
 }
+
+.naslov-zuti-centar {
+    color: #fff566;
+    font-size: 22px;
+    text-shadow: 1px 1px 1px #383535;
+    align-self: center;
+}
+
+.labela-forma-zuta{
+    color: #fff566;
+    font-size: 18px;
+    text-shadow: 1px 1px 1px #383535;
+}
+
+.poruka-greska {
+    color: #d12424;
+    font-size: 12px;
+    text-shadow: 1px 1px 1px #383535;
+    font-weight: 600;
+}
+
+.pozadina-plava{
+    background : #0b5c7c
+}

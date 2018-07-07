@@ -37,13 +37,13 @@ public class Klijent {
 
     private String nadlezni_organ;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private NaseljenoMesto prebivaliste;
 
     @OneToMany
     private List<Racun> racuni;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     private Delatnost delatnost;
 
     public Klijent() {
