@@ -1,20 +1,20 @@
 <div class="container">
-    <h3 class="naslov-zuti-centar" >Prijavite se:</h3>
-    <div class="row">
+    <div class="row gap-top-md">
         <div class="col-lg-3"> </div>
-        <div class="col-lg-6 pozadina-plava">
+        <div class="col-lg-6 pozadina-plava card card-block bg-faded">
+            <h3 class="naslov-zuti-centar" >Prijavite se:</h3>
             <form name="forma">
                 <div class="col-lg-12">
-                    <div class="row mx-auto">
+                    <div class="row mx-auto gap-top-xs">
                         <input type="text" class="form-control" name="korisnickoIme" id="korisnickoIme" ng-model="korisnik.korisnickoIme" placeholder="Korisnicko ime" ng-required="true"/>
                         <span class="poruka-greska" ng-show="forma.korisnickoIme.$dirty && forma.korisnickoIme.$error.required">Obavezno unesite!</span>
                     </div>
-                    <div class="row mx-auto">
+                    <div class="row mx-auto gap-top-xs">
                         <input type="password" class="form-control" name="lozinka" id="lozinka" ng-model="korisnik.lozinka" placeholder="Lozinka" ng-required="true"/>
                         <span class="poruka-greska" ng-show="forma.lozinka.$dirty && forma.lozinka.$error.required">Obavezno unesite!</span>
                     </div>
-                    <div class="row mx-auto" align="center">
-                        <button type="button" class="logregBtn btn btn-md btn-primary" name="potvrdi_lg" ng-click="ulogujSe($event)" ng-disabled="forma.$invalid">Potvrdi</button>
+                    <div class="row mx-auto top-bottomn-margin-xs">
+                        <button type="button" class="logregBtn btn btn-md btn-info col-lg-12" name="potvrdiLogin" ng-click="ulogujSe($event)" ng-disabled="forma.$invalid">Potvrdi</button>
                     </div>
                 </div>
             </form>

@@ -26,7 +26,7 @@
     color: #fff566;
     font-size: 22px;
     text-shadow: 1px 1px 1px #383535;
-    align-self: center;
+    text-align: center;
 }
 
 .labela-forma-zuta{
@@ -44,4 +44,21 @@
 
 .pozadina-plava{
     background : #0b5c7c
+}
+
+.top-bottomn-margin-xs {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.gap-top-xs{
+    margin-top: 5px;
+}
+
+.gap-top-md{
+    margin-top: 10px;
+}
+
+.gap-top-lg{
+    margin-top: 20px;
 }
