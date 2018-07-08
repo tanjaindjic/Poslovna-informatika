@@ -17,8 +17,12 @@ public class KlijentService {
     private KorisnikRepository korisnikRepository;
 
 
-    public Klijent getKlijent(Long id) {
+    public Klijent getKlijentPrekoKorisnikID(Long id) {
         Korisnik k = korisnikRepository.findById(id).get();
         return klijentRepository.findById(k.getKlijent().getId()).get();
+    }
+
+    public Klijent getKlijent(Long id){
+        return klijentRepository.findById(id).get();
     }
 }

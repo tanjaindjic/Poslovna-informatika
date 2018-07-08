@@ -8,6 +8,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import com.poslovna.poslovna.model.*;
+import com.poslovna.poslovna.model.enums.Status;
+import com.poslovna.poslovna.model.enums.VrstaPlacanja;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -96,9 +98,18 @@ public class StartData {
         createRacun("685138522", klijent, srpskaBanka, dolar);
         createRacun("852952201", klijent, srpskaBanka, euro);
 
+        AnalitikaIzvoda a = createNalog(klijent, beograd, euro);
+
         klijentRepository.save(klijent);
 
 
+    }
+
+    private AnalitikaIzvoda createNalog(Klijent k, NaseljenoMesto mesto, Valuta valuta) {
+        AnalitikaIzvoda a = new AnalitikaIzvoda("theMika", "sam sebi uplacujem", "the Mika", new Date(System.currentTimeMillis()), null,new Date(System.currentTimeMillis()),
+                "123456789", 97, "123-2050531-2", "685138522", 97, false, 10000F, 0, Status.E, VrstaPlacanja.GOTOVINSKO, false, mesto, valuta);
+        analitikaIzvodaRepository.save(a);
+        return a;
     }
 
     private Valuta createValulta(String sifra, String naziv, boolean domicilna, Drzava drzava) {

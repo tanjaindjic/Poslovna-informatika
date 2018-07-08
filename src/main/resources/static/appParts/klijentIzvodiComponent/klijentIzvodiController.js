@@ -3,6 +3,7 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
 
         $scope.logovaniKorisnik = {};
         $scope.odabranRacun = "";
+        $scope.
         $scope.initKlijent = function(){
             $scope.logovaniKorisnik = userService.parsirajToken();
 
@@ -16,6 +17,22 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
 
                 $scope.klijent = response.data;
                 console.log($scope.klijent)
+
+            }, function errorCallback(response) {
+                alert("Error occured check connection");
+                $location.path('/home');
+            });
+
+            $http({
+                method: 'GET',
+                url: 'http://localhost:8096/analitikaIzvoda/'+$scope.logovaniKorisnik.id,
+                headers: {'token' : $window.localStorage.getItem('token')}
+            }).then(function successCallback(response) {
+                if(response.data ==null)
+                    $location.path('/login');
+
+                $scope.nalozi = response.data;
+                console.log($scope.nalozi.length)
 
             }, function errorCallback(response) {
                 alert("Error occured check connection");

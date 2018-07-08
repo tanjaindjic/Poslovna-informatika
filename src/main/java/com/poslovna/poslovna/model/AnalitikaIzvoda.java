@@ -29,7 +29,6 @@ public class AnalitikaIzvoda {
     @Size(max = 18, min = 5)
     private String racunNalogodavca;
 
-    @Size(min = 2, max = 2)
     private int modelZaduzenja;
 
     @Size(max = 20)
@@ -38,7 +37,6 @@ public class AnalitikaIzvoda {
     @Size(max = 18, min = 5)
     private String racunPrimaoca;
 
-    @Size(min = 2, max = 2)
     private int modelOdobrenja;
 
     private boolean hitno;
@@ -61,6 +59,28 @@ public class AnalitikaIzvoda {
     private Valuta valuta;
 
     public AnalitikaIzvoda() {
+    }
+
+    public AnalitikaIzvoda(String nalogodavac, String svrhaPlacanja, String primalac, Date datumPrijema, Date datumObrade, Date datumValute, @Size(max = 18, min = 5) String racunNalogodavca, int modelZaduzenja, @Size(max = 20) String pozivNaBroj, @Size(max = 18, min = 5) String racunPrimaoca, int modelOdobrenja, boolean hitno, Float iznos, int tipGreske, Status status, VrstaPlacanja vrstaPlacanja, boolean medjubankarski, NaseljenoMesto mestoPrijema, Valuta valuta) {
+        this.nalogodavac = nalogodavac;
+        this.svrhaPlacanja = svrhaPlacanja;
+        this.primalac = primalac;
+        this.datumPrijema = datumPrijema;
+        this.datumObrade = datumObrade;
+        this.datumValute = datumValute;
+        this.racunNalogodavca = racunNalogodavca;
+        this.modelZaduzenja = modelZaduzenja;
+        this.pozivNaBroj = pozivNaBroj;
+        this.racunPrimaoca = racunPrimaoca;
+        this.modelOdobrenja = modelOdobrenja;
+        this.hitno = hitno;
+        this.iznos = iznos;
+        this.tipGreske = tipGreske;
+        this.status = status;
+        this.vrstaPlacanja = vrstaPlacanja;
+        this.medjubankarski = medjubankarski;
+        this.mestoPrijema = mestoPrijema;
+        this.valuta = valuta;
     }
 
     public long getId() {
