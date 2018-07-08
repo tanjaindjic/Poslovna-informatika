@@ -1,20 +1,16 @@
 package com.poslovna.poslovna;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import com.poslovna.poslovna.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.poslovna.poslovna.model.Delatnost;
-import com.poslovna.poslovna.model.Drzava;
-import com.poslovna.poslovna.model.Klijent;
-import com.poslovna.poslovna.model.Korisnik;
-import com.poslovna.poslovna.model.NaseljenoMesto;
-import com.poslovna.poslovna.model.Racun;
-import com.poslovna.poslovna.model.Sluzbenik;
 import com.poslovna.poslovna.model.enums.TipKlijenta;
 import com.poslovna.poslovna.model.enums.TipKorisnika;
 import com.poslovna.poslovna.repository.AnalitikaIzvodaRepository;
@@ -72,19 +68,40 @@ public class StartData {
         Drzava bosna = createDrzava(new ArrayList<NaseljenoMesto>(), "Bosna i Hercegovina", "BIH");
         Drzava hrvatska = createDrzava(new ArrayList<NaseljenoMesto>(), "Hrvatska", "HRV");
         Drzava makedonija = createDrzava(new ArrayList<NaseljenoMesto>(), "Republika Makedonija", "MKD");
+        Drzava amerika = createDrzava(new ArrayList<NaseljenoMesto>(), "Sjedinjene Americke drzave", "USD");
 
         NaseljenoMesto novisad = createNaseljenoMesto("Novi Sad", "21000", srbija);
         NaseljenoMesto beograd = createNaseljenoMesto("Beograd", "11000", srbija);
         NaseljenoMesto sarajevo = createNaseljenoMesto("Sarajevo", "71000", bosna);
         NaseljenoMesto zagreb = createNaseljenoMesto("Zagreb", "10000", hrvatska);
         NaseljenoMesto skopje = createNaseljenoMesto("Skopje", "1000", makedonija);
+        NaseljenoMesto njujork = createNaseljenoMesto("New York", "11004–05", amerika);
         
-        Klijent klijent = createKlijent(TipKlijenta.F, null, null, "Mika", "Mikic", "Adresa 1 bb", "mikamikic@gmail.com", null, "+38165123321", null, null, novisad, null, null);
+        Klijent klijent = createKlijent(TipKlijenta.F, null, null, "Mika", "Mikic", "Adresa 1 bb", "mikamikic@gmail.com", null, "+38165123321", null, null, novisad, new ArrayList<>(), null);
         Sluzbenik sluzbenik = ceateSluzbenik("Ceca", "Petrovic");		
         
         Korisnik korisnik1 = createKorisnik("theMika", "mmmmmmmm", null, klijent, TipKorisnika.KLIJENT);
         Korisnik korisnik2 = createKorisnik("theCeca", "cccccccc", sluzbenik, null, TipKorisnika.SLUZBENIK);
 
+        Banka srpskaBanka = createBanka("123", "123321123", "Srpska banka", beograd);
+        Banka vojvodjanskaBanka = createBanka("123", "123321123", "Vojvodjanska banka", beograd);
+
+        Valuta dinar = createValulta("RSD", "Srpski dinar", true, srbija);
+        Valuta kuna = createValulta("HRK", "Hrvatska kuna", false, hrvatska);
+        Valuta marka = createValulta("BAM", "Konvertibilna marka", false, bosna);
+        Valuta dolar = createValulta("USD", "Americki dolar", false, amerika);
+        Valuta euro  = createValulta("EUR", "Evro", false, null);
+
+        createRacun("123456789", klijent, srpskaBanka, dinar);
+        createRacun("685138522", klijent, srpskaBanka, dolar);
+        createRacun("852952201", klijent, srpskaBanka, euro);
+
+        klijentRepository.save(klijent);
+
+    }
+
+    private Valuta createValulta(String sifra, String naziv, boolean domicilna, Drzava drzava) {
+        return valutaRepository.save(new Valuta(sifra, naziv, domicilna, drzava, new ArrayList<>(), new ArrayList<>()));
     }
 
     private NaseljenoMesto createNaseljenoMesto(String naziv, String ptt, Drzava drzava){
@@ -118,11 +135,22 @@ public class StartData {
 	   
 	   return klijentRepository.save(new Klijent(tip, naziv, pib, ime, prezime, adresa, email, fax, telefon, skraceni_naziv, nadlezni_organ, prebivaliste, racuni, delatnost));
    }
+
+   private Banka createBanka(String sifra_banke, String pib, String naziv, NaseljenoMesto naseljenoMesto){
+        return bankaRepository.save(new Banka(sifra_banke, pib, naziv, "Savska 14", "srpskabanka@srpb.rs", "www.srpskabanka.rs",
+                "+381112366658", "+381112366658", true, naseljenoMesto));
+   }
    
    private Sluzbenik ceateSluzbenik(String ime, String prezime) {
 	   
 	   return sluzbenikRepository.save(new Sluzbenik(ime, prezime));
    }
-   
+
+   private void createRacun(String br, Klijent k, Banka b, Valuta v){
+        Ukidanje u = ukidanjeRepository.save(new Ukidanje());
+        Racun r = new Racun(br, new Date(System.currentTimeMillis()), true, k, b, u, v,new ArrayList<>() );
+        racunRepository.save(r);
+        k.getRacuni().add(r);
+   }
    
 }

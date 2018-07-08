@@ -30,6 +30,15 @@ public class Valuta {
     public Valuta() {
     }
 
+    public Valuta(@Size(min = 3, max = 3) String zvanicnaSifra, String naziv, boolean domicilna, Drzava drzava, List<KursUValuti> kurseviOsnova, List<KursUValuti> kurseviPrema) {
+        this.zvanicnaSifra = zvanicnaSifra;
+        this.naziv = naziv;
+        this.domicilna = domicilna;
+        this.drzava = drzava;
+        this.kurseviOsnova = kurseviOsnova;
+        this.kurseviPrema = kurseviPrema;
+    }
+
     public long getId() {
         return id;
     }

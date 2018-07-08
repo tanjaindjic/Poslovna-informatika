@@ -1,0 +1,45 @@
+<div ng-init="initKlijent()">
+    <h1 class="naslov-zuti-centar">Dobrodosli, {{klijent.ime}}!</h1>
+    <br>
+    <h3>Osnovni podaci:</h3>
+    <div>
+        <table>
+            <tr>
+                <td>Klijent: {{klijent.ime}} {{klijent.prezime}}</td>
+            </tr>
+            <tr ng-if="klijent.tip=='P'">
+                <td>Firma: {{klijent.naziv}}, {{klijent.skraceni_naziv}}</td>
+            </tr>
+            <tr ng-if="klijent.tip=='P'">
+                <td>PIB: {{klijent.pib}}</td>
+            </tr>
+            <tr>
+                <td>Adresa: {{klijent.adresa}}, {{klijent.prebivaliste.naziv}}, {{klijent.prebivaliste.drzava.naziv}}</td>
+            </tr>
+            <tr>
+                <td>Broj telefona: {{klijent.telefon}}</td>
+            </tr>
+            <tr>
+                <td>Email: {{klijent.email}}</td>
+            </tr>
+            <tr>
+                <td>Telefon: {{klijent.telefon}}, Fax: {{klijent.fax}}</td>
+            </tr>
+            <tr>
+                <td>Racuni:</td>
+            </tr>
+            <tr>
+                <td>Broj racuna:</td>
+                <td>Valuta:</td>
+                <td>Status:</td>
+            </tr>
+            <tr ng-repeat="racun in klijent.racuni">
+                <td>{{racun.brojRacuna}}</td>
+                <td>{{racun.valuta.zvanicnaSifra</td>
+                <td ng-if="racun.vazeci=='true">Aktivan</td>
+                <td ng-if="racun.vazeci=='false">Neaktivan</td>
+            </tr>
+
+        </table>
+    </div>
+</div>
