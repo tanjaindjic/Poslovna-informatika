@@ -113,8 +113,6 @@ public class StartData {
 
         klijentRepository.save(klijent);
 
-   
-
     }
 
     private AnalitikaIzvoda createNalog(Klijent k, NaseljenoMesto mesto, Valuta valuta) {

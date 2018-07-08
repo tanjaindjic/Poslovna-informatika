@@ -1,4 +1,4 @@
-mainModule.service('userService', [ '$http','jwtHelper','$window','$localStorage', 
+mainModule.service('userService', [ '$http','jwtHelper','$window','$localStorage',
     function($http, jwtHelper, $window, $localStorage) {
 
         this.ulogujSe = function(user){
@@ -27,5 +27,8 @@ mainModule.service('userService', [ '$http','jwtHelper','$window','$localStorage
             }
             return $http(req);
         }
+
+
     }
+
 ]);

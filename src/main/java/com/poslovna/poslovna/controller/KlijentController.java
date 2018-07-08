@@ -21,8 +21,8 @@ public class KlijentController {
     private KlijentService klijentService;
 
     @GetMapping(value = "/{id}")
-    public Klijent getKlijent(@PathVariable Long id){
-        return klijentService.getKlijent(id);
+    public Klijent getKlijentPrekoKorisnikID(@PathVariable Long id){
+        return klijentService.getKlijentPrekoKorisnikID(id);
     }
     
     @RequestMapping(value = "/getKlijentsByTip/{tip}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

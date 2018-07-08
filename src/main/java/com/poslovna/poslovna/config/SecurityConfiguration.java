@@ -65,8 +65,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.and()
     		.authorizeRequests()
     		.antMatchers("**/secured/**").authenticated();
-        
+
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+		httpSecurity.headers().frameOptions().disable();
 
 	}
 }

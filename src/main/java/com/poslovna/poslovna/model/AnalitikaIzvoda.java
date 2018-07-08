@@ -31,7 +31,6 @@ public class AnalitikaIzvoda {
     @Size(max = 18, min = 5)
     private String racunNalogodavca;
 
-    @Size(min = 2, max = 2)
     private int modelZaduzenja;
 
     @Size(max = 20)

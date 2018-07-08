@@ -18,6 +18,11 @@ mainModule.config(function($stateProvider, $urlRouterProvider) {
         templateUrl: 'appParts/klijentComponent/klijentHome.html',
         controller : 'klijentHomeController'
     })
+    .state('racuni', {
+        url: '/racuni',
+        templateUrl: 'appParts/klijentIzvodiComponent/klijentIzvodi.html',
+        controller : 'klijentIzvodiController'
+    })
     .state('noviRacun', {
         url: '/noviRacun',
         templateUrl: 'appParts/kreirajRacunComponent/kreirajRacun.html',

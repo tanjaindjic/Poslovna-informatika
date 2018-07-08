@@ -14,6 +14,7 @@ public class CustomUserDetailsFactory {
 	private CustomUserDetailsFactory() {}
 	
 	public static CustomUserDetails createCustomUserDetails(Korisnik korisnik) {
+
 		return new CustomUserDetails(
 				korisnik.getKorisnickoIme(),
 				korisnik.getId(),

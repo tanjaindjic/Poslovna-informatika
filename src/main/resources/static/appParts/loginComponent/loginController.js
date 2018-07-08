@@ -15,10 +15,17 @@ mainModule.controller('loginController', ['$scope','$window','$localStorage','$l
                         var tempUser = userService.parsirajToken();
 
                         if(tempUser.uloga === 'KLIJENT'){
-                            $location.path('/klijent');
+                            [].forEach.call(document.querySelectorAll('.isKlijent'), function (el) {
+                              el.style.display = 'block';
+                            });
+
                         }else{
-                            $location.path('/home');
+                            [].forEach.call(document.querySelectorAll('.isKlijent'), function (el) {
+                              el.style.display = 'none';
+                            });
+
                         }
+                        $location.path('/home');
                         
                     },
                     function (error){

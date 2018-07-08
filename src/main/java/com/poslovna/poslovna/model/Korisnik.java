@@ -26,13 +26,11 @@ public class Korisnik {
 	
 	@Column(nullable = false)
 	private String lozinka;
-	
-	@OneToOne(optional = true)
-    @PrimaryKeyJoinColumn
+
+	@OneToOne
     private Klijent klijent;
-	
-	@OneToOne(optional = true)
-    @PrimaryKeyJoinColumn
+
+	@OneToOne
     private Sluzbenik sluzbenik;
 	
 	@Enumerated(EnumType.STRING)

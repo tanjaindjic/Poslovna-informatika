@@ -1,33 +1,40 @@
 <div ng-init="initCenter()">
-    <h1 class="naslov-zuti-centar">Dobrodosli, {{klijent.ime}}!</h1>
-    <br>
+    <div>
+    <br><br>
+    </div>  
     <div>
         <p>Poslednje promene racuna:
             <select>
-                <option ng-repeat="racun in klijent.racuni">racun.brojRacuna</option>
+                <option ng-repeat="racun in klijent.racuni" ng-model="odabranRacun">{{racun.brojRacuna}}</option>
             </select>
         </p>
-        <table ng-if="racun.brojRacuna != ''">
-            <tr>
-                <td>Sa racuna:</td>
-                <td>Na racun:</td>
-                <td>Svrha placanja:</td>
-                <td>Iznos:</td>
-                <td>Datum kreiranja:</td>
-                <td>Datum izvrsenja:</td>
-                <td>Status naloga:</td>
+        <div style="display: inline-block">
+            <input type="checkbox" id="samoUplate"><label for="samoUplate" >Uplate</label>
+        </div>
+        <div style="display: inline-block">
+            <input type="checkbox" id="samoIsplate"><label for="samoIsplate" >Isplate</label>
+        </div>
+        <table style="table-layout: fixed; width:100%">
+            <tr style="background-color:#0b5c7c; color:white">
+                <td style="width: 30; text-align: center; vertical-align: middle;">Sa racuna</td>
+                <td style="width: 30;  text-align: center; vertical-align: middle;">Na racun</td>
+                <td style="width: 30;  text-align: center; vertical-align: middle;">Opis</td>
+                <td style="width: 30;  text-align: center; vertical-align: middle;">Iznos</td>
+                <td style="width: 30;  text-align: center; vertical-align: middle;">Datum kreiranja</td>
+                <td style="width: 30;  text-align: center; vertical-align: middle;">Datum izvrsenja</td>
+                <td style="width: 30;  text-align: center; vertical-align: middle;">Status naloga</td>
             </tr>
-            <tr ng-repeat="nalog in nalozi">
-                <td>Nalogodavac: {{nalog.nalogodavac}} <br> {{nalog.racunNalogodavca}}</td>
-                <td>Primalac: {{nalog.primalac}} <br> {{nalog.racunPrimaoca}}</td>
-                <td>{{nalog.svrhaPlacanja}}</td>
-                <td>{{nalog.iznos}} {{nalog.valuta.zvanicnaSifra</td>
-                <td>{{nalog.datumPrijema}}</td>
-                <td>{{nalog.datumObrade}}</td>
-                <td ng-if="nalog.status=='E'">Evidentiran</td>
-                <td ng-if="nalog.status=='P'">Poslat</td>
-                <td ng-if="nalog.status=='I'">Izvrsen</td>
-                <td ng-if="nalog.status=='O'">Odbijen</td>
+            <tr ng-repeat="nalog in nalozi" style="border-bottom: 1px">
+                 <td style="width: 30; text-align: center; vertical-align: middle;">Nalogodavac: {{nalog.nalogodavac}} <br> {{nalog.racunNalogodavca}}</td>
+                 <td style="width: 30; text-align: center; vertical-align: middle;">Primalac: {{nalog.primalac}} <br> {{nalog.racunPrimaoca}}</td>
+                 <td style="width: 30; text-align: center; vertical-align: middle;">{{nalog.svrhaPlacanja}}</td>
+                 <td style="width: 30; text-align: center; vertical-align: middle;">{{nalog.iznos}} {{nalog.valuta.zvanicnaSifra}}</td>
+                 <td style="width: 30; text-align: center; vertical-align: middle;">{{nalog.datumPrijema}}</td>
+                 <td style="width: 30; text-align: center; vertical-align: middle;">{{nalog.datumObrade}}</td>
+                <td style="width: 30; text-align: center; vertical-align: middle;" ng-if="nalog.status=='E'">Evidentiran</td>
+                <td style="width: 30; text-align: center; vertical-align: middle;" ng-if="nalog.status=='P'">Poslat</td>
+                <td style="width: 30; text-align: center; vertical-align: middle;" ng-if="nalog.status=='I'">Izvrsen</td>
+                <td style="width: 30; text-align: center; vertical-align: middle;" ng-if="nalog.status=='O'">Odbijen</td>
 
             </tr>
         </table>
