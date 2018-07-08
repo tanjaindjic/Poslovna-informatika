@@ -1,9 +1,15 @@
 package com.poslovna.poslovna.service;
 
-import com.poslovna.poslovna.model.Klijent;
-import com.poslovna.poslovna.repository.KlijentRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.poslovna.poslovna.model.Klijent;
+import com.poslovna.poslovna.model.Korisnik;
+import com.poslovna.poslovna.model.enums.TipKlijenta;
+import com.poslovna.poslovna.repository.KlijentRepository;
+import com.poslovna.poslovna.repository.KorisnikRepository;
 
 @Service
 public class KlijentService {
@@ -11,7 +17,28 @@ public class KlijentService {
     @Autowired
     private KlijentRepository klijentRepository;
 
+    @Autowired
+    private KorisnikRepository korisnikRepository;
+
+
     public Klijent getKlijent(Long id) {
-        return klijentRepository.getOne(id);
+        Korisnik k = korisnikRepository.findById(id).get();
+        return klijentRepository.findById(k.getKlijent().getId()).get();
     }
+    
+    public Klijent getOne(long id) {
+    	
+    	return klijentRepository.getOne(id);
+    }
+    
+    public List<Klijent> getKlijentsByTip(TipKlijenta tip){
+    	
+    	return klijentRepository.findByTip(tip);
+    }
+    
+    public Klijent saveKlinet(Klijent klijent) {
+    	
+    	return klijentRepository.save(klijent);
+    }
+    
 }

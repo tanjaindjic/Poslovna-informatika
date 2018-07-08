@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.sql.Date;
+
+import java.util.Date;
 import java.util.List;
 
 
@@ -15,24 +16,27 @@ public class Racun {
     @GeneratedValue
     private long id;
 
+    @Column(nullable = false, unique = true)
     @Size(min=5, max=18)
     private String brojRacuna;
 
+    @Column(nullable = false)
     private Date datumOtvaranja;
 
+    @Column(nullable = false)
     private boolean vazeci;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JsonBackReference
     private Klijent vlasnik;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Banka poslovnaBanka;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     private Ukidanje ukidanje;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Valuta valuta;
 
     @OneToMany

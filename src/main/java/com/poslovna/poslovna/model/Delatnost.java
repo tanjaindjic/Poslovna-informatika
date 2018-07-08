@@ -1,11 +1,14 @@
 package com.poslovna.poslovna.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
-import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Delatnost {
@@ -20,12 +23,20 @@ public class Delatnost {
     private String naziv;
 
     @OneToMany
+    @JsonBackReference
     private List<Klijent> klijenti;
 
     public Delatnost() {
     }
+    
+    
+    public Delatnost(String sifra, String naziv) {
+		super();
+		this.sifra = sifra;
+		this.naziv = naziv;
+	}
 
-    public long getId() {
+	public long getId() {
         return id;
     }
 

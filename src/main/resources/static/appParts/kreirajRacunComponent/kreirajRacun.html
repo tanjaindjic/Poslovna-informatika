@@ -1,0 +1,83 @@
+<h1 class="naslov-zuti-centar">Kreirajte novi racun za:</h1>
+<div class="row" ng-init="initKreirajRacun()">
+
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+        
+        <div class="row top-bottomn-margin-xs">
+            <div class="col-lg-3"></div>
+            <div class="radio col-lg-3">
+                <label class="labela-forma-plava"><input type="radio" name="tipKlijenta" value="P" checked="checked" ng-model="tipKlijenta">Pravno lice</label>
+            </div>
+            <div class="radio col-lg-3">
+                <label class="labela-forma-plava"><input type="radio" name="tipKlijenta" value="F" ng-model="tipKlijenta">Fizicko lice</label>
+            </div>
+        </div>
+
+        <div class="pozadina-plava card card-block bg-faded">
+            
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="naslov-zuti-centar">Klijenti</h3>
+                </div>
+                        
+                <table ng-if="tipKlijenta == 'F'" class="table table-fixed">
+                    <thead>
+                        <tr>
+                            <th class="col-lg-2">jmbg</th>
+                            <th class="col-lg-2">Ime</th>
+                            <th class="col-lg-2">Prezime</th>
+                            <th class="col-lg-4">Prebivaliste</th>
+                            <th class="col-lg-2">Telefon</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="klijent in klijenti" ng-class="{'selektovan-red': klijent.id == selKlijent }" ng-click="selektujRed(klijent.id)">
+                            <td class="col-lg-2">{{klijent.jmbg}}</td>
+                            <td class="col-lg-2">{{klijent.ime}}</td>
+                            <td class="col-lg-2">{{klijent.prezime}}</td>
+                            <td class="col-lg-4">{{klijent.prebivaliste.naziv}}, {{klijent.prebivaliste.drzava.naziv}}</td>
+                            <td class="col-lg-2">{{klijent.telefon}}</td>
+                        </tr>  
+                    </tbody>
+                </table>
+
+                <table ng-if="tipKlijenta == 'P'" class="table table-fixed">
+                    <thead>
+                        <tr>
+                            <th class="col-lg-2">pib</th>
+                            <th class="col-lg-3">Naziv</th>
+                            <th class="col-lg-2">Vlasnik</th>
+                            <th class="col-lg-3">Sediste</th>
+                            <th class="col-lg-2">Delatnost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <tr ng-repeat="klijent in klijenti" ng-class="{'selektovan-red': klijent.id == selKlijent }" ng-click="selektujRed(klijent.id)">
+                            <td class="col-lg-2">{{klijent.pib}}</td>
+                            <td class="col-lg-3">{{klijent.naziv}}</td>
+                            <td class="col-lg-2">{{klijent.ime}} {{klijent.prezime}}</td>
+                            <td class="col-lg-3">{{klijent.prebivaliste.naziv}}, {{klijent.prebivaliste.drzava.sifra_drzave}}</td>
+                            <td class="col-lg-2">{{klijent.delatnost.sifra}}</td>
+                        </tr>  
+                    </tbody>
+                </table>
+            </div> 
+            <div class="top-bottomn-margin-xs">
+                <button type="button" class="logregBtn btn btn-md btn-info col-lg-12" name="kreirajRacun" ng-click="otvoriKreiranje()" ng-disabled="selKlijent == -1">Kreiraj</button>
+            </div>
+        </div>
+
+        <div class="gap-top-md pozadina-plava card card-block bg-faded" ng-if="isKreiranje">
+            <form name="forma">
+                <input type="text" class="top-bottomn-margin-xs form-control" name="brojRacuna" id="brojRacuna" ng-model="racun.brojRacuna" placeholder="Broj racuna" ng-pattern="/^[0-9]{3}-[0-9]{1,13}-[0-9]{2}$/" ng-required="true"/>
+                <span class="poruka-greska" ng-show="forma.brojRacuna.$dirty && forma.brojRacuna.$error.pattern">Neispravan format broja racuna.</span>
+                <select ng-model="racun.valutaId" class="top-bottomn-margin-xs form-control">
+                    <option ng-repeat="valuta in valute" value="{{valuta.id}}">{{valuta.zvanicnaSifra}}, {{valuta.naziv}}</option>
+                </select>
+                <button type="button" class="logregBtn btn btn-md btn-info col-lg-12" name="potvrdiRacun" ng-disabled="forma.$invalid" ng-click="potvrdiKreiranje()">Posalji</button>
+            </form>
+        </div>
+    </div>
+
+</div>
