@@ -83,13 +83,14 @@ public class StartData {
         Delatnost delatnost2 = createDelatnost("DE2", "Gradjevinarstvo");
         Delatnost delatnost3 = createDelatnost("DE3", "Poljoprivreda");
         
-        Klijent klijent1 = createKlijent(TipKlijenta.F, null, null, "Mika", "Mikic", "Adresa 1 bb", "mikamikic@gmail.com", null, "+38165123321", null, null, novisad, new ArrayList<>(), null, "0101985800011");
+        Klijent klijent = createKlijent(TipKlijenta.F, null, null, "Mika", "Mikic", "Adresa 1 bb", "mikamikic@gmail.com", "+38165123321", "+38165123321", null, null, novisad, new ArrayList<>(), null, "0102982800011");
         Klijent klijent2 = createKlijent(TipKlijenta.F, null, null, "Zika", "Zikic", "Adresa 2 bb", "zikazikic@gmail.com", null, "+38165456654", null, null, beograd, new ArrayList<>(), null, "0102982800012");
         Klijent klijent3 = createKlijent(TipKlijenta.F, null, null, "Ana", "Petrovic", "Adresa 3 bb", "anap@gmail.com", null, "+38165258852", null, null, skopje, new ArrayList<>(), null, "0103971800013");
         Klijent klijent4 = createKlijent(TipKlijenta.P, "Preduzece Markovic", "123456789", "Marko", "Markovic", "Adresa 4 bb", "markovic@gmail.com", null, "+385888999", "PRM", null, zagreb, new ArrayList<>(), delatnost1, null);
+        
         Sluzbenik sluzbenik = ceateSluzbenik("Ceca", "Petrovic");		
         
-        Korisnik korisnik1 = createKorisnik("theMika", "mmmmmmmm", null, klijent1, TipKorisnika.KLIJENT);
+        Korisnik korisnik1 = createKorisnik("theMika", "mmmmmmmm", null, klijent, TipKorisnika.KLIJENT);
         Korisnik korisnik2 = createKorisnik("theZika", "zzzzzzzz", null, klijent2, TipKorisnika.KLIJENT);
         Korisnik korisnik3 = createKorisnik("theAna", "aaaaaaaa", null, klijent3, TipKorisnika.KLIJENT);
         Korisnik korisnik4 = createKorisnik("markovic", "markovic", null, klijent4, TipKorisnika.KLIJENT);
@@ -104,19 +105,20 @@ public class StartData {
         Valuta dolar = createValulta("USD", "Americki dolar", false, amerika);
         Valuta euro  = createValulta("EUR", "Evro", false, null);
 
-        createRacun("123456789", klijent1, srpskaBanka, dinar);
-        createRacun("685138522", klijent1, srpskaBanka, dolar);
-        createRacun("852952201", klijent1, srpskaBanka, euro);
+        createRacun("123456789", klijent, srpskaBanka, dinar);
+        createRacun("685138522", klijent, srpskaBanka, dolar);
+        createRacun("852952201", klijent, srpskaBanka, euro);
 
-        AnalitikaIzvoda a = createNalog(klijent1, beograd, euro);
+        AnalitikaIzvoda a = createNalog(klijent, beograd, euro);
 
-        klijentRepository.save(klijent1);
+        klijentRepository.save(klijent);
 
+   
 
     }
 
     private AnalitikaIzvoda createNalog(Klijent k, NaseljenoMesto mesto, Valuta valuta) {
-        AnalitikaIzvoda a = new AnalitikaIzvoda("theMika", "sam sebi uplacujem", "the Mika", new Date(System.currentTimeMillis()), null, new Date(System.currentTimeMillis()),
+        AnalitikaIzvoda a = new AnalitikaIzvoda("theMika", "sam sebi uplacujem", "the Mika", new Date(System.currentTimeMillis()), null,new Date(System.currentTimeMillis()),
                 "123456789", 97, "123-2050531-2", "685138522", 97, false, 10000F, 0, Status.E, VrstaPlacanja.GOTOVINSKO, false, mesto, valuta);
         analitikaIzvodaRepository.save(a);
         return a;
