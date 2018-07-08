@@ -5,10 +5,8 @@ mainModule.controller('klijentHomeController', ['$scope', '$window', 'userServic
 
         $scope.initKlijent = function(){
             $scope.logovaniKorisnik = userService.parsirajToken();
-        }
-        console.log($scope.logovaniKorisnikx)
 
-          $http({
+            $http({
                 method: 'GET',
                 url: 'https://localhost:8096/klijent/'+$scope.logovaniKorisnik.id,
                 headers: {'token' : $window.localStorage.getItem('token')}
@@ -22,6 +20,7 @@ mainModule.controller('klijentHomeController', ['$scope', '$window', 'userServic
                 alert("Error occured check connection");
                 $location.path('/home');
             });
+        }
 
     }
 ]);

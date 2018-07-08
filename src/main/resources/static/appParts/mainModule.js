@@ -15,7 +15,7 @@ mainModule.config(function($stateProvider, $urlRouterProvider) {
     })
     .state('klijent', {
         url: '/klijent',
-        templateUrl: 'appParts/klijentHomeController/klijentHome.html',
+        templateUrl: 'appParts/klijentComponent/klijentHome.html',
         controller : 'klijentHomeController'
     })
     .state('noviRacun', {
