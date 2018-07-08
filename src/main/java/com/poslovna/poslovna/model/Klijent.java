@@ -20,6 +20,9 @@ public class Klijent {
 
     @Size(min = 9, max = 9)
     private String pib;
+    
+    @Size(min = 13, max = 13)
+    private String jmbg;
 
     private String ime;
 
@@ -52,7 +55,7 @@ public class Klijent {
     
     public Klijent(TipKlijenta tip, String naziv, String pib, String ime, String prezime,
 			String adresa, String email, String fax, String telefon, String skraceni_naziv, String nadlezni_organ,
-			NaseljenoMesto prebivaliste, List<Racun> racuni, Delatnost delatnost) {
+			NaseljenoMesto prebivaliste, List<Racun> racuni, Delatnost delatnost, String jmbg) {
 		super();
 		this.tip = tip;
 		this.naziv = naziv;
@@ -68,6 +71,7 @@ public class Klijent {
 		this.prebivaliste = prebivaliste;
 		this.racuni = racuni;
 		this.delatnost = delatnost;
+		this.jmbg = jmbg;
 	}
 
 	public Delatnost getDelatnost() {
@@ -77,8 +81,6 @@ public class Klijent {
 	public void setDelatnost(Delatnost delatnost) {
 		this.delatnost = delatnost;
 	}
-
-
 
 	public long getId() {
         return id;
@@ -192,11 +194,12 @@ public class Klijent {
         this.racuni = racuni;
     }
 
-    public Delatnost getDelatnosti() {
-        return delatnost;
-    }
+	public String getJmbg() {
+		return jmbg;
+	}
 
-    public void setDelatnosti(Delatnost delatnosti) {
-        this.delatnost = delatnosti;
-    }
+	public void setJmbg(String jmbg) {
+		this.jmbg = jmbg;
+	}
+    
 }

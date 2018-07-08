@@ -3,9 +3,11 @@ package com.poslovna.poslovna.model;
 import com.poslovna.poslovna.model.enums.Status;
 import com.poslovna.poslovna.model.enums.VrstaPlacanja;
 
+import java.util.Date;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.sql.Date;
+
 
 @Entity
 public class AnalitikaIzvoda {
