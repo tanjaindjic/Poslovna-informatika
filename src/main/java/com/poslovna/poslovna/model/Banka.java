@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -33,7 +34,23 @@ public class Banka {
 
     private boolean banka;
 
+    @ManyToOne
+    private NaseljenoMesto naseljenoMesto;
+
     public Banka() {
+    }
+
+    public Banka(@Size(min = 3, max = 3) String sifra_banke, @Size(min = 9, max = 9) String PIB, String naziv, String adresa, String email, String web, String telefon, String fax, boolean banka, NaseljenoMesto naseljenoMesto) {
+        this.sifra_banke = sifra_banke;
+        this.PIB = PIB;
+        this.naziv = naziv;
+        this.adresa = adresa;
+        this.email = email;
+        this.web = web;
+        this.telefon = telefon;
+        this.fax = fax;
+        this.banka = banka;
+        this.naseljenoMesto = naseljenoMesto;
     }
 
     public long getId() {
@@ -114,5 +131,13 @@ public class Banka {
 
     public void setBanka(boolean banka) {
         this.banka = banka;
+    }
+
+    public NaseljenoMesto getNaseljenoMesto() {
+        return naseljenoMesto;
+    }
+
+    public void setNaseljenoMesto(NaseljenoMesto naseljenoMesto) {
+        this.naseljenoMesto = naseljenoMesto;
     }
 }

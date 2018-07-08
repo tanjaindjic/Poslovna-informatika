@@ -1,5 +1,7 @@
 package com.poslovna.poslovna.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.sql.Date;
@@ -21,6 +23,7 @@ public class Racun {
     private boolean vazeci;
 
     @ManyToOne
+    @JsonBackReference
     private Klijent vlasnik;
 
     @ManyToOne
@@ -36,6 +39,17 @@ public class Racun {
     private List<DnevnoStanje> dnevnaStanja;
 
     public Racun() {
+    }
+
+    public Racun(@Size(min = 5, max = 18) String brojRacuna, Date datumOtvaranja, boolean vazeci, Klijent vlasnik, Banka poslovnaBanka, Ukidanje ukidanje, Valuta valuta, List<DnevnoStanje> dnevnaStanja) {
+        this.brojRacuna = brojRacuna;
+        this.datumOtvaranja = datumOtvaranja;
+        this.vazeci = vazeci;
+        this.vlasnik = vlasnik;
+        this.poslovnaBanka = poslovnaBanka;
+        this.ukidanje = ukidanje;
+        this.valuta = valuta;
+        this.dnevnaStanja = dnevnaStanja;
     }
 
     public long getId() {

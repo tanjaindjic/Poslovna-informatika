@@ -22,6 +22,8 @@ public class AnalitikaIzvoda {
 
     private Date datumPrijema;
 
+    private Date datumObrade;
+
     private Date datumValute;
 
     @Size(max = 18, min = 5)
@@ -34,7 +36,7 @@ public class AnalitikaIzvoda {
     private String pozivNaBroj;
 
     @Size(max = 18, min = 5)
-    private String racunPoverioca;
+    private String racunPrimaoca;
 
     @Size(min = 2, max = 2)
     private int modelOdobrenja;
@@ -133,12 +135,12 @@ public class AnalitikaIzvoda {
         this.pozivNaBroj = pozivNaBroj;
     }
 
-    public String getRacunPoverioca() {
-        return racunPoverioca;
+    public String getRacunPrimaoca() {
+        return racunPrimaoca;
     }
 
-    public void setRacunPoverioca(String racunPoverioca) {
-        this.racunPoverioca = racunPoverioca;
+    public void setRacunPrimaoca(String racunPrimaoca) {
+        this.racunPrimaoca = racunPrimaoca;
     }
 
     public int getModelOdobrenja() {
@@ -211,5 +213,13 @@ public class AnalitikaIzvoda {
 
     public void setMestoPrijema(NaseljenoMesto mestoPrijema) {
         this.mestoPrijema = mestoPrijema;
+    }
+
+    public Date getDatumObrade() {
+        return datumObrade;
+    }
+
+    public void setDatumObrade(Date datumObrade) {
+        this.datumObrade = datumObrade;
     }
 }
