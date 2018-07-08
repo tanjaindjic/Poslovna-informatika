@@ -25,7 +25,7 @@ public class LoginController {
 	private TokenUtils tokenUtils;
 	
 	@RequestMapping(value = "login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> testMethod(@RequestBody Korisnik forLogin){
+	public ResponseEntity<String> login(@RequestBody Korisnik forLogin){
 	   	
 	    Korisnik korisnik = korisnikService.getKorisnikByKorisnickoIme(forLogin.getKorisnickoIme());
 	    

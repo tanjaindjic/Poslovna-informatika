@@ -5,8 +5,6 @@ mainModule.controller('centerController', ['$scope', '$window', 'userService',
 
         $scope.initCenter = function(){
             $scope.logovaniKorisnik = userService.parsirajToken();
-
-            console.log($scope.logovaniKorisnik);
         }
 
         $scope.odjaviSe = function(){
