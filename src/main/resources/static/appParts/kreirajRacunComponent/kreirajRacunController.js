@@ -25,7 +25,6 @@ mainModule.controller('kreirajRacunController', [ '$scope','$window','$localStor
             sluzbenikService.dobaviPoTipu($scope.tipKlijenta).then(
                 function (response){
                     $scope.klijenti = response.data;
-                    console.log($scope.klijenti);
                 },
                 function (error){
                     alert("Greska prilikom dobavljanja klijenata.");
@@ -38,7 +37,6 @@ mainModule.controller('kreirajRacunController', [ '$scope','$window','$localStor
             sluzbenikService.dobaviValute().then(
                 function (response){
                     $scope.valute = response.data;
-                    console.log($scope.valute);
                 },
                 function (error){
                     alert("Greska prilikom dobavljanja valuta.");
@@ -59,11 +57,8 @@ mainModule.controller('kreirajRacunController', [ '$scope','$window','$localStor
             
             $scope.racun.vlasnikId = $scope.selKlijent;
 
-            console.log($scope.racun)
-
             sluzbenikService.napraviRacun($scope.racun).then(
                 function (response){
-                    console.log(response.data)
                     if(response.data == false){
                         alert("Uneti broj racuna vec postoji u evidenciji.");
                     }else{
