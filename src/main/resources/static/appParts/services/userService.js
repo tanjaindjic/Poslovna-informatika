@@ -27,5 +27,8 @@ mainModule.service('userService', [ '$http','jwtHelper','$window','$localStorage
             }
             return $http(req);
         }
+
+
     }
+
 ]);

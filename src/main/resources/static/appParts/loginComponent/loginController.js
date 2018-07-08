@@ -13,7 +13,7 @@ mainModule.controller('loginController', ['$scope','$window','$localStorage','$l
                     function (response){
                         $window.localStorage.setItem('token', response.data);  
                         var tempUser = userService.parsirajToken();
-                        console.log(tempUser)
+
                         if(tempUser.uloga === 'KLIJENT'){
                             [].forEach.call(document.querySelectorAll('.isKlijent'), function (el) {
                               el.style.display = 'block';

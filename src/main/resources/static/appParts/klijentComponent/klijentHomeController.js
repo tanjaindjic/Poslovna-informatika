@@ -23,6 +23,7 @@ mainModule.controller('klijentHomeController', ['$scope', '$window', 'userServic
             });
         }
 
+        $scope.initKlijent();
 
         $scope.profil = function(){
             var tempUser = parsirajToken();

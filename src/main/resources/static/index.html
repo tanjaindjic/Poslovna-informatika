@@ -27,6 +27,7 @@
 	<script type="text/javascript" src="appParts/centerComponent/centerController.js"></script>
 	<script type="text/javascript" src="appParts/loginComponent/loginController.js"></script>
 	<script type="text/javascript" src="appParts/klijentComponent/klijentHomeController.js"></script>
+	<script type="text/javascript" src="appParts/klijentIzvodiComponent/klijentIzvodiController.js"></script>
 
 
 </head>
@@ -44,20 +45,14 @@
 		  <ul class="navbar-nav mr-auto">
 
 			  <li class="nav-item active isKlijent" style="display:none">
-				  <a class="btn btn-link nav-link">Nalog za prenos</a>
+				  <a class="btn btn-link nav-link" ui-sref="nalog">Nalog za prenos</a>
 			  </li>
 
 				<li class="nav-item active isKlijent" style="display:none">
-					<a class="btn btn-link nav-link">Pregled stanja racuna</a>
+					<a class="btn btn-link nav-link" ui-sref="racuni">Pregled stanja racuna</a>
 				</li>
 
-			  <li class="nav-item active isKlijent" style="display:none">
-				  <a class="btn btn-link nav-link">Uplate</a>
-			  </li>
 
-			  <li class="nav-item active isKlijent" style="display:none">
-				  <a class="btn btn-link nav-link">Isplate</a>
-			  </li>
 		  </ul>
 
 		  <ul class="nav navbar-nav navbar-right">
