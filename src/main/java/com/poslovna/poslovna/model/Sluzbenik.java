@@ -2,12 +2,14 @@ package com.poslovna.poslovna.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class Sluzbenik {
 	
 	@Id
+	@GeneratedValue
 	private long id;
 	
 	@Column(nullable = false)

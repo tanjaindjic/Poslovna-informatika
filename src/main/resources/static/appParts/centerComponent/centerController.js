@@ -13,5 +13,15 @@ mainModule.controller('centerController', ['$scope', '$window', 'userService',
             $window.location.reload();
         }
 
+
+        $scope.profil = function(){
+            var tempUser = parsirajToken();
+            if(tempUser.uloga === 'KLIJENT'){
+                $window.location('/klijent');
+            }else{
+                 $window.location('/home');
+            }
+        }
+
     }
 ]);

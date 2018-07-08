@@ -77,7 +77,7 @@ public class StartData {
         NaseljenoMesto skopje = createNaseljenoMesto("Skopje", "1000", makedonija);
         NaseljenoMesto njujork = createNaseljenoMesto("New York", "11004–05", amerika);
         
-        Klijent klijent = createKlijent(TipKlijenta.F, null, null, "Mika", "Mikic", "Adresa 1 bb", "mikamikic@gmail.com", null, "+38165123321", null, null, novisad, new ArrayList<>(), null);
+        Klijent klijent = createKlijent(TipKlijenta.F, null, null, "Mika", "Mikic", "Adresa 1 bb", "mikamikic@gmail.com", "+38165123321", "+38165123321", null, null, novisad, new ArrayList<>(), null);
         Sluzbenik sluzbenik = ceateSluzbenik("Ceca", "Petrovic");		
         
         Korisnik korisnik1 = createKorisnik("theMika", "mmmmmmmm", null, klijent, TipKorisnika.KLIJENT);
@@ -97,6 +97,7 @@ public class StartData {
         createRacun("852952201", klijent, srpskaBanka, euro);
 
         klijentRepository.save(klijent);
+
 
     }
 
