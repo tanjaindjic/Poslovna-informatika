@@ -4,17 +4,17 @@
     </div>  
     <div>
         <p>Poslednje promene racuna:
-            <select>
-                <option ng-repeat="racun in klijent.racuni" ng-model="odabranRacun">{{racun.brojRacuna}}</option>
+            <select ng-change="odabirRacuna(odabranRacun)"  ng-model="odabranRacun">
+                <option ng-repeat="racun in klijent.racuni">{{racun.brojRacuna}}</option>
             </select>
         </p>
         <div style="display: inline-block">
-            <input type="checkbox" id="samoUplate"><label for="samoUplate" >Uplate</label>
+            <input type="checkbox" id="upl" ng-click="samoUplate()"><label for="samoUplate" >Uplate</label>
         </div>
         <div style="display: inline-block">
-            <input type="checkbox" id="samoIsplate"><label for="samoIsplate" >Isplate</label>
+            <input type="checkbox" id="ispl" ng-click="samoIsplate()"><label for="samoIsplate" >Isplate</label>
         </div>
-        <table style="table-layout: fixed; width:100%">
+        <table style="table-layout: fixed; width:100%" id="tabelaIzvoda">
             <tr style="background-color:#0b5c7c; color:white">
                 <td style="width: 30; text-align: center; vertical-align: middle;">Sa racuna</td>
                 <td style="width: 30;  text-align: center; vertical-align: middle;">Na racun</td>
@@ -24,7 +24,7 @@
                 <td style="width: 30;  text-align: center; vertical-align: middle;">Datum izvrsenja</td>
                 <td style="width: 30;  text-align: center; vertical-align: middle;">Status naloga</td>
             </tr>
-            <tr ng-repeat="nalog in nalozi" style="border-bottom: 1px">
+            <tr ng-repeat="nalog in nalozi" style="border-bottom: 1px solid black" id="{{nalog.id}}">
                  <td style="width: 30; text-align: center; vertical-align: middle;">Nalogodavac: {{nalog.nalogodavac}} <br> {{nalog.racunNalogodavca}}</td>
                  <td style="width: 30; text-align: center; vertical-align: middle;">Primalac: {{nalog.primalac}} <br> {{nalog.racunPrimaoca}}</td>
                  <td style="width: 30; text-align: center; vertical-align: middle;">{{nalog.svrhaPlacanja}}</td>
