@@ -1,14 +1,24 @@
-mainModule.controller('loginController', function($scope, $window) {
+mainModule.controller('loginController', ['$scope','$window','$localStorage','$location', 'userService', 
+    function($scope, $window, $localStorage, $location, userService) {
 
-    $scope.korisnik = {};
+        $scope.korisnik = {};
 
-    $scope.ulogujSe = function(e) {
+        $scope.ulogujSe = function(e) {
 
-        if (!$scope.korisnik.korisnickoIme || !$scope.korisnik.lozinka) {
-            alert("Molimo vas da unesete sva polja za prijavu.");
-        } else {
+            if (!$scope.korisnik.korisnickoIme || !$scope.korisnik.lozinka) {
+                alert("Unesete sva polja za prijavu.");
+            } else {
 
-            console.log($scope.korisnik)
+                userService.ulogujSe($scope.korisnik).then(
+                    function (response){
+                        $window.localStorage.setItem('token', response.data);
+                        $location.path('/home');
+                    },
+                    function (error){
+                        alert("Greska prilikom prijave.");
+                    }
+                );
+            }
         }
     }
-});
+]);

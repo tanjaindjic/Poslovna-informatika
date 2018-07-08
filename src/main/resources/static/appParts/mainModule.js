@@ -1,4 +1,4 @@
-var mainModule = angular.module('mainModule', [ 'ui.router' ]);
+var mainModule = angular.module('mainModule', [ 'ui.router', 'ngStorage', 'angular-jwt' ]);
 
 mainModule.config(function($stateProvider, $urlRouterProvider) {
 
@@ -6,7 +6,7 @@ mainModule.config(function($stateProvider, $urlRouterProvider) {
 
     $stateProvider.state('home', {
         url: '/home',
-        templateUrl : 'appParts/centerComponent/center.html'
+        templateUrl : 'appParts/centerComponent/center.html',
     })
     .state('login', {
         url: '/login',

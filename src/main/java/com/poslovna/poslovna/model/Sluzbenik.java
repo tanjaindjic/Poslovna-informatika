@@ -20,9 +20,8 @@ public class Sluzbenik {
     	
     }
     
-	public Sluzbenik(long id, String ime, String prezime) {
+	public Sluzbenik(String ime, String prezime) {
 		super();
-		this.id = id;
 		this.ime = ime;
 		this.prezime = prezime;
 	}

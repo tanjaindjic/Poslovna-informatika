@@ -19,7 +19,7 @@ public class Klijent {
     private String naziv;
 
     @Size(min = 9, max = 9)
-    private String PIB;
+    private String pib;
 
     private String ime;
 
@@ -47,9 +47,40 @@ public class Klijent {
     private Delatnost delatnost;
 
     public Klijent() {
+    	
     }
+    
+    public Klijent(TipKlijenta tip, String naziv, String pib, String ime, String prezime,
+			String adresa, String email, String fax, String telefon, String skraceni_naziv, String nadlezni_organ,
+			NaseljenoMesto prebivaliste, List<Racun> racuni, Delatnost delatnost) {
+		super();
+		this.tip = tip;
+		this.naziv = naziv;
+		this.pib = pib;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.adresa = adresa;
+		this.email = email;
+		this.fax = fax;
+		this.telefon = telefon;
+		this.skraceni_naziv = skraceni_naziv;
+		this.nadlezni_organ = nadlezni_organ;
+		this.prebivaliste = prebivaliste;
+		this.racuni = racuni;
+		this.delatnost = delatnost;
+	}
 
-    public long getId() {
+	public Delatnost getDelatnost() {
+		return delatnost;
+	}
+
+	public void setDelatnost(Delatnost delatnost) {
+		this.delatnost = delatnost;
+	}
+
+
+
+	public long getId() {
         return id;
     }
 
@@ -73,15 +104,15 @@ public class Klijent {
         this.naziv = naziv;
     }
 
-    public String getPIB() {
-        return PIB;
-    }
+    public String getPib() {
+		return pib;
+	}
 
-    public void setPIB(String PIB) {
-        this.PIB = PIB;
-    }
+	public void setPib(String pib) {
+		this.pib = pib;
+	}
 
-    public String getIme() {
+	public String getIme() {
         return ime;
     }
 

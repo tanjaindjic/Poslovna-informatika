@@ -42,12 +42,13 @@ public class Korisnik {
 		
 	}
 
-	public Korisnik(String korisnickoIme, String lozinka, Klijent klijent, Sluzbenik sluzbenik) {
+	public Korisnik(String korisnickoIme, String lozinka, Klijent klijent, Sluzbenik sluzbenik, TipKorisnika tip) {
 		super();
 		this.korisnickoIme = korisnickoIme;
 		this.lozinka = lozinka;
 		this.klijent = klijent;
 		this.sluzbenik = sluzbenik;
+		this.tip = tip;
 	}
 
 	public long getId() {
