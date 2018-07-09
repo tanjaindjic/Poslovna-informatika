@@ -57,10 +57,8 @@ public class StartData {
     private UkidanjeRepository ukidanjeRepository;
     @Autowired
     private KursUValutiRepository kursUValutiRepository;
-    
     @Autowired
     private KorisnikRepository korisnikRepository;
-    
     @Autowired
     private SluzbenikRepository sluzbenikRepository;
 
@@ -102,10 +100,25 @@ public class StartData {
         Banka vojvodjanskaBanka = createBanka("124", "123451123", "Vojvodjanska banka", beograd);
 
         Valuta dinar = createValulta("RSD", "Srpski dinar", true, srbija);
-        Valuta kuna = createValulta("HRK", "Hrvatska kuna", false, hrvatska);
-        Valuta marka = createValulta("BAM", "Konvertibilna marka", false, bosna);
         Valuta dolar = createValulta("USD", "Americki dolar", false, amerika);
         Valuta euro  = createValulta("EUR", "Evro", false, null);
+
+        KursnaLista k = createKursnaLista(srpskaBanka);
+
+        k.getKursevi().add(createKursUValuti(dinar, dinar, 1F, k));
+        k.getKursevi().add(createKursUValuti(euro, euro, 1F, k));
+        k.getKursevi().add(createKursUValuti(dolar, dolar, 1F, k));
+        k.getKursevi().add(createKursUValuti(dinar, euro, 0.0085F, k));
+        k.getKursevi().add(createKursUValuti(dinar, dolar, 0.0100F, k));
+        k.getKursevi().add(createKursUValuti(euro, dinar, 118.03F, k));
+        k.getKursevi().add(createKursUValuti(euro, dolar, 1.18F, k));
+        k.getKursevi().add(createKursUValuti(dolar, dinar, 100.21F, k));
+        k.getKursevi().add(createKursUValuti(dolar, euro, 0.85F, k));
+
+
+        kursnaListaRepository.save(k);
+
+
 
         createRacun("100000001", klijent, srpskaBanka, dinar);
         createRacun("100000002", klijent, srpskaBanka, dolar);
