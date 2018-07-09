@@ -28,5 +28,10 @@ mainModule.config(function($stateProvider, $urlRouterProvider) {
         templateUrl: 'appParts/kreirajRacunComponent/kreirajRacun.html',
         controller : 'kreirajRacunController'
     })
+    .state('upravljanjeRacunima', {
+        url: '/upravljanjeRacunima',
+        templateUrl : 'appParts/upravljanjeRacunimaComponent/upravljanjeRacunima.html',
+        controller : 'upravljanjeRacunimaController'
+    })
 
 });

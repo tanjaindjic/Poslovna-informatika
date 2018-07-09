@@ -100,3 +100,7 @@
 .selektovan-red {
     background-color: #cadce4 !important;
 }
+
+.right-items{
+    float:right;
+}

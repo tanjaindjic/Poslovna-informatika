@@ -1,0 +1,53 @@
+<div class="row gap-top-md" ng-init="initUpravljanjeRacunima()">
+
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+        
+        <div class="pozadina-plava card card-block bg-faded">
+            
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="naslov-zuti-centar">Pregled stanja racuna</h3>
+                </div>
+                        
+                <table class="table table-fixed">
+                    <thead>
+                        <tr>
+                            <th class="col-lg-3">Broj racuna</th>
+                            <th class="col-lg-2">Valuta</th>
+                            <th class="col-lg-2">Banka</th>
+                            <th class="col-lg-3">Datum otvaranja</th>
+                            <th class="col-lg-2"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="racun in racuni" ng-class="{'selektovan-red': racun.id == selRacun }" ng-click="selektujRed(racun.id)">
+                            <td class="col-lg-3">{{racun.brojRacuna}}</td>
+                            <td class="col-lg-2">{{racun.valuta.zvanicnaSifra}}</td>
+                            <td class="col-lg-2">{{racun.poslovnaBanka.naziv}}</td>
+                            <td class="col-lg-3">{{parsirajDatum(racun.datumOtvaranja)}}</td>
+                            <td ng-if="racun.vazeci" class="col-lg-2"><a ng-click="deaktiviraj(racun.id)">Deaktiviraj</a></td>
+                            <td ng-if="!racun.vazeci" class="col-lg-2"><a ng-click="aktiviraj(racun.id)">Aktiviraj</a></td>
+                        </tr>  
+                    </tbody>
+                </table>
+
+                <div class="top-bottomn-margin-xs">
+                    <button class="btn btn-info right-items" ng-click="next()">&#x21E8;</button>
+                    <button class="btn btn-info right-items">{{pageNum}}</button>
+                    <button class="btn btn-info right-items" ng-click="prev()">&#x21E6;</button>
+                </div>
+
+            </div> 
+        </div>
+
+        <div class="gap-top-md pozadina-plava card card-block bg-faded" ng-if="isPrenos">
+            <form name="forma">
+                <input type="text" class="top-bottomn-margin-xs form-control" name="brojRacuna" id="brojRacuna" ng-model="naRacun" placeholder="Broj racuna" ng-pattern="/^[0-9]{3}-[0-9]{1,13}-[0-9]{2}$/" ng-required="true"/>
+                <span class="poruka-greska" ng-show="forma.brojRacuna.$dirty && forma.brojRacuna.$error.pattern">Neispravan format broja racuna.</span>
+                <button type="button" class="logregBtn btn btn-md btn-info col-lg-12" name="potvrdiPrenos" ng-disabled="forma.$invalid" ng-click="potvrdiPrenos()">Posalji</button>
+            </form>
+        </div>
+    </div>
+
+</div>
