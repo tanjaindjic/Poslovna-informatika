@@ -40,5 +40,29 @@ mainModule.service('sluzbenikService', [ '$http', '$window','$localStorage',
             return $http(req);
         }
 
+        this.deaktivirajRacun = function(racun, naRacun){
+
+            console.log(racun)
+
+            var req = {
+                method: 'PUT',
+                url: rootUrl+'racun/deaktiviraj/'+naRacun,
+                data: racun, 
+                headers: {'token' : $window.localStorage.getItem('token')}
+            }
+            return $http(req);
+        }
+
+        this.aktivirajRacun = function(racun){
+
+            var req = {
+                method: 'PUT',
+                url: rootUrl+'racun/aktiviraj',
+                data: racun, 
+                headers: {'token' : $window.localStorage.getItem('token')}
+            }
+            return $http(req);
+        }
+
     }
 ]);

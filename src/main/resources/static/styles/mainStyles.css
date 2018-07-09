@@ -104,3 +104,11 @@
 .right-items{
     float:right;
 }
+
+.racun-aktivan {
+    background-color: #7cc9c2 !important;
+}
+
+.racun-neaktivan {
+    background-color: #ce6060 !important;
+}

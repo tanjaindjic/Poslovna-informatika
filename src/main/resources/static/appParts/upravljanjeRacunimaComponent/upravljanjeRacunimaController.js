@@ -2,11 +2,11 @@ mainModule.controller('upravljanjeRacunimaController', [ '$scope','$window','$lo
     function($scope, $window, $localStorage, $location, sluzbenikService) {
     
         $scope.racuni = [];
-        $scope.selRacun = -1;
         $scope.isPrenos = false;
-        $scope.naRacun = null;
+        $scope.naRacun = {};
         $scope.pageNum = 1;
         $scope.maxPages = -1;
+        $scope.tempRacun = {};
 
         $scope.initUpravljanjeRacunima = function(){
             $scope.dobaviRacune();
@@ -49,20 +49,39 @@ mainModule.controller('upravljanjeRacunimaController', [ '$scope','$window','$lo
             return datum.slice(0, 10);
         }
 
-        $scope.selektujRed = function(idx){
-            $scope.selRacun = idx;
-        }
-
         $scope.deaktiviraj = function(idx){
-            $scope.selRacun = idx;
             $scope.isPrenos = !$scope.isPrenos;
+            $scope.tempRacun = $scope.racuni[idx];
             $scope.naRacun = null;
         }
 
-        $scope.potvrdiPrenos = function(){
+        $scope.aktiviraj = function(idx){
+            $scope.tempRacun = $scope.racuni[idx];
 
-            console.log($scope.naRacun);
+            sluzbenikService.aktivirajRacun($scope.tempRacun).then(
+                function (response){
+                    $scope.tempRacun = {};
+                    $scope.dobaviRacune();
+                },
+                function (error){
+                    alert("Greska prilikom aktivacije racuna.");
+                }
+            );
+        }
 
+        $scope.potvrdiPrenos = function(naRacun){
+
+            sluzbenikService.deaktivirajRacun($scope.tempRacun, naRacun).then(
+                function (response){
+                    $scope.tempRacun = {};
+                    $scope.isPrenos = false;
+                    $scope.dobaviRacune();
+                },
+                function (error){
+                    alert("Greska prilikom deaktivacije racuna.");
+                }
+            );
+            
         }
 
     }

@@ -21,13 +21,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="racun in racuni" ng-class="{'selektovan-red': racun.id == selRacun }" ng-click="selektujRed(racun.id)">
+                        <tr ng-repeat="racun in racuni" ng-class="{'racun-neaktivan': !racun.vazeci}">
                             <td class="col-lg-3">{{racun.brojRacuna}}</td>
                             <td class="col-lg-2">{{racun.valuta.zvanicnaSifra}}</td>
                             <td class="col-lg-2">{{racun.poslovnaBanka.naziv}}</td>
                             <td class="col-lg-3">{{parsirajDatum(racun.datumOtvaranja)}}</td>
-                            <td ng-if="racun.vazeci" class="col-lg-2"><a ng-click="deaktiviraj(racun.id)">Deaktiviraj</a></td>
-                            <td ng-if="!racun.vazeci" class="col-lg-2"><a ng-click="aktiviraj(racun.id)">Aktiviraj</a></td>
+                            <td ng-if="racun.vazeci" class="col-lg-2"><button class="btn btn-info" ng-click="deaktiviraj($index)">Deaktiviraj</button></td>
+                            <td ng-if="!racun.vazeci" class="col-lg-2"><button class="btn btn-info" ng-click="aktiviraj($index)">Aktiviraj</button></td>
                         </tr>  
                     </tbody>
                 </table>
@@ -42,10 +42,11 @@
         </div>
 
         <div class="gap-top-md pozadina-plava card card-block bg-faded" ng-if="isPrenos">
-            <form name="forma">
-                <input type="text" class="top-bottomn-margin-xs form-control" name="brojRacuna" id="brojRacuna" ng-model="naRacun" placeholder="Broj racuna" ng-pattern="/^[0-9]{3}-[0-9]{1,13}-[0-9]{2}$/" ng-required="true"/>
-                <span class="poruka-greska" ng-show="forma.brojRacuna.$dirty && forma.brojRacuna.$error.pattern">Neispravan format broja racuna.</span>
-                <button type="button" class="logregBtn btn btn-md btn-info col-lg-12" name="potvrdiPrenos" ng-disabled="forma.$invalid" ng-click="potvrdiPrenos()">Posalji</button>
+            <h3 class="naslov-zuti-centar">Prenesite sredstva na racun:</h3>
+            <form name="forma" class="gap-top-xs">
+                <input type="text" class="top-bottomn-margin-xs form-control" name="naRacun" id="naRacun" ng-model="naRacun" placeholder="Broj racuna" ng-pattern="/^[0-9]{3}-[0-9]{1,13}-[0-9]{2}$/" ng-required="true"/>
+                <span class="poruka-greska" ng-show="forma.naRacun.$dirty && forma.naRacun.$error.pattern">Neispravan format broja racuna.</span>
+                <button type="button" class="logregBtn btn btn-md btn-info col-lg-12" name="potvrdiPrenos" ng-disabled="forma.$invalid" ng-click="potvrdiPrenos(naRacun)">Posalji</button>
             </form>
         </div>
     </div>

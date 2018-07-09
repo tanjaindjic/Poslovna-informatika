@@ -1,12 +1,20 @@
 package com.poslovna.poslovna.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import javax.persistence.*;
-import javax.validation.constraints.Size;
-
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 @Entity
@@ -21,6 +29,7 @@ public class Racun {
     private String brojRacuna;
 
     @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date datumOtvaranja;
 
     @Column(nullable = false)
@@ -33,8 +42,8 @@ public class Racun {
     @ManyToOne(optional = false)
     private Banka poslovnaBanka;
 
-    @ManyToOne(optional = true)
-    private Ukidanje ukidanje;
+    @OneToMany
+    private List<Ukidanje> ukidanje;
 
     @ManyToOne(optional = false)
     private Valuta valuta;
@@ -45,7 +54,7 @@ public class Racun {
     public Racun() {
     }
 
-    public Racun(@Size(min = 5, max = 18) String brojRacuna, Date datumOtvaranja, boolean vazeci, Klijent vlasnik, Banka poslovnaBanka, Ukidanje ukidanje, Valuta valuta, List<DnevnoStanje> dnevnaStanja) {
+    public Racun(@Size(min = 5, max = 18) String brojRacuna, Date datumOtvaranja, boolean vazeci, Klijent vlasnik, Banka poslovnaBanka, List<Ukidanje> ukidanje, Valuta valuta, List<DnevnoStanje> dnevnaStanja) {
         this.brojRacuna = brojRacuna;
         this.datumOtvaranja = datumOtvaranja;
         this.vazeci = vazeci;
@@ -104,11 +113,11 @@ public class Racun {
         this.poslovnaBanka = poslovnaBanka;
     }
 
-    public Ukidanje getUkidanje() {
+    public List<Ukidanje> getUkidanje() {
         return ukidanje;
     }
 
-    public void setUkidanje(Ukidanje ukidanje) {
+    public void setUkidanje(List<Ukidanje> ukidanje) {
         this.ukidanje = ukidanje;
     }
 

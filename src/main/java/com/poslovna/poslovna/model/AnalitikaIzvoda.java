@@ -43,7 +43,7 @@ public class AnalitikaIzvoda {
 
     private boolean hitno;
 
-    private Float iznos;
+    private Float iznosZaPrenos;
 
     private int tipGreske;
 
@@ -58,12 +58,21 @@ public class AnalitikaIzvoda {
     private NaseljenoMesto mestoPrijema;
 
     @ManyToOne
-    private Valuta valuta;
+    private Valuta osnovnaValuta;
+
+    private Float konvertovaniIznos;
+
+    @ManyToOne
+    private Valuta krajnjaValuta;
 
     public AnalitikaIzvoda() {
     }
 
-    public AnalitikaIzvoda(String nalogodavac, String svrhaPlacanja, String primalac, Date datumPrijema, Date datumObrade, Date datumValute, @Size(max = 18, min = 5) String racunNalogodavca, int modelZaduzenja, @Size(max = 20) String pozivNaBroj, @Size(max = 18, min = 5) String racunPrimaoca, int modelOdobrenja, boolean hitno, Float iznos, int tipGreske, Status status, VrstaPlacanja vrstaPlacanja, boolean medjubankarski, NaseljenoMesto mestoPrijema, Valuta valuta) {
+    public AnalitikaIzvoda(String nalogodavac, String svrhaPlacanja, String primalac, Date datumPrijema, Date datumObrade, Date datumValute,
+                           @Size(max = 18, min = 5) String racunNalogodavca, int modelZaduzenja, @Size(max = 20) String pozivNaBroj,
+                           @Size(max = 18, min = 5) String racunPrimaoca, int modelOdobrenja, boolean hitno, Float iznosZaPrenos, int tipGreske,
+                           Status status, VrstaPlacanja vrstaPlacanja, boolean medjubankarski, NaseljenoMesto mestoPrijema, Valuta osnovnaValuta,
+                           Float konvertovaniIznos,Valuta krajnjaValuta ) {
         this.nalogodavac = nalogodavac;
         this.svrhaPlacanja = svrhaPlacanja;
         this.primalac = primalac;
@@ -76,13 +85,15 @@ public class AnalitikaIzvoda {
         this.racunPrimaoca = racunPrimaoca;
         this.modelOdobrenja = modelOdobrenja;
         this.hitno = hitno;
-        this.iznos = iznos;
+        this.iznosZaPrenos = iznosZaPrenos;
         this.tipGreske = tipGreske;
         this.status = status;
         this.vrstaPlacanja = vrstaPlacanja;
         this.medjubankarski = medjubankarski;
         this.mestoPrijema = mestoPrijema;
-        this.valuta = valuta;
+        this.osnovnaValuta = osnovnaValuta;
+        this.konvertovaniIznos = konvertovaniIznos;
+        this.krajnjaValuta = krajnjaValuta;
     }
 
     public long getId() {
@@ -182,11 +193,11 @@ public class AnalitikaIzvoda {
     }
 
     public Float getIznos() {
-        return iznos;
+        return iznosZaPrenos;
     }
 
-    public void setIznos(Float iznos) {
-        this.iznos = iznos;
+    public void setIznos(Float iznosZaPrenos) {
+        this.iznosZaPrenos = iznosZaPrenos;
     }
 
     public int getTipGreske() {
@@ -222,11 +233,11 @@ public class AnalitikaIzvoda {
     }
 
     public Valuta getValuta() {
-        return valuta;
+        return osnovnaValuta;
     }
 
-    public void setValuta(Valuta valuta) {
-        this.valuta = valuta;
+    public void setValuta(Valuta osnovnaValuta) {
+        this.osnovnaValuta = osnovnaValuta;
     }
 
     public NaseljenoMesto getMestoPrijema() {
@@ -243,5 +254,21 @@ public class AnalitikaIzvoda {
 
     public void setDatumObrade(Date datumObrade) {
         this.datumObrade = datumObrade;
+    }
+
+    public Float getKonvertovaniIznos() {
+        return konvertovaniIznos;
+    }
+
+    public void setKonvertovaniIznos(Float konvertovaniIznos) {
+        this.konvertovaniIznos = konvertovaniIznos;
+    }
+
+    public Valuta getKrajnjaValuta() {
+        return krajnjaValuta;
+    }
+
+    public void setKrajnjaValuta(Valuta krajnjaValuta) {
+        this.krajnjaValuta = krajnjaValuta;
     }
 }

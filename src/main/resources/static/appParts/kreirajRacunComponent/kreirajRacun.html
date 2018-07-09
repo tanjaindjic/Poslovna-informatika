@@ -72,7 +72,7 @@
             <form name="forma">
                 <input type="text" class="top-bottomn-margin-xs form-control" name="brojRacuna" id="brojRacuna" ng-model="racun.brojRacuna" placeholder="Broj racuna" ng-pattern="/^[0-9]{3}-[0-9]{1,13}-[0-9]{2}$/" ng-required="true"/>
                 <span class="poruka-greska" ng-show="forma.brojRacuna.$dirty && forma.brojRacuna.$error.pattern">Neispravan format broja racuna.</span>
-                <select ng-model="racun.valutaId" class="top-bottomn-margin-xs form-control">
+                <select ng-model="racun.valutaId" class="top-bottomn-margin-xs form-control" ng-required="true">
                     <option ng-repeat="valuta in valute" value="{{valuta.id}}">{{valuta.zvanicnaSifra}}, {{valuta.naziv}}</option>
                 </select>
                 <button type="button" class="logregBtn btn btn-md btn-info col-lg-12" name="potvrdiRacun" ng-disabled="forma.$invalid" ng-click="potvrdiKreiranje()">Posalji</button>

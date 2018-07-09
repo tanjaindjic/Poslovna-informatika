@@ -69,12 +69,32 @@ public class RacunController {
     
     @SuppressWarnings("deprecation")
 	@RequestMapping(value = "/getRacuniNum/{pagenum}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<Racun>> gratiRacunePaginacija(@PathVariable int pagenum){
+    public ResponseEntity<Page<Racun>> vratiRacunePaginacija(@PathVariable int pagenum){
     	
     	if(pagenum < 1) {
     		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     	}
     	
     	return new ResponseEntity<Page<Racun>>(racunService.getRacuniByPage(new PageRequest(pagenum-1, 5)), HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/aktiviraj", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> aktivirajRacun(@RequestBody Racun racun){
+    	
+		if(racunService.aktiviraj(racun) == null) {
+			return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
+		}
+    	
+    	return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+    }
+    
+	@RequestMapping(value = "/deaktiviraj/{naRacun}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> deaktivirajRacun(@PathVariable String naRacun, @RequestBody Racun racun){
+    	
+		if(racunService.deaktiviraj(racun, naRacun) == null) {
+			return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
+		}
+    	
+    	return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
 }
