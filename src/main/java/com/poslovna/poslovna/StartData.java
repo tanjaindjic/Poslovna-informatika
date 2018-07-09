@@ -5,6 +5,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
@@ -230,7 +231,7 @@ public class StartData {
    }
 
    private void createRacun(String br, Klijent k, Banka b, Valuta v){
-        
+        Ukidanje u = ukidanjeRepository.save(new Ukidanje());
         Racun r = new Racun(br, new Date(System.currentTimeMillis()), true, k, b, null, v,new ArrayList<>() );
         racunRepository.save(r);
         k.getRacuni().add(r);
