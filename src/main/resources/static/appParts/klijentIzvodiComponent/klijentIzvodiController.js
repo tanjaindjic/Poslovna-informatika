@@ -1,5 +1,5 @@
-mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userService','$location', '$http',
-    function($scope, $window, userService, $location, $http){
+mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userService','$location', '$http','$timeout',
+    function($scope, $window, userService, $location, $http, $timeout){
 
         $scope.logovaniKorisnik = {};
         $scope.nalozi = [];
@@ -71,21 +71,29 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
             }
         }
 
+        $scope.sve = function(){
+            var i = 0;
+            for( i = 0; i < $scope.nalozi.length; i++){
+                document.getElementById($scope.nalozi[i].id).style.display = 'table-row';
+            }
+        }
+
         $scope.samoUplate = function(){
             var checkBox = document.getElementById("upl");
             if (checkBox.checked == true){
                 var i = 0;
                 for( i = 0; i < $scope.nalozi.length; i++){
                     if($scope.nalozi[i].racunPrimaoca == $scope.odabranRacun)
-                        document.getElementById($scope.nalozi[i].id).style.display = 'block';
+                        document.getElementById($scope.nalozi[i].id).style.display = 'table-row';
                     else document.getElementById($scope.nalozi[i].id).style.display = 'none';
                 }
             }else {
                 var i = 0;
                 for( i = 0; i < $scope.nalozi.length; i++){
-                    document.getElementById($scope.nalozi[i].id).style.display = 'block';
+                    document.getElementById($scope.nalozi[i].id).style.display = 'table-row';
                 }
             }
+            $timeout(function(){ $scope.$apply(); }, 150);
 
         }
 
@@ -95,16 +103,16 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
                 var i = 0;
                 for( i = 0; i < $scope.nalozi.length; i++){
                     if($scope.nalozi[i].racunNalogodavca == $scope.odabranRacun)
-                        document.getElementById($scope.nalozi[i].id).style.display = 'block';
+                        document.getElementById($scope.nalozi[i].id).style.display = 'table-row';
                     else document.getElementById($scope.nalozi[i].id).style.display = 'none';
                 }
             }else{
                 var i = 0;
                 for( i = 0; i < $scope.nalozi.length; i++){
-                    document.getElementById($scope.nalozi[i].id).style.display = 'block';
+                    document.getElementById($scope.nalozi[i].id).style.display = 'table-row';
                 }
             }
-
+            $timeout(function(){ $scope.$apply(); }, 150);
         }
     }
 ]);

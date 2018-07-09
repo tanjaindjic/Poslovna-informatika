@@ -105,19 +105,39 @@ public class StartData {
         Valuta dolar = createValulta("USD", "Americki dolar", false, amerika);
         Valuta euro  = createValulta("EUR", "Evro", false, null);
 
-        createRacun("123456789", klijent, srpskaBanka, dinar);
-        createRacun("685138522", klijent, srpskaBanka, dolar);
-        createRacun("852952201", klijent, srpskaBanka, euro);
+        createRacun("100000001", klijent, srpskaBanka, dinar);
+        createRacun("100000002", klijent, srpskaBanka, dolar);
+        createRacun("100000003", klijent, srpskaBanka, euro);
+        createRacun("200000001", klijent2, srpskaBanka, dinar);
+        createRacun("200000002", klijent2, srpskaBanka, dolar);
+        createRacun("200000003", klijent2, srpskaBanka, euro);
+        createRacun("300000001", klijent3, srpskaBanka, dinar);
+        createRacun("300000002", klijent3, srpskaBanka, dolar);
+        createRacun("300000003", klijent3, srpskaBanka, euro);
+        createRacun("400000001", klijent4, srpskaBanka, dinar);
+        createRacun("400000002", klijent4, srpskaBanka, dolar);
+        createRacun("400000003", klijent4, srpskaBanka, euro);
 
-        AnalitikaIzvoda a = createNalog(klijent, beograd, euro);
+        AnalitikaIzvoda a = createNalog(klijent, beograd, euro, klijent2, 100F);
+        AnalitikaIzvoda a2 = createNalog(klijent, beograd, dolar, klijent3, 1500F);
+        AnalitikaIzvoda a3 = createNalog(klijent2, beograd, dinar, klijent4, 5000F);
+        AnalitikaIzvoda a4 = createNalog(klijent4, beograd, euro, klijent3, 8851F);
+        AnalitikaIzvoda a5 = createNalog(klijent4, beograd, euro, klijent, 8511111F);
+        AnalitikaIzvoda a6 = createNalog(klijent, beograd, euro, klijent2, 10000F);
+        AnalitikaIzvoda a7 = createNalog(klijent3, beograd, euro, klijent, 50F);
+        AnalitikaIzvoda a8 = createNalog(klijent2, beograd, euro, klijent4, 90000F);
 
         klijentRepository.save(klijent);
+        klijentRepository.save(klijent2);
+        klijentRepository.save(klijent3);
+        klijentRepository.save(klijent4);
 
     }
 
-    private AnalitikaIzvoda createNalog(Klijent k, NaseljenoMesto mesto, Valuta valuta) {
-        AnalitikaIzvoda a = new AnalitikaIzvoda("theMika", "sam sebi uplacujem", "the Mika", new Date(System.currentTimeMillis()), null,new Date(System.currentTimeMillis()),
-                "123456789", 97, "123-2050531-2", "685138522", 97, false, 10000F, 0, Status.E, VrstaPlacanja.GOTOVINSKO, false, mesto, valuta);
+    private AnalitikaIzvoda createNalog(Klijent nalogodavac, NaseljenoMesto mesto, Valuta valuta, Klijent primalac, Float iznos) {
+        AnalitikaIzvoda a = new AnalitikaIzvoda(nalogodavac.getIme() + nalogodavac.getPrezime(), "Uplata na racun",
+                primalac.getIme() + primalac.getPrezime(), new Date(System.currentTimeMillis()), null, new Date(System.currentTimeMillis()),
+                nalogodavac.getRacuni().get(0).getBrojRacuna(), 97, "123-2050531-2", primalac.getRacuni().get(0).getBrojRacuna(), 97, false, iznos, 0, Status.E, VrstaPlacanja.GOTOVINSKO, false, mesto, valuta);
         analitikaIzvodaRepository.save(a);
         return a;
     }
