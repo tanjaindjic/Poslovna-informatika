@@ -6,6 +6,7 @@ mainModule.controller('klijentHomeController', ['$scope', '$window', 'userServic
         $scope.initKlijent = function(){
             $scope.logovaniKorisnik = userService.parsirajToken();
 
+            console.log($scope.logovaniKorisnik)
 
             $http({
                 method: 'GET',

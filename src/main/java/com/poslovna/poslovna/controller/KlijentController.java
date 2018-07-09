@@ -22,6 +22,9 @@ public class KlijentController {
 
     @GetMapping(value = "/{id}")
     public Klijent getKlijentPrekoKorisnikID(@PathVariable Long id){
+    	
+    	System.out.println("ID JEE: "+id);
+    	
         return klijentService.getKlijentPrekoKorisnikID(id);
     }
     

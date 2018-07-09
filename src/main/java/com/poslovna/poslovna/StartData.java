@@ -89,14 +89,14 @@ public class StartData {
         Klijent klijent3 = createKlijent(TipKlijenta.F, null, null, "Ana", "Petrovic", "Adresa 3 bb", "anap@gmail.com", null, "+38165258852", null, null, skopje, new ArrayList<>(), null, "0103971800013");
         Klijent klijent4 = createKlijent(TipKlijenta.P, "Preduzece Markovic", "123456789", "Marko", "Markovic", "Adresa 4 bb", "markovic@gmail.com", null, "+385888999", "PRM", null, zagreb, new ArrayList<>(), delatnost1, null);
         
-        Sluzbenik sluzbenik = ceateSluzbenik("Ceca", "Petrovic");		
+        Sluzbenik sluzbenik = ceateSluzbenik("Ceca", "Petrovic");	
         
-        Korisnik korisnik1 = createKorisnik("theMika", "mmmmmmmm", null, klijent, TipKorisnika.KLIJENT);
-        Korisnik korisnik2 = createKorisnik("theZika", "zzzzzzzz", null, klijent2, TipKorisnika.KLIJENT);
-        Korisnik korisnik3 = createKorisnik("theAna", "aaaaaaaa", null, klijent3, TipKorisnika.KLIJENT);
-        Korisnik korisnik4 = createKorisnik("markovic", "markovic", null, klijent4, TipKorisnika.KLIJENT);
-        Korisnik korisnik5 = createKorisnik("theCeca", "cccccccc", sluzbenik, null, TipKorisnika.SLUZBENIK);
-
+        Korisnik korisnik1 = createKorisnik(klijent.getId(), "theMika", "mmmmmmmm", null, klijent, TipKorisnika.KLIJENT);
+        Korisnik korisnik2 = createKorisnik(klijent2.getId(), "theZika", "zzzzzzzz", null, klijent2, TipKorisnika.KLIJENT);
+        Korisnik korisnik3 = createKorisnik(klijent3.getId(), "theAna", "aaaaaaaa", null, klijent3, TipKorisnika.KLIJENT);
+        Korisnik korisnik4 = createKorisnik(klijent4.getId(), "markovic", "markovic", null, klijent4, TipKorisnika.KLIJENT);
+        Korisnik korisnik5 = createKorisnik(sluzbenik.getId(), "theCeca", "cccccccc", sluzbenik, null, TipKorisnika.SLUZBENIK);
+        
         Banka srpskaBanka = createBanka("123", "123321123", "Srpska banka", beograd);
         Banka vojvodjanskaBanka = createBanka("124", "123451123", "Vojvodjanska banka", beograd);
 
@@ -116,10 +116,7 @@ public class StartData {
         k.getKursevi().add(createKursUValuti(dolar, dinar, 100.21F, k));
         k.getKursevi().add(createKursUValuti(dolar, euro, 0.85F, k));
 
-
         kursnaListaRepository.save(k);
-
-
 
         createRacun("100000001", klijent, srpskaBanka, dinar);
         createRacun("100000002", klijent, srpskaBanka, dolar);
@@ -208,9 +205,9 @@ public class StartData {
         return nova;
     }
     
-   private Korisnik createKorisnik(String korisnickoIme, String lozinka, Sluzbenik sluzbenik, Klijent klijent, TipKorisnika tip) {
+   private Korisnik createKorisnik(long id, String korisnickoIme, String lozinka, Sluzbenik sluzbenik, Klijent klijent, TipKorisnika tip) {
 	   
-	   return korisnikRepository.save(new Korisnik(korisnickoIme, lozinka, klijent, sluzbenik, tip));
+	   return korisnikRepository.save(new Korisnik(id, korisnickoIme, lozinka, klijent, sluzbenik, tip));
    }
    
    private Klijent createKlijent(TipKlijenta tip, String naziv, String pib, String ime, String prezime,
