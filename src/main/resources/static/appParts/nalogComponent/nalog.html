@@ -1,0 +1,163 @@
+<div ng-init="initKlijent()">
+    <div style="overflow:hidden;">
+        <table cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin: auto">
+
+            <tbody><tr>
+                <td valign="top">
+
+                    <h2>Kreiranje naloga za placanje</h2>
+                    <table style="border: 1px solid #ddd;" cellpadding="0" cellspacing="0">
+                        <tbody><tr>
+                            <td style="width: 10px">&nbsp;</td>
+                            <td style="width: 350px">
+                                <table style="width: 100%; border-collapse: collapse" cellpadding="3">
+                                    <tbody><tr>
+                                        <td>
+                                            <span>Naziv platioca</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <textarea ng-model="nalogodavac" rows="3" cols="40" style="width: 340px"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-top: 10px">
+                                            <span>Svrha placanja</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <textarea ng-model="svrhaPlacanja" rows="3" cols="40" style="width: 340px"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-top: 10px">
+                                            <span>Naziv primaoca</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <textarea ng-model="primalac" rows="3" cols="40" style="width: 340px; margin-bottom: 10px"></textarea>
+                                        </td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                            <td style="width: 10px">&nbsp;</td>
+                            <td style="width: 1px; border-right: 1px solid #ddd">&nbsp;</td>
+                            <td style="width: 10px">&nbsp;</td>
+                            <td style="width: 250px" valign="top">
+                                <table style="width: 100%; border-collapse: collapse" cellpadding="3">
+                                    <tbody><tr>
+                                        <td style="text-align: left">
+                                            <span >Sifra placanja</span>
+                                        </td>
+                                        <td rowspan="2">
+                                        </td>
+                                        <td>
+                                            <span >Valuta</span>
+                                        </td>
+                                        <td rowspan="2">
+                                        </td>
+                                        <td style="text-align: right">
+                                            <span >Iznos</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 400px">
+
+                                                        <select >
+                                                            <option>220 – promet robe i usluga – medjufazna potrosnja</option>
+                                                            <option>221 – promet robe i usluga – finalna potrosnja</option>
+                                                            <option>222 – usluge javnih preduzeca</option>
+                                                            <option>231 – carine i druge uvozne dazbine</option>
+                                                            <option>240 – zarade i druga primanja zaposlenih</option>
+                                                            <option>241 – obustave od zarada</option>
+                                                            <option>245 – penzije</option>
+                                                            <option>253 – uplata tekucih prihoda</option>
+                                                            <option>257 – povracaj</option>
+                                                            <option>265 – uplata pazara</option>
+                                                            <option>266 – isplata gotovine</option>
+                                                            <option>272 – aktivna kamata</option>
+                                                            <option>279 – pasivna kamata</option>
+                                                            <option>281 – pozajmice osnivaca za likvidnost</option>
+                                                            <option>283 – naplata cekova građana</option>
+                                                            <option>286 – kupoprodaja deviza</option>
+                                                            <option>289 – transakcije po nalogu gradjana</option>
+                                                        </select>
+
+                                        </td>
+                                        <td nowrap="nowrap" style="width:40px">
+                                            <input type="text"  id="valuta" disabled="true" style="width:40px">
+                                        </td>
+                                        <td style="text-align: right">
+                                            <input ng-model="iznos" type="text" style="text-align:right; width: 100px"  maxlength="16">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            <span >Racun platioca</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            <select ng-change="odabirRacuna(odabranRacun)"  ng-model="odabranRacun">
+                                                <option ng-repeat="racun in klijent.racuni">{{racun.brojRacuna}}, {{racun.valuta.zvanicnaSifra}}</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="padding-top: 10px">
+                                            <span>Racun primaoca</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" nowrap="nowrap">
+                                            <input ng-model="oznakaBanke" type="text" size="3" maxlength="3">&nbsp;-
+                                            <input ng-model="racunPt2" type="text" size="13" maxlength="13">&nbsp;-
+                                            <input ng-model="racunPt3" type="text" size="2" maxlength="2">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            <span>Model i poziv na broj (odobrenja)</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" nowrap="nowrap">
+                                            <input ng-model="modelOdobrenja" type="text" size="2" maxlength="2">
+                                            <input ng-model="pozivNaBroj" type="text" size="27" maxlength="25">
+                                        </td>
+                                    </tr>
+                                    <tr >
+                                        <td colspan="5">
+                                            <table>
+                                                <tbody>
+                                                <tr>
+                                                    <td>Datum placanja</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><input type="date" name="date" id="projDate" ng-model="date" min="currentDate"></td>
+                                                    <td colspan="5">
+                                                        <input id="hitno" type="checkbox"> <span>Hitno</span>
+                                                    </td>
+                                                </tr>
+                                                </tbody></table>
+                                        </td>
+                                    </tr>
+
+                                    </tbody></table>
+                            </td>
+                            <td style="width: 10px">&nbsp;</td>
+                        </tr>
+                        </tbody></table>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center; padding-top: 10px">
+                    <button type="button" role="button" aria-disabled="false" ng-click="izvrsi()"><span></span><span><span>Izvrsi nalog</span></span></button>
+                </td>
+            </tr>
+            </tbody></table>
+    </div>
+</div>

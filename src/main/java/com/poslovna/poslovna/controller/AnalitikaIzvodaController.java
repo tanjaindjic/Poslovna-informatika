@@ -1,13 +1,14 @@
 package com.poslovna.poslovna.controller;
 
-import com.poslovna.poslovna.model.AnalitikaIzvoda;
-import com.poslovna.poslovna.model.Klijent;
+import com.poslovna.poslovna.dto.AnalitikaIzvodaDTO;
+import com.poslovna.poslovna.model.*;
 import com.poslovna.poslovna.service.AnalitikaIzvodaService;
+import com.poslovna.poslovna.service.KlijentService;
+import com.poslovna.poslovna.service.KursUValutiService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,8 +19,17 @@ public class AnalitikaIzvodaController {
     @Autowired
     private AnalitikaIzvodaService analitikaIzvodaService;
 
+    @Autowired
+    private KlijentService klijentService;
+
+
     @GetMapping(value = "/{id}")
     public List<AnalitikaIzvoda> getIzvodiKlijenta(@PathVariable Long id){
         return analitikaIzvodaService.getIzvodiKlijenta(id);
+    }
+
+    @PostMapping
+    public String createIzvod(@RequestBody AnalitikaIzvodaDTO dto){
+        return analitikaIzvodaService.createIzvod(dto);
     }
 }

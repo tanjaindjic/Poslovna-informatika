@@ -2,8 +2,7 @@ package com.poslovna.poslovna.service;
 
 import java.util.List;
 
-import com.poslovna.poslovna.model.Klijent;
-import com.poslovna.poslovna.model.Korisnik;
+import com.poslovna.poslovna.model.*;
 import com.poslovna.poslovna.repository.KlijentRepository;
 import com.poslovna.poslovna.repository.KorisnikRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +48,13 @@ public class KlijentService {
     	
     	return klijentRepository.save(klijent);
     }
-    
+
+    public Klijent findKlijentByRacun(String primalac) {
+        for(Klijent k : klijentRepository.findAll()){
+            for(Racun r : k.getRacuni())
+                if(r.getBrojRacuna().equals(primalac))
+                    return  k;
+        }
+        return null;
+    }
 }
