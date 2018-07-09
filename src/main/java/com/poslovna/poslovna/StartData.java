@@ -5,6 +5,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
@@ -57,10 +58,8 @@ public class StartData {
     private UkidanjeRepository ukidanjeRepository;
     @Autowired
     private KursUValutiRepository kursUValutiRepository;
-    
     @Autowired
     private KorisnikRepository korisnikRepository;
-    
     @Autowired
     private SluzbenikRepository sluzbenikRepository;
 
@@ -102,10 +101,25 @@ public class StartData {
         Banka vojvodjanskaBanka = createBanka("124", "123451123", "Vojvodjanska banka", beograd);
 
         Valuta dinar = createValulta("RSD", "Srpski dinar", true, srbija);
-        Valuta kuna = createValulta("HRK", "Hrvatska kuna", false, hrvatska);
-        Valuta marka = createValulta("BAM", "Konvertibilna marka", false, bosna);
         Valuta dolar = createValulta("USD", "Americki dolar", false, amerika);
         Valuta euro  = createValulta("EUR", "Evro", false, null);
+
+        KursnaLista k = createKursnaLista(srpskaBanka);
+
+        k.getKursevi().add(createKursUValuti(dinar, dinar, 1F, k));
+        k.getKursevi().add(createKursUValuti(euro, euro, 1F, k));
+        k.getKursevi().add(createKursUValuti(dolar, dolar, 1F, k));
+        k.getKursevi().add(createKursUValuti(dinar, euro, 0.0085F, k));
+        k.getKursevi().add(createKursUValuti(dinar, dolar, 0.0100F, k));
+        k.getKursevi().add(createKursUValuti(euro, dinar, 118.03F, k));
+        k.getKursevi().add(createKursUValuti(euro, dolar, 1.18F, k));
+        k.getKursevi().add(createKursUValuti(dolar, dinar, 100.21F, k));
+        k.getKursevi().add(createKursUValuti(dolar, euro, 0.85F, k));
+
+
+        kursnaListaRepository.save(k);
+
+
 
         createRacun("100000001", klijent, srpskaBanka, dinar);
         createRacun("100000002", klijent, srpskaBanka, dolar);
@@ -121,14 +135,14 @@ public class StartData {
         createRacun("400000003", klijent4, srpskaBanka, euro);
 
         i = 0;
-        AnalitikaIzvoda a = createNalog(klijent, beograd, euro, klijent2, 100F);
-        AnalitikaIzvoda a2 = createNalog(klijent, beograd, dolar, klijent3, 1500F);
+        AnalitikaIzvoda a = createNalog(klijent, beograd, dinar, klijent2, 100F);
+        AnalitikaIzvoda a2 = createNalog(klijent, beograd, dinar, klijent3, 1500F);
         AnalitikaIzvoda a3 = createNalog(klijent2, beograd, dinar, klijent4, 5000F);
-        AnalitikaIzvoda a4 = createNalog(klijent4, beograd, euro, klijent3, 8851F);
-        AnalitikaIzvoda a5 = createNalog(klijent4, beograd, euro, klijent, 8511111F);
-        AnalitikaIzvoda a6 = createNalog(klijent, beograd, euro, klijent2, 10000F);
-        AnalitikaIzvoda a7 = createNalog(klijent3, beograd, euro, klijent, 50F);
-        AnalitikaIzvoda a8 = createNalog(klijent2, beograd, euro, klijent4, 90000F);
+        AnalitikaIzvoda a4 = createNalog(klijent4, beograd, dinar, klijent3, 8851F);
+        AnalitikaIzvoda a5 = createNalog(klijent4, beograd, dinar, klijent, 8511111F);
+        AnalitikaIzvoda a6 = createNalog(klijent, beograd, dinar, klijent2, 10000F);
+        AnalitikaIzvoda a7 = createNalog(klijent3, beograd, dinar, klijent, 50F);
+        AnalitikaIzvoda a8 = createNalog(klijent2, beograd, dinar, klijent4, 90000F);
 
         klijentRepository.save(klijent);
         klijentRepository.save(klijent2);
@@ -137,12 +151,34 @@ public class StartData {
 
     }
 
+    private KursnaLista createKursnaLista(Banka banka) {
+        KursnaLista k = new KursnaLista();
+        k.setBroj(1);
+        k.setDatum(new Date(System.currentTimeMillis()));
+        k.setKursevi(new ArrayList<>());
+        k.setVaziOd(new Date(System.currentTimeMillis()));
+        k.setZaBanku(banka);
+        kursnaListaRepository.save(k);
+        return k;
+    }
+
+    private KursUValuti createKursUValuti(Valuta od, Valuta ka, Float odnos, KursnaLista kursnaLista) {
+        KursUValuti k = new KursUValuti();
+        k.setOdnos(odnos);
+        k.setOsnovna(od);
+        k.setPrema(ka);
+        k.setPripada(kursnaLista);
+        kursUValutiRepository.save(k);
+
+        return  k;
+    }
+
     private AnalitikaIzvoda createNalog(Klijent nalogodavac, NaseljenoMesto mesto, Valuta valuta, Klijent primalac, Float iznos) {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.DAY_OF_MONTH, -i);
         AnalitikaIzvoda a = new AnalitikaIzvoda(nalogodavac.getIme() + nalogodavac.getPrezime(), "Uplata na racun",
                 primalac.getIme() + primalac.getPrezime(), new Date(now.getTimeInMillis()), null, new Date(now.getTimeInMillis()),
-                nalogodavac.getRacuni().get(0).getBrojRacuna(), 97, "123-2050531-2", primalac.getRacuni().get(0).getBrojRacuna(), 97, false, iznos, 0, Status.E, VrstaPlacanja.GOTOVINSKO, false, mesto, valuta);
+                nalogodavac.getRacuni().get(0).getBrojRacuna(), 97, "123-2050531-2", primalac.getRacuni().get(0).getBrojRacuna(), 97, false, iznos, 0, Status.E, VrstaPlacanja.GOTOVINSKO, false, mesto, valuta, iznos, primalac.getRacuni().get(0).getValuta());
         analitikaIzvodaRepository.save(a);
         i++;
         return a;

@@ -50,7 +50,7 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
                 $scope.odabranRacun = $scope.klijent.racuni[0].brojRacuna;
                 setNalozi();
 
-                console.log($scope.odabranRacun)
+                console.log($scope.sviNalozi)
 
             }, function errorCallback(response) {
                 alert("Error occured check connection");

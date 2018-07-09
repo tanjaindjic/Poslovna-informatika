@@ -23,6 +23,11 @@ mainModule.config(function($stateProvider, $urlRouterProvider) {
         templateUrl: 'appParts/klijentIzvodiComponent/klijentIzvodi.html',
         controller : 'klijentIzvodiController'
     })
+    .state('nalog', {
+        url: '/nalog',
+        templateUrl: 'appParts/nalogComponent/nalog.html',
+        controller : 'nalogController'
+    })
     .state('noviRacun', {
         url: '/noviRacun',
         templateUrl: 'appParts/kreirajRacunComponent/kreirajRacun.html',

@@ -18,6 +18,8 @@ public class KursUValuti {
 
     private Float srednji;
 
+    private Float odnos;
+
     @ManyToOne
     private Valuta osnovna;
 
@@ -84,5 +86,13 @@ public class KursUValuti {
 
     public void setPripada(KursnaLista pripada) {
         this.pripada = pripada;
+    }
+
+    public Float getOdnos() {
+        return odnos;
+    }
+
+    public void setOdnos(Float odnos) {
+        this.odnos = odnos;
     }
 }
