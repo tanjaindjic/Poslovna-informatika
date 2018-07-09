@@ -1,10 +1,12 @@
 mainModule.service('sluzbenikService', [ '$http', '$window','$localStorage', 
     function($http, $window, $localStorage) {
 
+        var rootUrl = 'http://localhost:8096/';
+
         this.dobaviPoTipu = function(tip){
             var req = {
                 method: 'GET',
-                url: 'http://localhost:8096/klijent/getKlijentsByTip/'+tip
+                url: rootUrl+'klijent/getKlijentsByTip/'+tip
             }
             return $http(req);
         }
@@ -12,7 +14,7 @@ mainModule.service('sluzbenikService', [ '$http', '$window','$localStorage',
         this.dobaviValute = function(){
             var req = {
                 method: 'GET',
-                url: 'http://localhost:8096/valuta/getAll'
+                url: rootUrl+'valuta/getAll'
             }
             return $http(req);
         }
@@ -21,8 +23,18 @@ mainModule.service('sluzbenikService', [ '$http', '$window','$localStorage',
 
             var req = {
                 method: 'POST',
-                url: 'http://localhost:8096/racun/saveRacun',
+                url: rootUrl+'racun/saveRacun',
                 data: racun,
+                headers: {'token' : $window.localStorage.getItem('token')}
+            }
+            return $http(req);
+        }
+
+        this.vratiRacuneStranica = function(pagenum){
+
+            var req = {
+                method: 'GET',
+                url: rootUrl+'racun/getRacuniNum/'+pagenum,
                 headers: {'token' : $window.localStorage.getItem('token')}
             }
             return $http(req);
