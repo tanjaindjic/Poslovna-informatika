@@ -3,6 +3,7 @@ package com.poslovna.poslovna;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -62,7 +63,8 @@ public class StartData {
     
     @Autowired
     private SluzbenikRepository sluzbenikRepository;
-    
+
+    private int i ;
 
     @PostConstruct
     private void init(){
@@ -118,6 +120,7 @@ public class StartData {
         createRacun("400000002", klijent4, srpskaBanka, dolar);
         createRacun("400000003", klijent4, srpskaBanka, euro);
 
+        i = 0;
         AnalitikaIzvoda a = createNalog(klijent, beograd, euro, klijent2, 100F);
         AnalitikaIzvoda a2 = createNalog(klijent, beograd, dolar, klijent3, 1500F);
         AnalitikaIzvoda a3 = createNalog(klijent2, beograd, dinar, klijent4, 5000F);
@@ -135,10 +138,13 @@ public class StartData {
     }
 
     private AnalitikaIzvoda createNalog(Klijent nalogodavac, NaseljenoMesto mesto, Valuta valuta, Klijent primalac, Float iznos) {
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.DAY_OF_MONTH, -i);
         AnalitikaIzvoda a = new AnalitikaIzvoda(nalogodavac.getIme() + nalogodavac.getPrezime(), "Uplata na racun",
-                primalac.getIme() + primalac.getPrezime(), new Date(System.currentTimeMillis()), null, new Date(System.currentTimeMillis()),
+                primalac.getIme() + primalac.getPrezime(), new Date(now.getTimeInMillis()), null, new Date(now.getTimeInMillis()),
                 nalogodavac.getRacuni().get(0).getBrojRacuna(), 97, "123-2050531-2", primalac.getRacuni().get(0).getBrojRacuna(), 97, false, iznos, 0, Status.E, VrstaPlacanja.GOTOVINSKO, false, mesto, valuta);
         analitikaIzvodaRepository.save(a);
+        i++;
         return a;
     }
 

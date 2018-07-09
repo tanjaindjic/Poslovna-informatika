@@ -42,6 +42,11 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
                     $location.path('/login');
 
                 $scope.sviNalozi = response.data;
+                $scope.sviNalozi.sort(function compare(a, b) {
+                  var dateA = new Date(a.datumPrijema);
+                  var dateB = new Date(b.datumPrijema);
+                  return dateB - dateA;
+                });
                 $scope.odabranRacun = $scope.klijent.racuni[0].brojRacuna;
                 setNalozi();
 
