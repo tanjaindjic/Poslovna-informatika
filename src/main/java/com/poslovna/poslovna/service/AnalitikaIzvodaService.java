@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -69,6 +68,12 @@ public class AnalitikaIzvodaService {
     private List<AnalitikaIzvoda> getIzvodiPrimalac(String brRacuna) {
         return analitikaIzvodaRepository.findByRacunPrimaoca(brRacuna);
     }
+    
+    public AnalitikaIzvoda getOne(long id){
+    	
+    	return analitikaIzvodaRepository.getOne(id);
+    }
+    
     @SuppressWarnings("unchecked")
     @Transactional(readOnly = false, rollbackFor = Exception.class, propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     public String createIzvod(AnalitikaIzvodaDTO dto) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
@@ -87,10 +92,18 @@ public class AnalitikaIzvodaService {
         }
         DnevnoStanje trenutno = Collections.max(saRacuna.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
         if(trenutno.getNovoStanje()-dto.getIznos()<0){
-            System.out.println("Racun nije nadjen u sistemu!");
+            System.out.println("Nedovoljno sredstava!");
             throw new NedovoljnoSredstavaException("Nedovoljno sredstava!");
         }
-
+        List<AnalitikaIzvoda> rezervisanaSredstva = analitikaIzvodaRepository.findByRacunNalogodavcaAndStatus(dto.getRacunNalogodavca(), Status.E);
+        Float rezervisanoIznos = 0F;
+        for(AnalitikaIzvoda aiz: rezervisanaSredstva)
+            rezervisanoIznos+=aiz.getIznos();
+        System.out.println("Rezervisano: " + rezervisanoIznos);
+        if(trenutno.getNovoStanje()-rezervisanoIznos<0){
+            System.out.println("Nedovoljno sredstava!");
+            throw new NedovoljnoSredstavaException("Nedovoljno sredstava!");
+        }
 
         a.setNalogodavac(dto.getNalogodavac());
         a.setSvrhaPlacanja(dto.getSvrhaPlacanja());

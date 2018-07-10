@@ -72,7 +72,7 @@ public class RacunController {
     public ResponseEntity<Page<Racun>> vratiRacunePaginacija(@PathVariable int pagenum){
     	
     	if(pagenum < 1) {
-    		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     	}
     	
     	return new ResponseEntity<Page<Racun>>(racunService.getRacuniByPage(new PageRequest(pagenum-1, 5)), HttpStatus.OK);

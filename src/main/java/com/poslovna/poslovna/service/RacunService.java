@@ -33,7 +33,7 @@ public class RacunService {
 	
 	public boolean checkIfUnique(String brojRacuna){
 		
-		return true;
+		return racunRepository.findByBrojRacuna(brojRacuna) == null ? true : false;
 	}
 	
 	public List<Racun> getAllRacuni(){
