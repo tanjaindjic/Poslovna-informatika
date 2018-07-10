@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -69,6 +68,12 @@ public class AnalitikaIzvodaService {
     private List<AnalitikaIzvoda> getIzvodiPrimalac(String brRacuna) {
         return analitikaIzvodaRepository.findByRacunPrimaoca(brRacuna);
     }
+    
+    public AnalitikaIzvoda getOne(long id){
+    	
+    	return analitikaIzvodaRepository.getOne(id);
+    }
+    
     @SuppressWarnings("unchecked")
     @Transactional(readOnly = false, rollbackFor = Exception.class, propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     public String createIzvod(AnalitikaIzvodaDTO dto) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {

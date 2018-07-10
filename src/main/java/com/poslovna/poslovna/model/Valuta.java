@@ -2,9 +2,13 @@ package com.poslovna.poslovna.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import java.util.List;
 
 @Entity
+@XmlRootElement(name="Valuta")
 public class Valuta {
 
     @Id
@@ -39,6 +43,7 @@ public class Valuta {
         this.kurseviPrema = kurseviPrema;
     }
 
+    @XmlElement
     public long getId() {
         return id;
     }
@@ -47,6 +52,7 @@ public class Valuta {
         this.id = id;
     }
 
+    @XmlElement
     public String getZvanicnaSifra() {
         return zvanicnaSifra;
     }
@@ -55,6 +61,7 @@ public class Valuta {
         this.zvanicnaSifra = zvanicnaSifra;
     }
 
+    @XmlElement
     public String getNaziv() {
         return naziv;
     }
@@ -63,6 +70,7 @@ public class Valuta {
         this.naziv = naziv;
     }
 
+    @XmlElement
     public boolean isDomicilna() {
         return domicilna;
     }
@@ -71,6 +79,7 @@ public class Valuta {
         this.domicilna = domicilna;
     }
 
+    @XmlElement
     public Drzava getDrzava() {
         return drzava;
     }
