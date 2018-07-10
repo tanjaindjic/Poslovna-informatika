@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="izvodKlijenta" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6446f3b9-2141-4e32-ba00-551221c145ee">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="poslovnaInformatika"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="603"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="383"/>
+	<parameter name="korisnicko_ime" class="java.lang.String"/>
+	<parameter name="datum_od" class="java.sql.Date"/>
+	<parameter name="datum_do" class="java.sql.Date"/>
+	<parameter name="broj_racuna" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select a.ime, a.prezime, a.adresa, a.email, a.telefon, a.broj_racuna, 
+b.iznos_za_prenos, b.datum_placanja, b.poziv_na_broj, 
+b.svrha_placanja, b.id, IF(a.broj_racuna=b.racun_nalogodavca, 'isplata', 'uplata') AS upl_ispl
+from (SELECT distinct klijent.ime, klijent.prezime, klijent.adresa, klijent.email, klijent.telefon, racun.broj_racuna, klijent.id
+FROM korisnik join klijent join klijent_racuni join racun
+WHERE korisnik.korisnicko_ime=$P{korisnicko_ime} and racun.broj_racuna=$P{broj_racuna} and korisnik.id=klijent.id and racun.vlasnik_id=korisnik.id
+) a join (select * from analitika_izvoda
+where datum_placanja>$P{datum_od} and datum_placanja<$P{datum_do}) b
+where a.broj_racuna=b.racun_nalogodavca or a.broj_racuna=b.racun_primaoca 
+order by b.datum_placanja]]>
+	</queryString>
+	<field name="ime" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ime"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="klijent"/>
+	</field>
+	<field name="prezime" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="prezime"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="klijent"/>
+	</field>
+	<field name="adresa" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="adresa"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="klijent"/>
+	</field>
+	<field name="email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="klijent"/>
+	</field>
+	<field name="telefon" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="telefon"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="klijent"/>
+	</field>
+	<field name="broj_racuna" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="broj_racuna"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="racun"/>
+	</field>
+	<field name="iznos_za_prenos" class="java.lang.Float">
+		<property name="com.jaspersoft.studio.field.label" value="iznos_za_prenos"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="analitika_izvoda"/>
+	</field>
+	<field name="datum_placanja" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="datum_placanja"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="analitika_izvoda"/>
+	</field>
+	<field name="poziv_na_broj" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="poziv_na_broj"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="analitika_izvoda"/>
+	</field>
+	<field name="svrha_placanja" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="svrha_placanja"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="analitika_izvoda"/>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="analitika_izvoda"/>
+	</field>
+	<field name="upl_ispl" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="upl_ispl"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="235" splitType="Stretch">
+			<staticText>
+				<reportElement x="152" y="0" width="250" height="30" uuid="fccf38fe-f54c-4c95-a271-afe7a7654fc9"/>
+				<textElement textAlignment="Center">
+					<font size="23" isBold="true"/>
+				</textElement>
+				<text><![CDATA[POSLOVNA BANKA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="30" width="200" height="20" uuid="9bbaa7ce-bf83-4ca2-bd5b-53c414c173e9"/>
+				<textElement textAlignment="Center">
+					<font size="13"/>
+				</textElement>
+				<text><![CDATA[Izvod iz banke]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="80" width="60" height="20" uuid="29bea237-e261-4c21-963e-256a2f553af1"/>
+				<text><![CDATA[Za Klijenta:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="100" width="60" height="20" uuid="f26b03d1-f8e9-4a37-943c-9bb2803ef017"/>
+				<text><![CDATA[Adresa:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="120" width="60" height="20" uuid="d5f6f327-d000-49f9-994a-fd909f314998"/>
+				<text><![CDATA[Broj telefona:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="140" width="60" height="20" uuid="b11d3046-eae7-43c0-a47c-cb58512fc84f"/>
+				<text><![CDATA[email:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="370" y="80" width="50" height="20" uuid="d2c47ce1-5d3f-47d1-8a46-5b7a26551bb3"/>
+				<textFieldExpression><![CDATA[$F{ime}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="420" y="80" width="130" height="20" uuid="3e3dd246-e9ae-4fd1-8024-11df891ba9e7"/>
+				<textFieldExpression><![CDATA[$F{prezime}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="100" width="180" height="20" uuid="0b6dc2c2-f7a4-41ae-84bc-e471b272c023"/>
+				<textFieldExpression><![CDATA[$F{adresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="120" width="170" height="20" uuid="080c7897-0637-4303-81aa-11e027e78c09"/>
+				<textFieldExpression><![CDATA[$F{telefon}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="140" width="180" height="20" uuid="a567e7e6-32ff-4cf5-8797-bab08dd233b4"/>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="80" y="50" width="100" height="20" uuid="5a557290-f917-4612-b619-0c79c715339a"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="50" width="80" height="20" uuid="9923e7a5-a7c8-40bf-ac47-beb08120eb59"/>
+				<text><![CDATA[Datum izdavanja:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="220" width="560" height="1" uuid="bf704729-2987-401c-9444-bdf85d774875"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="100" width="79" height="20" uuid="b53bb0b2-fbc8-4474-92c4-42cae9d78d6e"/>
+				<text><![CDATA[ZA PERIOD:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="120" width="33" height="19" uuid="438de526-efbe-4d43-b8b8-1ebe90b76331"/>
+				<text><![CDATA[OD:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="139" width="33" height="19" uuid="5c04be73-7800-4aa8-acd3-01f09f7ca1d5"/>
+				<text><![CDATA[DO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="120" width="100" height="19" uuid="33a792ba-c863-4812-bc4d-185dacd643f5"/>
+				<textFieldExpression><![CDATA[$P{datum_od}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="140" width="100" height="18" uuid="98c236b2-6451-4a2f-9b36-6c2367bc1d4b"/>
+				<textFieldExpression><![CDATA[$P{datum_do}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="81" width="60" height="19" uuid="2e003e69-7c77-40bb-85a2-71284ba9af11"/>
+				<text><![CDATA[Broj Racuna:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="60" y="81" width="120" height="19" uuid="44e0f64e-4906-4286-bfc1-2148a7ac175c"/>
+				<textFieldExpression><![CDATA[$P{broj_racuna}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="139" y="200" width="59" height="20" uuid="8af18f6f-e5ac-4375-9efc-937874332d65"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Iznos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="199" y="200" width="100" height="20" uuid="527c8556-5ba1-4572-8029-052ce7b0467d"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datum Placanja]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="299" y="200" width="100" height="20" uuid="b8c094ad-96ca-42a8-9b81-8e00df0f6af5"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Poziv na broj]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="200" width="60" height="20" uuid="fb14d6fc-b6e7-4ebd-8d96-23f2bd7b2ad5"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[id prenosa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="399" y="200" width="100" height="20" uuid="4ec765f2-f358-429b-82ba-2dda059b75cd"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Svrha placanja]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="200" width="79" height="20" uuid="7f5295a8-4db5-4202-ba01-4b3100ba4670"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Uplata/Isplata]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement x="139" y="1" width="60" height="20" uuid="351854a5-4d2f-4d59-98a3-b81b6eaeed06"/>
+				<textFieldExpression><![CDATA[$F{iznos_za_prenos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="1" width="100" height="20" uuid="3935fccc-97cd-46ea-862d-0849b79a4707"/>
+				<textFieldExpression><![CDATA[$F{datum_placanja}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="299" y="1" width="100" height="20" uuid="09d1bce0-78cd-4e55-99e7-59ef24b9d3b6"/>
+				<textFieldExpression><![CDATA[$F{poziv_na_broj}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="17" y="1" width="41" height="20" uuid="193692a6-130c-435d-96e4-077f42b63e08"/>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="399" y="1" width="180" height="20" uuid="2098d2dd-bd06-4610-abfe-eda46af5ef10"/>
+				<textFieldExpression><![CDATA[$F{svrha_placanja}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="1" width="79" height="20" uuid="cdbabc3d-0b5a-4583-949f-20c2416602ea"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{upl_ispl}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30">
+			<textField>
+				<reportElement x="410" y="10" width="79" height="20" uuid="ff6b39fd-5d2e-4f4a-b0ec-bcfe539adb36"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Strana " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="489" y="10" width="70" height="20" uuid="8ee1fe73-cc2f-42c2-8d49-4c900e8331c6"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" od " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
