@@ -9,7 +9,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.sql.Date;
 
 public class AnalitikaIzvodaDTO {
 
@@ -19,7 +19,7 @@ public class AnalitikaIzvodaDTO {
 
     private String primalac;
 
-    private Date datumPrijema;
+    private Date datumPlacanja;
 
     @Size(max = 18, min = 5)
     private String racunNalogodavca;
@@ -44,11 +44,11 @@ public class AnalitikaIzvodaDTO {
     public AnalitikaIzvodaDTO() {
     }
 
-    public AnalitikaIzvodaDTO(String nalogodavac, String svrhaPlacanja, String primalac, Date datumPrijema, @Size(max = 18, min = 5) String racunNalogodavca, int modelZaduzenja, @Size(max = 20) String pozivNaBroj, @Size(max = 18, min = 5) String racunPrimaoca, int modelOdobrenja, boolean hitno, Float iznos,  Long klijentId) {
+    public AnalitikaIzvodaDTO(String nalogodavac, String svrhaPlacanja, String primalac, Date datumPlacanja, @Size(max = 18, min = 5) String racunNalogodavca, int modelZaduzenja, @Size(max = 20) String pozivNaBroj, @Size(max = 18, min = 5) String racunPrimaoca, int modelOdobrenja, boolean hitno, Float iznos,  Long klijentId) {
         this.nalogodavac = nalogodavac;
         this.svrhaPlacanja = svrhaPlacanja;
         this.primalac = primalac;
-        this.datumPrijema = datumPrijema;
+        this.datumPlacanja = datumPlacanja;
         this.racunNalogodavca = racunNalogodavca;
         this.modelZaduzenja = modelZaduzenja;
         this.pozivNaBroj = pozivNaBroj;
@@ -83,12 +83,12 @@ public class AnalitikaIzvodaDTO {
         this.primalac = primalac;
     }
 
-    public Date getDatumPrijema() {
-        return datumPrijema;
+    public Date getDatumPlacanja() {
+        return datumPlacanja;
     }
 
-    public void setDatumPrijema(Date datumPrijema) {
-        this.datumPrijema = datumPrijema;
+    public void setDatumPlacanja(Date datumPlacanja) {
+        this.datumPlacanja = datumPlacanja;
     }
 
     public String getRacunNalogodavca() {

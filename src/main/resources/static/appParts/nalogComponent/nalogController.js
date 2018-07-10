@@ -107,16 +107,25 @@ mainModule.controller('nalogController', ['$scope', '$window', 'userService','$l
             month = date.getMonth() + 1;
             year = date.getFullYear();
 
-            if(date < $scope.currentDate){
-                alert("Datum nije validan.")
+            if(date.getFullYear() != $scope.currentDate.getFullYear()){
+                alert("Datum nije validan. Godina nije odgovarajuca.")
+                return;
             }
-            console.log("klijent id: " + $scope.klijent.id + "korisnikID: " + $scope.logovaniKorisnik.id)
+            if(date.getMonth() + 1 < $scope.currentDate.getMonth() + 1){
+                alert("Datum nije validan. Mesec nije odgovarajuci.")
+                return;
+            }
+             if(date.getDate() < $scope.currentDate.getDate()){
+                 alert("Datum nije validan. Dan nije odgovarajuci.")
+                 return;
+             }
+
 
             var data = {
                 "nalogodavac": $scope.nalogodavac,
                 "svrhaPlacanja": $scope.svrhaPlacanja,
                 "primalac":$scope.primalac,
-                "datumPrijema": date,
+                "datumPlacanja": date,
                 "racunNalogodavca": $scope.odabranRacunVal,
                 "modelZaduzenja" : $scope.modelOdobrenja,
                 "pozivNaBroj": $scope.pozivNaBroj,
@@ -126,7 +135,7 @@ mainModule.controller('nalogController', ['$scope', '$window', 'userService','$l
                 "iznos": $scope.iznos,
                 "klijentId": $scope.klijent.id
             };
-
+            console.log("datum: " + $scope.date)
 
             $http({
                 method: 'POST',

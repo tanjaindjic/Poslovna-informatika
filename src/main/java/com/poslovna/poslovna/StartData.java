@@ -248,7 +248,7 @@ public class StartData {
    private DnevnoStanje initDnevnoStanje(Racun racun){
         DnevnoStanje ds = new DnevnoStanje();
         Calendar now = Calendar.getInstance();
-        now.add(Calendar.DAY_OF_MONTH, -10);
+        now.add(Calendar.DAY_OF_MONTH, -8);
         ds.setDatumPrometa(new java.sql.Date(now.getTimeInMillis()));
         ds.setPrethodnoStanje(10000F);
         ds.setPrometNaTeret(0F);
