@@ -248,15 +248,16 @@ public class StartData {
    private DnevnoStanje initDnevnoStanje(Racun racun){
         DnevnoStanje ds = new DnevnoStanje();
         Calendar now = Calendar.getInstance();
-        now.add(Calendar.DAY_OF_MONTH, -10);
+        now.add(Calendar.DAY_OF_MONTH, -8);
         ds.setDatumPrometa(new java.sql.Date(now.getTimeInMillis()));
         ds.setPrethodnoStanje(10000F);
         ds.setPrometNaTeret(0F);
         ds.setPrometUKorist(0F);
         ds.setNovoStanje(10000F);
         ds.setZaRacun(racun);
-        ds.setIzvodi(analitikaIzvodaRepository.findByRacunNalogodavca(racun.getBrojRacuna()));
-        ds.getIzvodi().addAll(analitikaIzvodaRepository.findByRacunPrimaoca(racun.getBrojRacuna()));
+        ds.setIzvodi(new ArrayList<>());
+        //ds.setIzvodi(analitikaIzvodaRepository.findByRacunNalogodavca(racun.getBrojRacuna()));
+        //ds.getIzvodi().addAll(analitikaIzvodaRepository.findByRacunPrimaoca(racun.getBrojRacuna()));
         dnevnoStanjeRepository.save(ds);
         return ds;
    }

@@ -18,4 +18,8 @@ public class DnevnoStanjeService {
     public void kliring(){
 
     }
+
+    public void updateDS(DnevnoStanje ds) {
+        dnevnoStanjeRepository.save(ds);
+    }
 }

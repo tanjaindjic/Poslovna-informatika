@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,8 @@ public class AnalitikaIzvodaService {
     @Autowired
     private KlijentService klijentService;
 
+    @Autowired
+    private DnevnoStanjeService dnevnoStanjeService;
 
     @Autowired
     private KursnaListaService kursnaListaService;
@@ -92,7 +95,8 @@ public class AnalitikaIzvodaService {
         a.setNalogodavac(dto.getNalogodavac());
         a.setSvrhaPlacanja(dto.getSvrhaPlacanja());
         a.setPrimalac(dto.getPrimalac());
-        a.setDatumPrijema(dto.getDatumPrijema());
+        a.setDatumPrijema(new Date(System.currentTimeMillis()));
+        a.setDatumPlacanja(dto.getDatumPlacanja());
         a.setDatumObrade(null);
 
         Racun naRacun = null;
@@ -124,7 +128,7 @@ public class AnalitikaIzvodaService {
         a.setRacunNalogodavca(saRacuna.getBrojRacuna());
         a.setModelZaduzenja(dto.getModelZaduzenja());
         a.setPozivNaBroj(dto.getPozivNaBroj());
-        a.setRacunPrimaoca(naRacun.getBrojRacuna());
+        a.setRacunPrimaoca(dto.getRacunPrimaoca());
         a.setModelOdobrenja(dto.getModelOdobrenja());
         if(dto.getIznos()>250000F)
             a.setHitno(true);
@@ -141,9 +145,77 @@ public class AnalitikaIzvodaService {
 
         analitikaIzvodaRepository.save(a);
         //ovde pozivam da se prebace odmah sredstva ako je prenos unutar banke
-        if(a.isMedjubankarski()){
-
+        if(!a.isMedjubankarski()){
+            Date odbraniDatum = dto.getDatumPlacanja();
+            Date danas = new Date(System.currentTimeMillis());
+            //SAMO AKO DANAS ZELI DA SE IZVRSI INTERNO PREBACIVANJE ONDA, INACE CEKA KLIRING ZA ODABRANI DAN
+            if(danas.getYear()==odbraniDatum.getYear() && danas.getMonth()==odbraniDatum.getMonth() && danas.getDay()==odbraniDatum.getDay() )
+                prebaciSredstva(saRacuna, naRacun, a);
         }
         return "Nalog je evidentiran.";
+    }
+
+    public void prebaciSredstva(Racun saRacuna, Racun naRacun, AnalitikaIzvoda nalogZaPrenos){
+        //prvo azuriram ili kreiram novo dnevno stanje raucna sa kojeg skidam
+        DnevnoStanje ds = Collections.max(saRacuna.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
+        Date datumDS = ds.getDatumPrometa();
+        Date danas = new Date(System.currentTimeMillis());
+        if(datumDS.getYear()==danas.getYear() && datumDS.getMonth()==danas.getMonth() && datumDS.getDay()==danas.getDay()){
+            //ima danasnje stanje samo azuriram
+            Float trenutnoNaTeret = ds.getPrometNaTeret();
+            ds.setPrometNaTeret(trenutnoNaTeret + nalogZaPrenos.getIznos());
+            ds.setPrethodnoStanje(ds.getNovoStanje());
+            ds.setNovoStanje(ds.getPrethodnoStanje()-nalogZaPrenos.getIznos());
+            ds.getIzvodi().add(nalogZaPrenos);
+            dnevnoStanjeService.updateDS(ds);
+            racunService.saveRacun(saRacuna);
+        }else{
+            DnevnoStanje novo = new DnevnoStanje();
+            novo.setPrethodnoStanje(ds.getNovoStanje());
+            Float trenutnoNaTeret = ds.getPrometNaTeret();
+            novo.setPrometNaTeret(trenutnoNaTeret + nalogZaPrenos.getIznos());
+            novo.setPrometUKorist(ds.getPrometUKorist());
+            novo.setNovoStanje(ds.getNovoStanje()-nalogZaPrenos.getIznos());
+            novo.setIzvodi(new ArrayList<>());
+            novo.setZaRacun(ds.getZaRacun());
+            novo.setDatumPrometa(danas);
+            novo.getIzvodi().add(nalogZaPrenos);
+            dnevnoStanjeService.updateDS(novo);
+            saRacuna.getDnevnaStanja().add(novo);
+            racunService.saveRacun(saRacuna);
+        }
+        //sad za primaoca
+        DnevnoStanje ds2 = Collections.max(naRacun.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
+        Date datumDS2 = ds2.getDatumPrometa();
+
+        if(datumDS2.getYear()==danas.getYear() && datumDS2.getMonth()==danas.getMonth() && datumDS2.getDay()==danas.getDay()){
+            //ima danasnje stanje samo azuriram
+            Float trenutnoUKorist = ds2.getPrometUKorist();
+            ds2.setPrometUKorist(trenutnoUKorist + nalogZaPrenos.getKonvertovaniIznos());
+            ds2.setPrethodnoStanje(ds2.getNovoStanje());
+            ds2.setNovoStanje(ds2.getPrethodnoStanje()+nalogZaPrenos.getKonvertovaniIznos());
+            ds2.getIzvodi().add(nalogZaPrenos);
+            dnevnoStanjeService.updateDS(ds2);
+            racunService.saveRacun(naRacun);
+        }else{
+            DnevnoStanje novo = new DnevnoStanje();
+            novo.setPrethodnoStanje(ds2.getNovoStanje());
+            Float trenutnoUKorist = ds2.getPrometUKorist();
+            novo.setPrometNaTeret(ds2.getPrometNaTeret());
+            novo.setPrometUKorist(trenutnoUKorist + nalogZaPrenos.getKonvertovaniIznos());
+            novo.setNovoStanje(ds2.getNovoStanje()+nalogZaPrenos.getKonvertovaniIznos());
+            novo.setIzvodi(new ArrayList<>());
+            novo.setZaRacun(ds2.getZaRacun());
+            novo.setDatumPrometa(danas);
+            novo.getIzvodi().add(nalogZaPrenos);
+            dnevnoStanjeService.updateDS(novo);
+            naRacun.getDnevnaStanja().add(novo);
+            racunService.saveRacun(naRacun);
+        }
+        nalogZaPrenos.setStatus(Status.I);
+        nalogZaPrenos.setDatumObrade(danas);
+        analitikaIzvodaRepository.save(nalogZaPrenos);
+
+
     }
 }

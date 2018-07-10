@@ -24,6 +24,8 @@ public class AnalitikaIzvoda {
 
     private Date datumPrijema;
 
+    private Date datumPlacanja;
+
     private Date datumObrade;
 
     private Date datumValute;
@@ -68,7 +70,7 @@ public class AnalitikaIzvoda {
     public AnalitikaIzvoda() {
     }
 
-    public AnalitikaIzvoda(String nalogodavac, String svrhaPlacanja, String primalac, Date datumPrijema, Date datumObrade, Date datumValute,
+    public AnalitikaIzvoda(String nalogodavac, String svrhaPlacanja, String primalac, Date datumPlacanja, Date datumObrade, Date datumValute,
                            @Size(max = 18, min = 5) String racunNalogodavca, int modelZaduzenja, @Size(max = 20) String pozivNaBroj,
                            @Size(max = 18, min = 5) String racunPrimaoca, int modelOdobrenja, boolean hitno, Float iznosZaPrenos, int tipGreske,
                            Status status, VrstaPlacanja vrstaPlacanja, boolean medjubankarski, NaseljenoMesto mestoPrijema, Valuta osnovnaValuta,
@@ -76,7 +78,7 @@ public class AnalitikaIzvoda {
         this.nalogodavac = nalogodavac;
         this.svrhaPlacanja = svrhaPlacanja;
         this.primalac = primalac;
-        this.datumPrijema = datumPrijema;
+        this.datumPlacanja = datumPlacanja;
         this.datumObrade = datumObrade;
         this.datumValute = datumValute;
         this.racunNalogodavca = racunNalogodavca;
@@ -270,5 +272,13 @@ public class AnalitikaIzvoda {
 
     public void setKrajnjaValuta(Valuta krajnjaValuta) {
         this.krajnjaValuta = krajnjaValuta;
+    }
+
+    public Date getDatumPlacanja() {
+        return datumPlacanja;
+    }
+
+    public void setDatumPlacanja(Date datumPlacanja) {
+        this.datumPlacanja = datumPlacanja;
     }
 }
