@@ -43,7 +43,7 @@ public class Klijent {
     @ManyToOne(optional = false)
     private NaseljenoMesto prebivaliste;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Racun> racuni;
 
     @ManyToOne(optional = true)

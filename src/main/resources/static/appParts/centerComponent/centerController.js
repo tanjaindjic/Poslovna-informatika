@@ -5,7 +5,13 @@ mainModule.controller('centerController', ['$scope', '$window', 'userService',
 
         $scope.initCenter = function(){
             $scope.logovaniKorisnik = userService.parsirajToken();
+
+            if($scope.logovaniKorisnik.uloga === 'KLIJENT')
+                $scope.isKlijent = true;
+            else $scope.isKlijent = false;
         }
+
+
 
         $scope.odjaviSe = function(){
             $window.localStorage.removeItem('token');

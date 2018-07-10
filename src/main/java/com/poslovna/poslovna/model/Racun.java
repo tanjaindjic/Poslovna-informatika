@@ -15,6 +15,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 
 @Entity
@@ -49,6 +51,7 @@ public class Racun {
     private Valuta valuta;
 
     @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<DnevnoStanje> dnevnaStanja;
 
     public Racun() {

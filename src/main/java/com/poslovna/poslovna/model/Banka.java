@@ -15,7 +15,7 @@ public class Banka {
     private long id;
 
     @Size(min = 3, max = 3)
-    private String sifra_banke;
+    private String sifraBanke;
 
     @Size(min = 9, max = 9)
     private String PIB;
@@ -40,8 +40,8 @@ public class Banka {
     public Banka() {
     }
 
-    public Banka(@Size(min = 3, max = 3) String sifra_banke, @Size(min = 9, max = 9) String PIB, String naziv, String adresa, String email, String web, String telefon, String fax, boolean banka, NaseljenoMesto naseljenoMesto) {
-        this.sifra_banke = sifra_banke;
+    public Banka(@Size(min = 3, max = 3) String sifraBanke, @Size(min = 9, max = 9) String PIB, String naziv, String adresa, String email, String web, String telefon, String fax, boolean banka, NaseljenoMesto naseljenoMesto) {
+        this.sifraBanke = sifraBanke;
         this.PIB = PIB;
         this.naziv = naziv;
         this.adresa = adresa;
@@ -61,12 +61,12 @@ public class Banka {
         this.id = id;
     }
 
-    public String getSifra_banke() {
-        return sifra_banke;
+    public String getSifraBanke() {
+        return sifraBanke;
     }
 
-    public void setSifra_banke(String sifra_banke) {
-        this.sifra_banke = sifra_banke;
+    public void setSifraBanke(String sifraBanke) {
+        this.sifraBanke = sifraBanke;
     }
 
     public String getPIB() {

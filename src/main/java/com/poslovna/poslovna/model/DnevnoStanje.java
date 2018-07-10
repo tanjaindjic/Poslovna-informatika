@@ -1,5 +1,7 @@
 package com.poslovna.poslovna.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
@@ -22,6 +24,7 @@ public class DnevnoStanje {
     private Float novoStanje;
 
     @ManyToOne
+    @JsonBackReference
     private Racun zaRacun;
 
     @ManyToMany

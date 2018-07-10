@@ -33,7 +33,7 @@ public class RacunService {
 	
 	public boolean checkIfUnique(String brojRacuna){
 		
-		return racunRepository.findByBrojRacuna(brojRacuna).isEmpty() ? true : false;
+		return true;
 	}
 	
 	public List<Racun> getAllRacuni(){
@@ -72,4 +72,9 @@ public class RacunService {
 		
 		return racunRepository.save(retVal);
 	}
+
+    public Racun findRacunByBroj(String racunPrimaoca) {
+		//ovo izmeniti kad se promeni da metoda vraca samo 1 racun
+		return racunRepository.findByBrojRacuna(racunPrimaoca);
+    }
 }

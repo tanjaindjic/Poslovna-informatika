@@ -8,7 +8,7 @@ import com.poslovna.poslovna.model.Racun;
 
 public interface RacunRepository extends JpaRepository<Racun, Long> {
 	
-	public List<Racun> findByBrojRacuna(String brojRacuna);
+	public Racun findByBrojRacuna(String brojRacuna);
 	
 	//public Page<Racun> findAll
 	

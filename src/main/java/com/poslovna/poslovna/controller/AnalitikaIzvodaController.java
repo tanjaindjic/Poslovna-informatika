@@ -1,6 +1,9 @@
 package com.poslovna.poslovna.controller;
 
 import com.poslovna.poslovna.dto.AnalitikaIzvodaDTO;
+import com.poslovna.poslovna.exception.NedovoljnoSredstavaException;
+import com.poslovna.poslovna.exception.NemaNalogodavcaException;
+import com.poslovna.poslovna.exception.NemaRacunaException;
 import com.poslovna.poslovna.model.*;
 import com.poslovna.poslovna.service.AnalitikaIzvodaService;
 import com.poslovna.poslovna.service.KlijentService;
@@ -29,7 +32,7 @@ public class AnalitikaIzvodaController {
     }
 
     @PostMapping
-    public String createIzvod(@RequestBody AnalitikaIzvodaDTO dto){
+    public String createIzvod(@RequestBody AnalitikaIzvodaDTO dto) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
         return analitikaIzvodaService.createIzvod(dto);
     }
 }

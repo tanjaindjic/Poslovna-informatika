@@ -26,7 +26,6 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
                     $location.path('/login');
 
                 $scope.klijent = response.data;
-                console.log($scope.klijent)
 
             }, function errorCallback(response) {
                 alert("Error occured check connection");
@@ -47,10 +46,9 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
                   var dateB = new Date(b.datumPrijema);
                   return dateB - dateA;
                 });
-                $scope.odabranRacun = $scope.klijent.racuni[0].brojRacuna;
+
                 setNalozi();
 
-                console.log($scope.sviNalozi)
 
             }, function errorCallback(response) {
                 alert("Error occured check connection");
@@ -61,10 +59,51 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
 
         $scope.initKlijent();
 
+        var setDnevnaStanja = function(){
+            var i = 0;
+            for(i = 0; i < $scope.klijent.racuni.length; i++)
+                if($scope.klijent.racuni[i].brojRacuna==$scope.odabranRacun){
+                    $scope.dnevnaStanja = $scope.klijent.racuni[i].dnevnaStanja;
+                    break;
+                }
+            console.log($scope.dnevnaStanja.length)
+        }
+
+        var setTrenutniRacun = function(){
+            var i = 0;
+            for(i = 0; i < $scope.klijent.racuni.length; i++)
+                if($scope.klijent.racuni[i].brojRacuna==$scope.odabranRacun){
+                    $scope.trenutniRacun = $scope.klijent.racuni[i];
+                    break;
+                }
+                console.log($scope.trenutniRacun)
+        }
+
+        var setTrenutnoStanje = function(){
+            $scope.trenutnoStanje = $scope.trenutniRacun.dnevnaStanja[$scope.trenutniRacun.dnevnaStanja.length-1];
+        }
+
+        var setRezervisanaSredstva = function(){
+            $scope.rezervisanaSredstva = 0;
+            var i;
+            for(i=0; i < $scope.nalozi.length; i++){
+                if($scope.nalozi[i].status=='E' && $scope.nalozi[i].racunNalogodavca == $scope.odabranRacun)
+                    $scope.rezervisanaSredstva+=$scope.nalozi[i].iznos;
+
+            }
+        }
+
         $scope.odabirRacuna = function(odabranRacun){
             $scope.odabranRacun = odabranRacun;
+            setTrenutniRacun();
             $scope.nalozi = [];
             setNalozi();
+            $scope.dnevnaStanja = [];
+            setDnevnaStanja();
+            setTrenutnoStanje();
+            setRezervisanaSredstva();
+
+
         }
 
         $scope.profil = function(){
@@ -79,7 +118,7 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
         $scope.sve = function(){
             var i = 0;
             for( i = 0; i < $scope.nalozi.length; i++){
-                document.getElementById($scope.nalozi[i].id).style.display = 'table-row';
+                document.getElementById($scope.nalozi[i].id).style.display = 'table';
             }
         }
 
@@ -89,13 +128,13 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
                 var i = 0;
                 for( i = 0; i < $scope.nalozi.length; i++){
                     if($scope.nalozi[i].racunPrimaoca == $scope.odabranRacun)
-                        document.getElementById($scope.nalozi[i].id).style.display = 'table-row';
+                        document.getElementById($scope.nalozi[i].id).style.display = 'table';
                     else document.getElementById($scope.nalozi[i].id).style.display = 'none';
                 }
             }else {
                 var i = 0;
                 for( i = 0; i < $scope.nalozi.length; i++){
-                    document.getElementById($scope.nalozi[i].id).style.display = 'table-row';
+                    document.getElementById($scope.nalozi[i].id).style.display = 'table';
                 }
             }
             $timeout(function(){ $scope.$apply(); }, 150);
@@ -108,13 +147,13 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
                 var i = 0;
                 for( i = 0; i < $scope.nalozi.length; i++){
                     if($scope.nalozi[i].racunNalogodavca == $scope.odabranRacun)
-                        document.getElementById($scope.nalozi[i].id).style.display = 'table-row';
+                        document.getElementById($scope.nalozi[i].id).style.display = 'table';
                     else document.getElementById($scope.nalozi[i].id).style.display = 'none';
                 }
             }else{
                 var i = 0;
                 for( i = 0; i < $scope.nalozi.length; i++){
-                    document.getElementById($scope.nalozi[i].id).style.display = 'table-row';
+                    document.getElementById($scope.nalozi[i].id).style.display = 'table';
                 }
             }
             $timeout(function(){ $scope.$apply(); }, 150);
