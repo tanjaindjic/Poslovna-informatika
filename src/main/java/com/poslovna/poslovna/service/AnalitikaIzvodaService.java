@@ -87,10 +87,18 @@ public class AnalitikaIzvodaService {
         }
         DnevnoStanje trenutno = Collections.max(saRacuna.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
         if(trenutno.getNovoStanje()-dto.getIznos()<0){
-            System.out.println("Racun nije nadjen u sistemu!");
+            System.out.println("Nedovoljno sredstava!");
             throw new NedovoljnoSredstavaException("Nedovoljno sredstava!");
         }
-
+        List<AnalitikaIzvoda> rezervisanaSredstva = analitikaIzvodaRepository.findByRacunNalogodavcaAndStatus(dto.getRacunNalogodavca(), Status.E);
+        Float rezervisanoIznos = 0F;
+        for(AnalitikaIzvoda aiz: rezervisanaSredstva)
+            rezervisanoIznos+=aiz.getIznos();
+        System.out.println("Rezervisano: " + rezervisanoIznos);
+        if(trenutno.getNovoStanje()-rezervisanoIznos<0){
+            System.out.println("Nedovoljno sredstava!");
+            throw new NedovoljnoSredstavaException("Nedovoljno sredstava!");
+        }
 
         a.setNalogodavac(dto.getNalogodavac());
         a.setSvrhaPlacanja(dto.getSvrhaPlacanja());
