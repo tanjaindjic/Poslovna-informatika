@@ -181,7 +181,7 @@ public class AnalitikaIzvodaService {
             novo.setPrometNaTeret(trenutnoNaTeret + nalogZaPrenos.getIznos());
             novo.setPrometUKorist(ds.getPrometUKorist());
             novo.setNovoStanje(ds.getNovoStanje()-nalogZaPrenos.getIznos());
-            novo.setIzvodi(ds.getIzvodi());
+            novo.setIzvodi(new ArrayList<>());
             novo.setZaRacun(ds.getZaRacun());
             novo.setDatumPrometa(danas);
             novo.getIzvodi().add(nalogZaPrenos);
@@ -209,7 +209,7 @@ public class AnalitikaIzvodaService {
             novo.setPrometNaTeret(ds2.getPrometNaTeret());
             novo.setPrometUKorist(trenutnoUKorist + nalogZaPrenos.getKonvertovaniIznos());
             novo.setNovoStanje(ds2.getNovoStanje()+nalogZaPrenos.getKonvertovaniIznos());
-            novo.setIzvodi(ds2.getIzvodi());
+            novo.setIzvodi(new ArrayList<>());
             novo.setZaRacun(ds2.getZaRacun());
             novo.setDatumPrometa(danas);
             novo.getIzvodi().add(nalogZaPrenos);

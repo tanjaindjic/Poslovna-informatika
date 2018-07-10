@@ -255,8 +255,8 @@ public class StartData {
         ds.setPrometUKorist(0F);
         ds.setNovoStanje(10000F);
         ds.setZaRacun(racun);
-        ds.setIzvodi(analitikaIzvodaRepository.findByRacunNalogodavca(racun.getBrojRacuna()));
-        ds.getIzvodi().addAll(analitikaIzvodaRepository.findByRacunPrimaoca(racun.getBrojRacuna()));
+        //ds.setIzvodi(analitikaIzvodaRepository.findByRacunNalogodavca(racun.getBrojRacuna()));
+        //ds.getIzvodi().addAll(analitikaIzvodaRepository.findByRacunPrimaoca(racun.getBrojRacuna()));
         dnevnoStanjeRepository.save(ds);
         return ds;
    }

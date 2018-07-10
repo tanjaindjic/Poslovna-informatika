@@ -9,7 +9,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.sql.Date;
 
 public class AnalitikaIzvodaDTO {
 
@@ -44,7 +44,7 @@ public class AnalitikaIzvodaDTO {
     public AnalitikaIzvodaDTO() {
     }
 
-    public AnalitikaIzvodaDTO(String nalogodavac, String svrhaPlacanja, String primalac, Date datumPrijema, @Size(max = 18, min = 5) String racunNalogodavca, int modelZaduzenja, @Size(max = 20) String pozivNaBroj, @Size(max = 18, min = 5) String racunPrimaoca, int modelOdobrenja, boolean hitno, Float iznos,  Long klijentId) {
+    public AnalitikaIzvodaDTO(String nalogodavac, String svrhaPlacanja, String primalac, Date datumPlacanja, @Size(max = 18, min = 5) String racunNalogodavca, int modelZaduzenja, @Size(max = 20) String pozivNaBroj, @Size(max = 18, min = 5) String racunPrimaoca, int modelOdobrenja, boolean hitno, Float iznos,  Long klijentId) {
         this.nalogodavac = nalogodavac;
         this.svrhaPlacanja = svrhaPlacanja;
         this.primalac = primalac;
