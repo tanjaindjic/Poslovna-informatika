@@ -24,7 +24,7 @@
         <br>
         <p><b>Promene stanja:</b></p>
         <div>
-            <table style="table-layout: fixed; width:100%">
+            <table style="table-layout: fixed; width:100%; border-collapse: collapse; ">
                 <tr style="background-color:#0b5c7c; color:white">
                     <td style="width: 30; text-align: center; vertical-align: middle;">Datum prometa</td>
                     <td style="width: 30;  text-align: center; vertical-align: middle;">Prethodno stanje</td>
@@ -34,10 +34,10 @@
                     <td style="width: 30;  text-align: center; vertical-align: middle;">Izvestaj</td>
                 </tr>
             </table>
-            <table style="table-layout: fixed; width:100%">
+            <table style="table-layout: fixed; width:100%; border-collapse: collapse;">
                 <tbody style="display: inline-block; height:200px; overflow-y: auto; overflow-x: hidden;">
-                    <tr  style="display:table; table-layout:fixed; width:100%;" ng-repeat="ds in dnevnaStanja" style="border-bottom: 1px solid black" id="{{ds.id}}">
-                        <td style="width: 30; text-align: center; vertical-align: middle;">{{ds.datumPrometa}}</td>
+                    <tr  style="display:table; table-layout:fixed; width:100%; border-bottom:1pt solid black;" ng-repeat="ds in dnevnaStanja" style="border-bottom: 1px solid black" id="{{ds.id}}">
+                        <td style="width: 30; text-align: center; vertical-align: middle;">{{ds.datumPrometa | date:'medium'}}</td>
                         <td style="width: 30;  text-align: center; vertical-align: middle;">{{ds.prethodnoStanje}},00</td>
                         <td style="width: 30;  text-align: center; vertical-align: middle;">{{ds.prometUKorist}},00</td>
                         <td style="width: 30;  text-align: center; vertical-align: middle;">{{ds.prometNaTeret}},00</td>
@@ -61,7 +61,7 @@
                 <input type="radio" name="izbor" id="sve" ng-click="sve()"><label for="sve" >Svi prenosi</label>
             </div>
         </span>
-        <table style="table-layout: fixed; width:100%" id="tabelaIzvoda">
+        <table style="table-layout: fixed; width:100%; border-collapse: collapse;" id="tabelaIzvoda">
 
           <tr style="background-color:#0b5c7c; color:white">
               <td style="width: 30; text-align: center; vertical-align: middle;">Sa racuna</td>
@@ -74,9 +74,9 @@
               <td style="width: 5%;  text-align: center; vertical-align: middle;">Export</td>
           </tr>
         </table>
-        <table style="table-layout: fixed; width:100%" id="tabelaIzvoda2">
+        <table style="table-layout: fixed; width:100%; border-collapse: collapse;" id="tabelaIzvoda2">
             <tbody style="display: inline-block; height:200px; overflow-y: auto; overflow-x: hidden;">
-            <tr style="display:table; table-layout:fixed; width:100%;" ng-repeat="nalog in nalozi" style="border-bottom: 1px solid black" id="{{nalog.id}}">
+            <tr style="display:table; table-layout:fixed; width:100%; border-bottom:1pt solid black;" ng-repeat="nalog in nalozi" style="border-bottom: 1px solid black" id="{{nalog.id}}">
                 <td style="width: 30; text-align: center; vertical-align: middle;">Nalogodavac: {{nalog.nalogodavac}} <br> {{nalog.racunNalogodavca}}</td>
                 <td style="width: 30; text-align: center; vertical-align: middle;">Primalac: {{nalog.primalac}} <br> {{nalog.racunPrimaoca}}</td>
                 <td style="width: 30; text-align: center; vertical-align: middle;">{{nalog.svrhaPlacanja}}</td>

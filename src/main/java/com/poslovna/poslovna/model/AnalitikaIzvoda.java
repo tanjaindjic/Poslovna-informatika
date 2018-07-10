@@ -302,7 +302,7 @@ public class AnalitikaIzvoda {
 
     //@XmlElement
     public Date getDatumPlacanja() {
-        return getDatumPlacanja();
+        return datumPlacanja;
     }
 
     public void setDatumPlacanja(Date datumPlacanja) {
