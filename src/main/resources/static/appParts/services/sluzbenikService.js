@@ -42,8 +42,6 @@ mainModule.service('sluzbenikService', [ '$http', '$window','$localStorage',
 
         this.deaktivirajRacun = function(racun, naRacun){
 
-            console.log(racun)
-
             var req = {
                 method: 'PUT',
                 url: rootUrl+'racun/deaktiviraj/'+naRacun,

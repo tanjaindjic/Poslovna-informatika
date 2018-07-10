@@ -19,7 +19,7 @@ public class AnalitikaIzvodaDTO {
 
     private String primalac;
 
-    private Date datumPrijema;
+    private Date datumPlacanja;
 
     @Size(max = 18, min = 5)
     private String racunNalogodavca;
@@ -48,7 +48,7 @@ public class AnalitikaIzvodaDTO {
         this.nalogodavac = nalogodavac;
         this.svrhaPlacanja = svrhaPlacanja;
         this.primalac = primalac;
-        this.datumPrijema = datumPrijema;
+        this.datumPlacanja = datumPlacanja;
         this.racunNalogodavca = racunNalogodavca;
         this.modelZaduzenja = modelZaduzenja;
         this.pozivNaBroj = pozivNaBroj;
@@ -83,12 +83,12 @@ public class AnalitikaIzvodaDTO {
         this.primalac = primalac;
     }
 
-    public Date getDatumPrijema() {
-        return datumPrijema;
+    public Date getDatumPlacanja() {
+        return datumPlacanja;
     }
 
-    public void setDatumPrijema(Date datumPrijema) {
-        this.datumPrijema = datumPrijema;
+    public void setDatumPlacanja(Date datumPlacanja) {
+        this.datumPlacanja = datumPlacanja;
     }
 
     public String getRacunNalogodavca() {

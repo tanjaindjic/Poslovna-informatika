@@ -7,9 +7,12 @@ import java.util.Date;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 @Entity
+@XmlRootElement(name="AnalitikaIzvoda")
 public class AnalitikaIzvoda {
 
     @Id
@@ -23,6 +26,8 @@ public class AnalitikaIzvoda {
     private String primalac;
 
     private Date datumPrijema;
+
+    private Date datumPlacanja;
 
     private Date datumObrade;
 
@@ -68,7 +73,7 @@ public class AnalitikaIzvoda {
     public AnalitikaIzvoda() {
     }
 
-    public AnalitikaIzvoda(String nalogodavac, String svrhaPlacanja, String primalac, Date datumPrijema, Date datumObrade, Date datumValute,
+    public AnalitikaIzvoda(String nalogodavac, String svrhaPlacanja, String primalac, Date datumPlacanja, Date datumObrade, Date datumValute,
                            @Size(max = 18, min = 5) String racunNalogodavca, int modelZaduzenja, @Size(max = 20) String pozivNaBroj,
                            @Size(max = 18, min = 5) String racunPrimaoca, int modelOdobrenja, boolean hitno, Float iznosZaPrenos, int tipGreske,
                            Status status, VrstaPlacanja vrstaPlacanja, boolean medjubankarski, NaseljenoMesto mestoPrijema, Valuta osnovnaValuta,
@@ -76,7 +81,7 @@ public class AnalitikaIzvoda {
         this.nalogodavac = nalogodavac;
         this.svrhaPlacanja = svrhaPlacanja;
         this.primalac = primalac;
-        this.datumPrijema = datumPrijema;
+        this.datumPlacanja = datumPlacanja;
         this.datumObrade = datumObrade;
         this.datumValute = datumValute;
         this.racunNalogodavca = racunNalogodavca;
@@ -96,6 +101,7 @@ public class AnalitikaIzvoda {
         this.krajnjaValuta = krajnjaValuta;
     }
 
+    @XmlElement
     public long getId() {
         return id;
     }
@@ -112,6 +118,7 @@ public class AnalitikaIzvoda {
         this.nalogodavac = nalogodavac;
     }
 
+    @XmlElement
     public String getSvrhaPlacanja() {
         return svrhaPlacanja;
     }
@@ -120,6 +127,7 @@ public class AnalitikaIzvoda {
         this.svrhaPlacanja = svrhaPlacanja;
     }
 
+    @XmlElement
     public String getPrimalac() {
         return primalac;
     }
@@ -128,6 +136,7 @@ public class AnalitikaIzvoda {
         this.primalac = primalac;
     }
 
+    @XmlElement
     public Date getDatumPrijema() {
         return datumPrijema;
     }
@@ -136,6 +145,7 @@ public class AnalitikaIzvoda {
         this.datumPrijema = datumPrijema;
     }
 
+    @XmlElement
     public Date getDatumValute() {
         return datumValute;
     }
@@ -144,6 +154,7 @@ public class AnalitikaIzvoda {
         this.datumValute = datumValute;
     }
 
+    @XmlElement
     public String getRacunNalogodavca() {
         return racunNalogodavca;
     }
@@ -152,6 +163,7 @@ public class AnalitikaIzvoda {
         this.racunNalogodavca = racunNalogodavca;
     }
 
+    @XmlElement
     public int getModelZaduzenja() {
         return modelZaduzenja;
     }
@@ -160,6 +172,7 @@ public class AnalitikaIzvoda {
         this.modelZaduzenja = modelZaduzenja;
     }
 
+    @XmlElement
     public String getPozivNaBroj() {
         return pozivNaBroj;
     }
@@ -168,30 +181,37 @@ public class AnalitikaIzvoda {
         this.pozivNaBroj = pozivNaBroj;
     }
 
+    @XmlElement
     public String getRacunPrimaoca() {
         return racunPrimaoca;
     }
 
+    @XmlElement
     public void setRacunPrimaoca(String racunPrimaoca) {
         this.racunPrimaoca = racunPrimaoca;
     }
 
+    @XmlElement
     public int getModelOdobrenja() {
         return modelOdobrenja;
     }
 
+    @XmlElement
     public void setModelOdobrenja(int modelOdobrenja) {
         this.modelOdobrenja = modelOdobrenja;
     }
 
+    @XmlElement
     public boolean isHitno() {
         return hitno;
     }
 
+    @XmlElement
     public void setHitno(boolean hitno) {
         this.hitno = hitno;
     }
 
+    @XmlElement
     public Float getIznos() {
         return iznosZaPrenos;
     }
@@ -200,6 +220,7 @@ public class AnalitikaIzvoda {
         this.iznosZaPrenos = iznosZaPrenos;
     }
 
+    @XmlElement
     public int getTipGreske() {
         return tipGreske;
     }
@@ -208,6 +229,7 @@ public class AnalitikaIzvoda {
         this.tipGreske = tipGreske;
     }
 
+    @XmlElement
     public Status getStatus() {
         return status;
     }
@@ -216,6 +238,7 @@ public class AnalitikaIzvoda {
         this.status = status;
     }
 
+    @XmlElement
     public VrstaPlacanja getVrstaPlacanja() {
         return vrstaPlacanja;
     }
@@ -224,6 +247,7 @@ public class AnalitikaIzvoda {
         this.vrstaPlacanja = vrstaPlacanja;
     }
 
+    @XmlElement
     public boolean isMedjubankarski() {
         return medjubankarski;
     }
@@ -232,6 +256,7 @@ public class AnalitikaIzvoda {
         this.medjubankarski = medjubankarski;
     }
 
+    @XmlElement
     public Valuta getValuta() {
         return osnovnaValuta;
     }
@@ -240,6 +265,7 @@ public class AnalitikaIzvoda {
         this.osnovnaValuta = osnovnaValuta;
     }
 
+    @XmlElement
     public NaseljenoMesto getMestoPrijema() {
         return mestoPrijema;
     }
@@ -248,6 +274,7 @@ public class AnalitikaIzvoda {
         this.mestoPrijema = mestoPrijema;
     }
 
+    @XmlElement
     public Date getDatumObrade() {
         return datumObrade;
     }
@@ -256,6 +283,7 @@ public class AnalitikaIzvoda {
         this.datumObrade = datumObrade;
     }
 
+    @XmlElement
     public Float getKonvertovaniIznos() {
         return konvertovaniIznos;
     }
@@ -264,11 +292,21 @@ public class AnalitikaIzvoda {
         this.konvertovaniIznos = konvertovaniIznos;
     }
 
+    @XmlElement
     public Valuta getKrajnjaValuta() {
         return krajnjaValuta;
     }
 
     public void setKrajnjaValuta(Valuta krajnjaValuta) {
         this.krajnjaValuta = krajnjaValuta;
+    }
+
+    @XmlElement
+    public Date getDatumPlacanja() {
+        return getDatumPlacanja();
+    }
+
+    public void setDatumPlacanja(Date datumPlacanja) {
+        this.datumPlacanja = datumPlacanja;
     }
 }

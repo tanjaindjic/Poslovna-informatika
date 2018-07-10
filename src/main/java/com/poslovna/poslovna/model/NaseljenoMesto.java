@@ -4,8 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
+@XmlRootElement(name="NaseljenoMesto")
 public class NaseljenoMesto {
     @Id
     @GeneratedValue
@@ -18,6 +21,12 @@ public class NaseljenoMesto {
     @ManyToOne
     private Drzava drzava;
 
+    
+    public NaseljenoMesto() {
+    	
+    }
+    
+    @XmlElement
     public Drzava getDrzava() {
         return drzava;
     }
@@ -26,9 +35,7 @@ public class NaseljenoMesto {
         this.drzava = drzava;
     }
 
-    public NaseljenoMesto() {
-    }
-
+    @XmlElement
     public long getId() {
         return id;
     }
@@ -37,6 +44,7 @@ public class NaseljenoMesto {
         this.id = id;
     }
 
+    @XmlElement
     public String getNaziv() {
         return naziv;
     }
@@ -45,6 +53,7 @@ public class NaseljenoMesto {
         this.naziv = naziv;
     }
 
+    @XmlElement
     public String getPtt() {
         return ptt;
     }
