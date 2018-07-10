@@ -66,7 +66,7 @@
                                     <tr>
                                         <td style="width: 400px">
 
-                                                        <select >
+                                                        <select required>
                                                             <option>220 – promet robe i usluga – medjufazna potrosnja</option>
                                                             <option>221 – promet robe i usluga – finalna potrosnja</option>
                                                             <option>222 – usluge javnih preduzeca</option>
@@ -91,7 +91,7 @@
                                             <input type="text"  id="valuta" disabled="true" style="width:40px">
                                         </td>
                                         <td style="text-align: right">
-                                            <input ng-model="iznos" type="text" style="text-align:right; width: 100px"  maxlength="16">
+                                            <input required ng-model="iznos" type="text" style="text-align:right; width: 100px"  maxlength="16">
                                         </td>
                                     </tr>
                                     <tr>
@@ -101,7 +101,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="5">
-                                            <select ng-change="odabirRacuna(odabranRacun)"  ng-model="odabranRacun">
+                                            <select required ng-change="odabirRacuna(odabranRacun)"  ng-model="odabranRacun">
                                                 <option ng-repeat="racun in klijent.racuni">{{racun.brojRacuna}}, {{racun.valuta.zvanicnaSifra}}</option>
                                             </select>
                                         </td>
@@ -113,9 +113,9 @@
                                     </tr>
                                     <tr>
                                         <td colspan="5" nowrap="nowrap">
-                                            <input ng-model="oznakaBanke" type="text" size="3" maxlength="3">&nbsp;-
-                                            <input ng-model="racunPt2" type="text" size="13" maxlength="13">&nbsp;-
-                                            <input ng-model="racunPt3" type="text" size="2" maxlength="2">
+                                            <input required ng-model="oznakaBanke" type="text" size="3" maxlength="3">&nbsp;-
+                                            <input required ng-model="racunPt2" type="text" size="13" maxlength="13">&nbsp;-
+                                            <input required ng-model="racunPt3" type="text" size="2" maxlength="2">
                                         </td>
                                     </tr>
                                     <tr>
@@ -125,7 +125,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="5" nowrap="nowrap">
-                                            <input ng-model="modelOdobrenja" type="text" size="2" maxlength="2">
+                                            <input required ng-model="modelOdobrenja" type="text" size="2" maxlength="2">
                                             <input ng-model="pozivNaBroj" type="text" size="27" maxlength="25">
                                         </td>
                                     </tr>
@@ -137,7 +137,7 @@
                                                     <td>Datum placanja</td>
                                                 </tr>
                                                 <tr>
-                                                    <td><input type="date" name="date" id="projDate" ng-model="date" min="currentDate"></td>
+                                                    <td><input required type="date" name="date" id="projDate" ng-model="date" min="currentDate"></td>
                                                     <td colspan="5">
                                                         <input id="hitno" type="checkbox"> <span>Hitno</span>
                                                     </td>

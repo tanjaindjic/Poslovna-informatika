@@ -119,6 +119,41 @@ mainModule.controller('nalogController', ['$scope', '$window', 'userService','$l
                  alert("Datum nije validan. Dan nije odgovarajuci.")
                  return;
              }
+             if(date==null || date==""){
+                alert("Datum placanja nije unesen.")
+                return;
+             }
+             if($scope.odabranRacunVal==null || $scope.odabranRacunVal==""){
+                alert("Racun sa kojeg se prenose sredstva nije odabran.")
+                return;
+             }
+             if($scope.modelOdobrenja==null || $scope.modelOdobrenja==""){
+                alert("Model odobrenja nije unet.")
+                return;
+             }
+             if($scope.oznakaBanke==null || $scope.oznakaBanke=="" || $scope.oznakaBanke.trim().length!=3){
+                alert("Racun primaoca nije ispravan.")
+                return;
+             }
+             if($scope.racunPt2==null || $scope.racunPt2=="" || $scope.racunPt2.trim().length<1 || $scope.racunPt2.trim().length>13){
+                alert("Racun primaoca nije ispravan.")
+                return;
+             }
+             if($scope.racunPt3==null || $scope.racunPt3=="" || $scope.racunPt3.trim().length!=2){
+                alert("Racun primaoca nije ispravan.")
+                return;
+             }
+
+            $scope.ceoRacun = $scope.oznakaBanke + $scope.racunPt2 + $scope.racunPt3;
+            if(!(/^\d+$/.test($scope.ceoRacun))){
+                alert("Racun primaoca se mora sastojati samo iz brojeva.")
+                return;
+            }
+            if(!(/^\d+$/.test($scope.iznos))){
+                alert("Iznos se mora sastojati samo iz brojeva.")
+                return;
+            }
+
 
 
             var data = {
@@ -129,7 +164,7 @@ mainModule.controller('nalogController', ['$scope', '$window', 'userService','$l
                 "racunNalogodavca": $scope.odabranRacunVal,
                 "modelZaduzenja" : $scope.modelOdobrenja,
                 "pozivNaBroj": $scope.pozivNaBroj,
-                "racunPrimaoca" : $scope.oznakaBanke + $scope.racunPt2 + $scope.racunPt3,
+                "racunPrimaoca" : $scope.ceoRacun,
                 "modelOdobrenja" : $scope.modelOdobrenja,
                 "hitno": document.getElementById("hitno").checked,
                 "iznos": $scope.iznos,
