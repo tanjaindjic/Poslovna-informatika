@@ -1,14 +1,21 @@
 package com.poslovna.poslovna.model;
 
-import com.poslovna.poslovna.model.enums.Status;
-import com.poslovna.poslovna.model.enums.VrstaPlacanja;
-
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.poslovna.poslovna.model.enums.Status;
+import com.poslovna.poslovna.model.enums.VrstaPlacanja;
 
 
 @Entity
@@ -101,16 +108,17 @@ public class AnalitikaIzvoda {
         this.krajnjaValuta = krajnjaValuta;
     }
 
-    @XmlElement
+    //@XmlElement(name = "Id")
     public long getId() {
         return id;
     }
 
+    @XmlTransient
     public void setId(long id) {
         this.id = id;
     }
 
-    @XmlElement
+    @XmlElement(name = "Nalogodavac")
     public String getNalogodavac() {
         return nalogodavac;
     }
@@ -119,7 +127,7 @@ public class AnalitikaIzvoda {
         this.nalogodavac = nalogodavac;
     }
 
-    @XmlElement
+    @XmlElement(name = "SvrhaPlacanja")
     public String getSvrhaPlacanja() {
         return svrhaPlacanja;
     }
@@ -128,7 +136,7 @@ public class AnalitikaIzvoda {
         this.svrhaPlacanja = svrhaPlacanja;
     }
 
-    @XmlElement
+    @XmlElement(name = "Primalac")
     public String getPrimalac() {
         return primalac;
     }
@@ -137,7 +145,7 @@ public class AnalitikaIzvoda {
         this.primalac = primalac;
     }
 
-    @XmlElement
+    @XmlElement(name = "DatumPrijema")
     public Date getDatumPrijema() {
         return datumPrijema;
     }
@@ -146,7 +154,7 @@ public class AnalitikaIzvoda {
         this.datumPrijema = datumPrijema;
     }
 
-    @XmlElement
+    @XmlElement(name = "DatumValute")
     public Date getDatumValute() {
         return datumValute;
     }
@@ -155,7 +163,7 @@ public class AnalitikaIzvoda {
         this.datumValute = datumValute;
     }
 
-    @XmlElement
+    @XmlElement(name = "RacunNalogodavca")
     public String getRacunNalogodavca() {
         return racunNalogodavca;
     }
@@ -164,7 +172,7 @@ public class AnalitikaIzvoda {
         this.racunNalogodavca = racunNalogodavca;
     }
 
-    @XmlElement
+    @XmlElement(name = "modelZaduzenja")
     public int getModelZaduzenja() {
         return modelZaduzenja;
     }
@@ -173,7 +181,7 @@ public class AnalitikaIzvoda {
         this.modelZaduzenja = modelZaduzenja;
     }
 
-    @XmlElement
+    @XmlElement(name = "PozivNaBroj")
     public String getPozivNaBroj() {
         return pozivNaBroj;
     }
@@ -182,7 +190,7 @@ public class AnalitikaIzvoda {
         this.pozivNaBroj = pozivNaBroj;
     }
 
-    @XmlElement
+    @XmlElement(name = "RacunPrimaoca")
     public String getRacunPrimaoca() {
         return racunPrimaoca;
     }
@@ -191,7 +199,7 @@ public class AnalitikaIzvoda {
         this.racunPrimaoca = racunPrimaoca;
     }
 
-    @XmlElement
+    @XmlElement(name = "ModelOdobrenja")
     public int getModelOdobrenja() {
         return modelOdobrenja;
     }
@@ -201,7 +209,7 @@ public class AnalitikaIzvoda {
         this.modelOdobrenja = modelOdobrenja;
     }
 
-    @XmlElement
+    @XmlElement(name = "Hitno")
     public boolean isHitno() {
         return hitno;
     }
@@ -211,7 +219,7 @@ public class AnalitikaIzvoda {
         this.hitno = hitno;
     }
 
-    @XmlElement
+    @XmlElement(name = "Iznos")
     public Float getIznos() {
         return iznosZaPrenos;
     }
@@ -220,7 +228,7 @@ public class AnalitikaIzvoda {
         this.iznosZaPrenos = iznosZaPrenos;
     }
 
-    @XmlElement
+    @XmlElement(name = "TipGreske")
     public int getTipGreske() {
         return tipGreske;
     }
@@ -229,7 +237,7 @@ public class AnalitikaIzvoda {
         this.tipGreske = tipGreske;
     }
 
-    @XmlElement
+    @XmlElement(name = "Status")
     public Status getStatus() {
         return status;
     }
@@ -238,7 +246,7 @@ public class AnalitikaIzvoda {
         this.status = status;
     }
 
-    @XmlElement
+    @XmlElement(name = "VrstaPlacanja")
     public VrstaPlacanja getVrstaPlacanja() {
         return vrstaPlacanja;
     }
@@ -247,7 +255,7 @@ public class AnalitikaIzvoda {
         this.vrstaPlacanja = vrstaPlacanja;
     }
 
-    @XmlElement
+    @XmlElement(name = "Medjubankarski")
     public boolean isMedjubankarski() {
         return medjubankarski;
     }
@@ -256,7 +264,7 @@ public class AnalitikaIzvoda {
         this.medjubankarski = medjubankarski;
     }
 
-    @XmlElement
+    @XmlElement(name = "OsnovnaValuta")
     public Valuta getValuta() {
         return osnovnaValuta;
     }
@@ -265,7 +273,7 @@ public class AnalitikaIzvoda {
         this.osnovnaValuta = osnovnaValuta;
     }
 
-    @XmlElement
+    @XmlElement(name = "MestoPrijema")
     public NaseljenoMesto getMestoPrijema() {
         return mestoPrijema;
     }
@@ -274,7 +282,7 @@ public class AnalitikaIzvoda {
         this.mestoPrijema = mestoPrijema;
     }
 
-    @XmlElement
+    @XmlElement(name = "DatumObrade")
     public Date getDatumObrade() {
         return datumObrade;
     }
@@ -283,7 +291,7 @@ public class AnalitikaIzvoda {
         this.datumObrade = datumObrade;
     }
 
-    @XmlElement
+    @XmlElement(name = "KonvertovaniIznos")
     public Float getKonvertovaniIznos() {
         return konvertovaniIznos;
     }
@@ -292,7 +300,7 @@ public class AnalitikaIzvoda {
         this.konvertovaniIznos = konvertovaniIznos;
     }
 
-    @XmlElement
+    @XmlElement(name = "KrajnjaValuta")
     public Valuta getKrajnjaValuta() {
         return krajnjaValuta;
     }
@@ -301,7 +309,7 @@ public class AnalitikaIzvoda {
         this.krajnjaValuta = krajnjaValuta;
     }
 
-    @XmlElement
+    @XmlElement(name = "DatumPlacanja")
     public Date getDatumPlacanja() {
         return datumPlacanja;
     }

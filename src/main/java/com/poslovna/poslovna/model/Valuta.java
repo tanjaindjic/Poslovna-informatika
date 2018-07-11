@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class Valuta {
         this.kurseviPrema = kurseviPrema;
     }
 
-    @XmlElement
+    @XmlElement(name="Id")
     public long getId() {
         return id;
     }
@@ -52,7 +53,7 @@ public class Valuta {
         this.id = id;
     }
 
-    @XmlElement
+    @XmlElement(name="ZvanicnaSifra")
     public String getZvanicnaSifra() {
         return zvanicnaSifra;
     }
@@ -61,7 +62,7 @@ public class Valuta {
         this.zvanicnaSifra = zvanicnaSifra;
     }
 
-    @XmlElement
+    @XmlElement(name="Naziv")
     public String getNaziv() {
         return naziv;
     }
@@ -70,7 +71,7 @@ public class Valuta {
         this.naziv = naziv;
     }
 
-    @XmlElement
+    @XmlElement(name="Domicilna")
     public boolean isDomicilna() {
         return domicilna;
     }
@@ -79,7 +80,7 @@ public class Valuta {
         this.domicilna = domicilna;
     }
 
-    @XmlElement
+    @XmlElement(name="Drzava")
     public Drzava getDrzava() {
         return drzava;
     }
@@ -92,6 +93,7 @@ public class Valuta {
         return kurseviOsnova;
     }
 
+    @XmlTransient
     public void setKurseviOsnova(List<KursUValuti> kurseviOsnova) {
         this.kurseviOsnova = kurseviOsnova;
     }
@@ -100,6 +102,7 @@ public class Valuta {
         return kurseviPrema;
     }
 
+    @XmlTransient
     public void setKurseviPrema(List<KursUValuti> kurseviPrema) {
         this.kurseviPrema = kurseviPrema;
     }
