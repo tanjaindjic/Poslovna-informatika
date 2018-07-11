@@ -51,6 +51,7 @@ public class ImportExportService {
 			
 			return analitikaIzvoda;
 		}catch(Exception e) {
+			System.out.println("Greska!");
 			e.printStackTrace();
 		}
 		
