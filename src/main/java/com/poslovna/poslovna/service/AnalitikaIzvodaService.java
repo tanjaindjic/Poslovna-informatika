@@ -85,7 +85,7 @@ public class AnalitikaIzvodaService {
     
     @SuppressWarnings("unchecked")
     @Transactional(readOnly = false, rollbackFor = Exception.class, propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
-    public AnalitikaIzvoda createIzvod(AnalitikaIzvodaDTO dto) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
+    public String createIzvod(AnalitikaIzvodaDTO dto) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
 
         AnalitikaIzvoda a = new AnalitikaIzvoda();
         Klijent nalogodavac = klijentService.getOne(dto.getKlijentId());
@@ -95,29 +95,29 @@ public class AnalitikaIzvodaService {
         if(nalogodavac==null){
             System.out.println("Nalogodavac nije nadjen u sistemu! linija 96");
             //throw new NemaNalogodavcaException("Nalogodavac nije nadjen u sistemu!");
-            return null;
+            return "Nalogodavac nije nadjen u sistemu.";
         }
         if(saRacuna==null){
             System.out.println("Racun nije nadjen u sistemu linija 100!");
             //throw new NemaRacunaException("Racun nije nadjen u sistemu!");
-            return null;
+            return "Racun nije nadjen u sistemu.";
 
         }
         if(naRacun!=null && !naRacun.isVazeci()){
             System.out.println("Racun nije aktivan! linija 104");
             //throw new NemaRacunaException("Racun nije aktivan!");
-            return null;
+            return "Racun primaoca nije aktivan.";
         }
         if(!saRacuna.isVazeci()){
             System.out.println("Racun nije aktivan! linija 108");
             //throw new NemaRacunaException("Racun nije aktivan!");
-            return null;
+            return "Racun nalogodavca nije aktivan.";
         }
         DnevnoStanje trenutno = Collections.max(saRacuna.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
         if(trenutno.getNovoStanje()-dto.getIznos()<0){
             System.out.println("Nedovoljno sredstava! linija 113");
             //throw new NedovoljnoSredstavaException("Nedovoljno sredstava!");
-            return null;
+            return "Nedovoljno sredstava.";
         }
         List<AnalitikaIzvoda> rezervisanaSredstva = analitikaIzvodaRepository.findByRacunNalogodavcaAndStatus(dto.getRacunNalogodavca(), Status.E);
         Float rezervisanoIznos = 0F;
@@ -127,7 +127,7 @@ public class AnalitikaIzvodaService {
         if(trenutno.getNovoStanje()-rezervisanoIznos-dto.getIznos()<0){
             System.out.println("Nedovoljno sredstava! linija 122");
             //throw new NedovoljnoSredstavaException("Nedovoljno sredstava!");
-            return null;
+            return "Nedovoljno sredstava.";
         }
 
         a.setNalogodavac(dto.getNalogodavac());
@@ -187,7 +187,7 @@ public class AnalitikaIzvodaService {
             if((danas.getYear()==odbraniDatum.getYear() && danas.getMonth()==odbraniDatum.getMonth() && danas.getDay()==odbraniDatum.getDay()) || a.isHitno())
                 prebaciSredstva(saRacuna, naRacun, a);
         }
-        return a;
+        return "Nalog uspesno kreiran.";
     }
 
     public void prebaciSredstva(Racun saRacuna, Racun naRacun, AnalitikaIzvoda nalogZaPrenos){
@@ -229,8 +229,9 @@ public class AnalitikaIzvodaService {
             //ima danasnje stanje samo azuriram
             Float trenutnoUKorist = ds2.getPrometUKorist();
             ds2.setPrometUKorist(trenutnoUKorist + nalogZaPrenos.getKonvertovaniIznos());
-            ds2.setPrethodnoStanje(ds2.getNovoStanje());
-            ds2.setNovoStanje(ds2.getPrethodnoStanje()+nalogZaPrenos.getKonvertovaniIznos());
+            Float prethodno = ds2.getNovoStanje();
+            //ds2.setPrethodnoStanje(ds2.getNovoStanje());
+            ds2.setNovoStanje(prethodno+nalogZaPrenos.getKonvertovaniIznos());
             ds2.getIzvodi().add(nalogZaPrenos);
             dnevnoStanjeService.updateDS(ds2);
             racunService.saveRacun(naRacun);
