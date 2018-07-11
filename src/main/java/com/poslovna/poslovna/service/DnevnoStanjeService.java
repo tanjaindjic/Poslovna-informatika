@@ -29,9 +29,15 @@ public class DnevnoStanjeService {
 
     public void kliring(){
         for(AnalitikaIzvoda a: analitikaIzvodaService.getAllEvidentirani()){
-            pojedinacniKliring(a);
-            a.setStatus(Status.I);
-            analitikaIzvodaService.update(a);
+            Date danas = new Date(System.currentTimeMillis());
+            //ako je klijent stavio da se pare prenesu negde u buducnosti onda to sad ne diramo, stoje kao rezervisana sredstva
+            if(a.getDatumPlacanja().getYear()<=danas.getYear() && a.getDatumPlacanja().getMonth()<=danas.getMonth() && a.getDatumPlacanja().getDay()<=danas.getDay()){
+                pojedinacniKliring(a);
+                a.setDatumObrade(danas);
+                a.setStatus(Status.I);
+                analitikaIzvodaService.update(a);
+            }
+
         }
     }
 
@@ -61,16 +67,16 @@ public class DnevnoStanjeService {
 
     private void azurirajDnevnoStanje(AnalitikaIzvoda a, Racun r, DnevnoStanje poslednje) {
 
-        poslednje.setPrethodnoStanje(poslednje.getNovoStanje());
+        Float prethodno = poslednje.getNovoStanje();
         //u slucaju da obradjujem nalogodavca, njemu skidam pare
         if(a.getRacunNalogodavca().equals(r.getBrojRacuna())){
             Float trenutno = poslednje.getPrometNaTeret();
             poslednje.setPrometNaTeret(trenutno + a.getIznos());
-            poslednje.setNovoStanje(poslednje.getPrethodnoStanje()-a.getIznos());
+            poslednje.setNovoStanje(prethodno-a.getIznos());
         }else{ //u ovom slucaju je primalac i njemu dodajem pare
             Float trenutno = poslednje.getPrometUKorist();
             poslednje.setPrometUKorist(trenutno + a.getKonvertovaniIznos());
-            poslednje.setNovoStanje(poslednje.getPrethodnoStanje()+a.getKonvertovaniIznos());
+            poslednje.setNovoStanje(prethodno+a.getKonvertovaniIznos());
         }
         poslednje.getIzvodi().add(a);
         dnevnoStanjeRepository.save(poslednje);
@@ -115,5 +121,10 @@ public class DnevnoStanjeService {
             analitikaIzvodaService.update(a);
         }
 
+    }
+    
+    public DnevnoStanje getOne(long id) {
+    	
+    	return dnevnoStanjeRepository.getOne(id);
     }
 }

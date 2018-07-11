@@ -44,7 +44,7 @@ public class KlijentController {
     	}else if(tip.equals(TipKlijenta.P.toString())) {
     		retVal = klijentService.getKlijentsByTip(TipKlijenta.P);
     	}else {
-    		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    		//return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     	}
     	
     	return new ResponseEntity<List<Klijent>>(retVal, HttpStatus.OK);

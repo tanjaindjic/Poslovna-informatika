@@ -30,11 +30,11 @@ public class LoginController {
 	    Korisnik korisnik = korisnikService.getKorisnikByKorisnickoIme(forLogin.getKorisnickoIme());
 	    
 	    if(korisnik == null) {
-	    	return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+	    	//return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 	    }
 	    
 	    if(!korisnik.getLozinka().equals(forLogin.getLozinka())) {
-	    	return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+	    	//return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 	    }
 	    
 	    String token = tokenUtils.generateToken(CustomUserDetailsFactory.createCustomUserDetails(korisnik));

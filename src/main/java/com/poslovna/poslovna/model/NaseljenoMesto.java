@@ -26,7 +26,7 @@ public class NaseljenoMesto {
     	
     }
     
-    @XmlElement
+    @XmlElement(name="Drzava")
     public Drzava getDrzava() {
         return drzava;
     }
@@ -35,7 +35,7 @@ public class NaseljenoMesto {
         this.drzava = drzava;
     }
 
-    @XmlElement
+    @XmlElement(name="Id")
     public long getId() {
         return id;
     }
@@ -44,7 +44,7 @@ public class NaseljenoMesto {
         this.id = id;
     }
 
-    @XmlElement
+    @XmlElement(name="Naziv")
     public String getNaziv() {
         return naziv;
     }
@@ -53,7 +53,7 @@ public class NaseljenoMesto {
         this.naziv = naziv;
     }
 
-    @XmlElement
+    @XmlElement(name="Ptt")
     public String getPtt() {
         return ptt;
     }

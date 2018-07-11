@@ -3,12 +3,21 @@ mainModule.service('exportService', [ '$http', '$window','$localStorage',
 
         var rootUrl = 'http://localhost:8096/';
 
-        this.napraviRacun = function(racun){
+        this.eksportujNalog = function(idNaloga){
 
             var req = {
-                method: 'POST',
-                url: rootUrl+'racun/saveRacun',
-                data: racun,
+                method: 'GET',
+                url: rootUrl+'impexp/exportAnalitikaIzvoda/'+idNaloga,
+                headers: {'token' : $window.localStorage.getItem('token')}
+            }
+            return $http(req);
+        }
+
+        this.eksportujIzvestaj = function(idIzvestaja){
+
+            var req = {
+                method: 'GET',
+                url: rootUrl+'impexp/exportIzvod/'+idIzvestaja,
                 headers: {'token' : $window.localStorage.getItem('token')}
             }
             return $http(req);

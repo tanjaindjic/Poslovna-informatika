@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.poslovna.poslovna.model.AnalitikaIzvoda;
+import com.poslovna.poslovna.model.DnevnoStanje;
 import com.poslovna.poslovna.service.AnalitikaIzvodaService;
+import com.poslovna.poslovna.service.DnevnoStanjeService;
 import com.poslovna.poslovna.service.ImportExportService;
 
 @RestController
@@ -23,6 +25,10 @@ public class ImportExportController {
 	@Autowired
 	private AnalitikaIzvodaService analitikaIzvodaService;
 	
+	@Autowired
+	private DnevnoStanjeService dnevnoStanjeService;
+	
+	
 	@RequestMapping(value = "/exportAnalitikaIzvoda/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> exoprtAnalitikaIzvoda(@PathVariable long id){
 		
@@ -32,7 +38,33 @@ public class ImportExportController {
 			return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
 		}
 		
-		boolean retVal = importExportService.exoprtAnalitikaIzvoda(nalog);
+		boolean retVal = importExportService.exportObjectToXml(nalog, AnalitikaIzvoda.class, nalog.getId());
+		
+		return new ResponseEntity<Boolean>(retVal, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/importAnalitikaIzvoda/{filepath}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<AnalitikaIzvoda> exoprtAnalitikaIzvoda(@PathVariable String filepath){
+		
+		AnalitikaIzvoda nalog = importExportService.importAnalitikaIzvoda(filepath);
+		
+		if(nalog == null) {
+			return new ResponseEntity<AnalitikaIzvoda>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<AnalitikaIzvoda>(nalog, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/exportIzvod/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> exoprtIzvoda(@PathVariable long id){
+		
+		DnevnoStanje dnevnoStanje = dnevnoStanjeService.getOne(id);
+		
+		if(dnevnoStanje == null) {
+			return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
+		}
+		
+		boolean retVal = importExportService.exportObjectToXml(dnevnoStanje, DnevnoStanje.class, dnevnoStanje.getId());
 		
 		return new ResponseEntity<Boolean>(retVal, HttpStatus.OK);
 	}
