@@ -10,7 +10,6 @@ import java.util.List;
 public class Klijent {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Enumerated(EnumType.STRING)
@@ -53,10 +52,11 @@ public class Klijent {
     	
     }
     
-    public Klijent(TipKlijenta tip, String naziv, String pib, String ime, String prezime,
+    public Klijent(long id, TipKlijenta tip, String naziv, String pib, String ime, String prezime,
 			String adresa, String email, String fax, String telefon, String skraceni_naziv, String nadlezni_organ,
 			NaseljenoMesto prebivaliste, List<Racun> racuni, Delatnost delatnost, String jmbg) {
 		super();
+		this.id = id;
 		this.tip = tip;
 		this.naziv = naziv;
 		this.pib = pib;
@@ -201,5 +201,15 @@ public class Klijent {
 	public void setJmbg(String jmbg) {
 		this.jmbg = jmbg;
 	}
+
+	@Override
+	public String toString() {
+		return "Klijent [id=" + id + ", tip=" + tip + ", naziv=" + naziv + ", pib=" + pib + ", jmbg=" + jmbg + ", ime="
+				+ ime + ", prezime=" + prezime + ", adresa=" + adresa + ", email=" + email + ", fax=" + fax
+				+ ", telefon=" + telefon + ", skraceni_naziv=" + skraceni_naziv + ", nadlezni_organ=" + nadlezni_organ
+				+ ", prebivaliste=" + prebivaliste + ", racuni=" + racuni + ", delatnost=" + delatnost + "]";
+	}
+	
+	
     
 }

@@ -13,6 +13,7 @@ import com.poslovna.poslovna.securityBeans.CustomUserDetailsFactory;
 
 
 @Service
+@ComponentScan("repository")
 public class CustomUserDetailsService implements UserDetailsService{
 
 	@Autowired

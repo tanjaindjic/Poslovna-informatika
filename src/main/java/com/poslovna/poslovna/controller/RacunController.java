@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.poslovna.poslovna.dto.RacunDTO;
 import com.poslovna.poslovna.model.Klijent;
 import com.poslovna.poslovna.model.Racun;
 import com.poslovna.poslovna.model.Valuta;
@@ -21,8 +22,6 @@ import com.poslovna.poslovna.service.BankaService;
 import com.poslovna.poslovna.service.KlijentService;
 import com.poslovna.poslovna.service.RacunService;
 import com.poslovna.poslovna.service.ValutaService;
-
-import dto.RacunDTO;
 
 @RestController
 @RequestMapping(value="/racun")

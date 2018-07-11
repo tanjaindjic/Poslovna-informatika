@@ -25,6 +25,10 @@ public class KlijentController {
     	
     	System.out.println("ID JEE: "+id);
     	
+    	Klijent nadjeno = klijentService.getKlijentPrekoKorisnikID(id);
+    	
+    	System.out.println(nadjeno);
+    	
         return klijentService.getKlijentPrekoKorisnikID(id);
     }
     

@@ -10,7 +10,6 @@ import javax.persistence.Id;
 public class Sluzbenik {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
 	@Column(nullable = false)
@@ -23,8 +22,9 @@ public class Sluzbenik {
     	
     }
     
-	public Sluzbenik(String ime, String prezime) {
+	public Sluzbenik(long id, String ime, String prezime) {
 		super();
+		this.id = id;
 		this.ime = ime;
 		this.prezime = prezime;
 	}

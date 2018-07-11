@@ -32,7 +32,7 @@ import com.poslovna.poslovna.repository.SluzbenikRepository;
 import com.poslovna.poslovna.repository.UkidanjeRepository;
 import com.poslovna.poslovna.repository.ValutaRepository;
 
-@Component
+//@Component
 public class StartData {
     @Autowired
     private DrzavaRepository drzavaRepository;
@@ -65,7 +65,7 @@ public class StartData {
 
     private int i ;
 
-    @PostConstruct
+    //@PostConstruct
     private void init(){
         Drzava srbija = createDrzava(new ArrayList<NaseljenoMesto>(), "Srbija", "SRB");
         Drzava bosna = createDrzava(new ArrayList<NaseljenoMesto>(), "Bosna i Hercegovina", "BIH");
@@ -84,18 +84,30 @@ public class StartData {
         Delatnost delatnost2 = createDelatnost("DE2", "Gradjevinarstvo");
         Delatnost delatnost3 = createDelatnost("DE3", "Poljoprivreda");
         
-        Klijent klijent = createKlijent(TipKlijenta.F, null, null, "Mika", "Mikic", "Adresa 1 bb", "mikamikic@gmail.com", "+38165123321", "+38165123321", null, null, novisad, new ArrayList<>(), null, "0102982800011");
-        Klijent klijent2 = createKlijent(TipKlijenta.F, null, null, "Zika", "Zikic", "Adresa 2 bb", "zikazikic@gmail.com", null, "+38165456654", null, null, beograd, new ArrayList<>(), null, "0102982800012");
-        Klijent klijent3 = createKlijent(TipKlijenta.F, null, null, "Ana", "Petrovic", "Adresa 3 bb", "anap@gmail.com", null, "+38165258852", null, null, skopje, new ArrayList<>(), null, "0103971800013");
-        Klijent klijent4 = createKlijent(TipKlijenta.P, "Preduzece Markovic", "123456789", "Marko", "Markovic", "Adresa 4 bb", "markovic@gmail.com", null, "+385888999", "PRM", null, zagreb, new ArrayList<>(), delatnost1, null);
+        Korisnik korisnik1 = createKorisnik("theMika", "mmmmmmmm", null, null, TipKorisnika.KLIJENT);
+        Korisnik korisnik2 = createKorisnik("theZika", "zzzzzzzz", null, null, TipKorisnika.KLIJENT);
+        Korisnik korisnik3 = createKorisnik("theAna", "aaaaaaaa", null, null, TipKorisnika.KLIJENT);
+        Korisnik korisnik4 = createKorisnik("markovic", "markovic", null, null, TipKorisnika.KLIJENT);
+        Korisnik korisnik5 = createKorisnik("theCeca", "cccccccc", null, null, TipKorisnika.SLUZBENIK);
         
-        Sluzbenik sluzbenik = ceateSluzbenik("Ceca", "Petrovic");	
+        Klijent klijent = createKlijent(korisnik1.getId(), TipKlijenta.F, null, null, "Mika", "Mikic", "Adresa 1 bb", "mikamikic@gmail.com", "+38165123321", "+38165123321", null, null, novisad, new ArrayList<>(), null, "0102982800011");
+        Klijent klijent2 = createKlijent(korisnik2.getId(), TipKlijenta.F, null, null, "Zika", "Zikic", "Adresa 2 bb", "zikazikic@gmail.com", null, "+38165456654", null, null, beograd, new ArrayList<>(), null, "0102982800012");
+        Klijent klijent3 = createKlijent(korisnik3.getId(), TipKlijenta.F, null, null, "Ana", "Petrovic", "Adresa 3 bb", "anap@gmail.com", null, "+38165258852", null, null, skopje, new ArrayList<>(), null, "0103971800013");
+        Klijent klijent4 = createKlijent(korisnik4.getId(), TipKlijenta.P, "Preduzece Markovic", "123456789", "Marko", "Markovic", "Adresa 4 bb", "markovic@gmail.com", null, "+385888999", "PRM", null, zagreb, new ArrayList<>(), delatnost1, null);
         
-        Korisnik korisnik1 = createKorisnik(klijent.getId(), "theMika", "mmmmmmmm", null, klijent, TipKorisnika.KLIJENT);
-        Korisnik korisnik2 = createKorisnik(klijent2.getId(), "theZika", "zzzzzzzz", null, klijent2, TipKorisnika.KLIJENT);
-        Korisnik korisnik3 = createKorisnik(klijent3.getId(), "theAna", "aaaaaaaa", null, klijent3, TipKorisnika.KLIJENT);
-        Korisnik korisnik4 = createKorisnik(klijent4.getId(), "markovic", "markovic", null, klijent4, TipKorisnika.KLIJENT);
-        Korisnik korisnik5 = createKorisnik(sluzbenik.getId(), "theCeca", "cccccccc", sluzbenik, null, TipKorisnika.SLUZBENIK);
+        Sluzbenik sluzbenik = ceateSluzbenik(korisnik5.getId(), "Ceca", "Petrovic");
+        
+        korisnik1.setKlijent(klijent);
+        korisnik2.setKlijent(klijent2);
+        korisnik3.setKlijent(klijent3);
+        korisnik4.setKlijent(klijent4);
+        korisnik5.setSluzbenik(sluzbenik);
+        
+        korisnikRepository.save(korisnik1);
+        korisnikRepository.save(korisnik2);
+        korisnikRepository.save(korisnik3);
+        korisnikRepository.save(korisnik4);
+        korisnikRepository.save(korisnik5);
         
         Banka srpskaBanka = createBanka("123", "123321123", "Srpska banka", beograd);
         Banka vojvodjanskaBanka = createBanka("400", "123451123", "Vojvodjanska banka", beograd);
@@ -212,16 +224,16 @@ public class StartData {
         return nova;
     }
     
-   private Korisnik createKorisnik(long id, String korisnickoIme, String lozinka, Sluzbenik sluzbenik, Klijent klijent, TipKorisnika tip) {
+   private Korisnik createKorisnik(String korisnickoIme, String lozinka, Sluzbenik sluzbenik, Klijent klijent, TipKorisnika tip) {
 	   
-	   return korisnikRepository.save(new Korisnik(id, korisnickoIme, lozinka, klijent, sluzbenik, tip));
+	   return korisnikRepository.save(new Korisnik(korisnickoIme, lozinka, klijent, sluzbenik, tip));
    }
    
-   private Klijent createKlijent(TipKlijenta tip, String naziv, String pib, String ime, String prezime,
+   private Klijent createKlijent(long id, TipKlijenta tip, String naziv, String pib, String ime, String prezime,
 			String adresa, String email, String fax, String telefon, String skraceni_naziv, String nadlezni_organ,
 			NaseljenoMesto prebivaliste, List<Racun> racuni, Delatnost delatnost, String jmbg) {
 	   
-	   return klijentRepository.save(new Klijent(tip, naziv, pib, ime, prezime, adresa, email, fax, telefon, skraceni_naziv, nadlezni_organ, prebivaliste, racuni, delatnost, jmbg));
+	   return klijentRepository.save(new Klijent(id, tip, naziv, pib, ime, prezime, adresa, email, fax, telefon, skraceni_naziv, nadlezni_organ, prebivaliste, racuni, delatnost, jmbg));
    }
 
    private Banka createBanka(String sifra_banke, String pib, String naziv, NaseljenoMesto naseljenoMesto){
@@ -229,9 +241,9 @@ public class StartData {
                 "+381112366658", "+381112366658", true, naseljenoMesto));
    }
    
-   private Sluzbenik ceateSluzbenik(String ime, String prezime) {
+   private Sluzbenik ceateSluzbenik(long id, String ime, String prezime) {
 	   
-	   return sluzbenikRepository.save(new Sluzbenik(ime, prezime));
+	   return sluzbenikRepository.save(new Sluzbenik(id, ime, prezime));
    }
 
    private void createRacun(String br, Klijent k, Banka b, Valuta v){

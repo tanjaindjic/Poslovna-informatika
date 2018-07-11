@@ -17,7 +17,7 @@ import com.poslovna.poslovna.model.enums.TipKorisnika;
 public class Korisnik {
 	
 	@Id
-	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
 	@Column(nullable = false, unique = true)
@@ -41,9 +41,8 @@ public class Korisnik {
 		
 	}
 
-	public Korisnik(long id, String korisnickoIme, String lozinka, Klijent klijent, Sluzbenik sluzbenik, TipKorisnika tip) {
+	public Korisnik(String korisnickoIme, String lozinka, Klijent klijent, Sluzbenik sluzbenik, TipKorisnika tip) {
 		super();
-		this.id = id;
 		this.korisnickoIme = korisnickoIme;
 		this.lozinka = lozinka;
 		this.klijent = klijent;
