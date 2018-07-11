@@ -77,4 +77,9 @@ public class RacunService {
 		//ovo izmeniti kad se promeni da metoda vraca samo 1 racun
 		return racunRepository.findByBrojRacuna(racunPrimaoca);
     }
+
+	public List<Racun> vratiRacune() {
+		// TODO Auto-generated method stub
+		return racunRepository.findAll();
+	}
 }

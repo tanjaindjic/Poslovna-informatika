@@ -1,0 +1,68 @@
+
+<div ng-init="initCenter()">
+    <div>
+    <br>
+    </div>
+    <div>
+        <span>
+           <!-- <img align="middle" style="display: inline-block; margin-left: auto; margin-right: auto;  width: 64px;  height: 64px;" src="assets/images/piggy-bank.png" >
+-->
+        <span  style="display: inline-block">
+            <p >Racun
+                <select ng-change="odabirRacuna(odabranRacun)"  ng-model="odabranRacun">
+                    <option ng-repeat="racun in racuni">{{racun.brojRacuna}}</option>
+                </select>
+            </p>
+            <p >Valuta: {{trenutniRacun.valuta.zvanicnaSifra}}</p>
+        </span>
+        <span>       </span>
+        <span style="display: inline-block">
+            <p>Raspoloziva sredstva: {{trenutnoStanje.novoStanje-rezervisanaSredstva}},00</p>
+            <p>Rezervisana sredstva: {{rezervisanaSredstva-0}},00 </p>
+        </span>
+        <span  style="display: inline-block; float:right">
+            <p >Izvod za racun u vremenskom intervalu(.pdf):</p>
+            <p>
+                od: <input type="date" ng-model='izvestaj.datumOd' ng-change='setMinDatumDo()'/>
+                do: <input type="date" ng-model='izvestaj.datumDo' min="{{minDatumDo}}"/></p>
+            <p ><button ng-click='skiniIzvestaj()' style="float:right"> skini pdf</button></p>
+        </span>
+        </span>
+        <br>     
+        <br>     
+        <br>     
+        <br>     
+        <br>     
+       
+    </div>
+    
+      <div>
+        <span>
+           <!-- <img align="middle" style="display: inline-block; margin-left: auto; margin-right: auto;  width: 64px;  height: 64px;" src="assets/images/piggy-bank.png" >
+-->
+        <span  style="display: inline-block">
+            <p >Banka
+                <select  ng-model="odabranaBanka">
+                    <option ng-repeat="banka in banke">{{banka.naziv}}</option>
+                </select>
+            </p>
+        </span>
+        <span>       </span>
+        <span style="display: inline-block">
+            <p>Naziv banke: {{odabranaBanka.naziv}}</p>
+            <p>pib: {{odabranaBanka.pib}}</p>
+            <p>adresa: {{odabranaBanka.adresa}}</p>
+            <p>telefon: {{odabranaBanka.telefon}}</p>
+            <p>faks: {{odabranaBanka.fax}}</p>
+            <p>email: {{odabranaBanka.email}}</p>
+            <p> {{odabranaBanka.web}}</p>
+        </span>
+        <span  style="display: inline-block; float:right">
+            <p >Izvestaj stanja na racunima(.pdf):</p>
+            <p ><button ng-click='skiniIzvestajBanka()' style="float:right"> skini pdf</button></p>
+        </span>
+        </span>
+        <br>     
+       
+    </div>
+</div>

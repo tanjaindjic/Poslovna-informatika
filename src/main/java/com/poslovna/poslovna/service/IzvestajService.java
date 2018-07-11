@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.mysql.jdbc.Connection;
 import com.poslovna.poslovna.dto.IzvodKlijentaDTO;
+import com.poslovna.poslovna.repository.BankaRepository;
 import com.poslovna.poslovna.repository.KlijentRepository;
 
 @Service
@@ -22,6 +23,9 @@ public class IzvestajService {
 	
 	@Autowired
     private KlijentRepository klijentRepo;
+	
+	@Autowired
+    private BankaRepository bankaRepo;
 	
 	public boolean getIzvodKlijenta(IzvodKlijentaDTO izvodDTO) {
 		HashMap<String, Object> params = new HashMap<>();
@@ -36,6 +40,23 @@ public class IzvestajService {
 			JasperReport jasperReport = JasperCompileManager.compileReport(path+"\\izvodKlijenta.jrxml");
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
 			JasperExportManager.exportReportToPdfFile(jasperPrint, "D:\\nalozi\\izvod_"+izvodDTO.getBrojRacuna()+".pdf");
+			return true;
+		}catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		return false;
+	}
+
+	public boolean getIzvodBanke(int id) {
+		HashMap<String, Object> params = new HashMap<>();
+		params.put("banka_id", id);
+	
+		try {
+			String path = System.getProperty("user.dir");
+			Connection con=(Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/poslovnaInformatika","root","root");
+			JasperReport jasperReport = JasperCompileManager.compileReport(path+"\\spisakRacuna.jrxml");
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
+			JasperExportManager.exportReportToPdfFile(jasperPrint, "D:\\nalozi\\izvod_"+bankaRepo.getOne(new Long(id)).getNaziv()+".pdf");
 			return true;
 		}catch (Exception ex) {
 				ex.printStackTrace();

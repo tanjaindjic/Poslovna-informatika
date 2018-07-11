@@ -16,7 +16,7 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
 
         $scope.initKlijent = function(){
             $scope.logovaniKorisnik = userService.parsirajToken();
-
+            $scope.izvestaji={};
             $http({
                 method: 'GET',
                 url: 'http://localhost:8096/klijent/'+$scope.logovaniKorisnik.id,

@@ -65,7 +65,7 @@ public class StartData {
 
     private int i ;
 
-    @PostConstruct
+ //   @PostConstruct
     private void init(){
         Drzava srbija = createDrzava(new ArrayList<NaseljenoMesto>(), "Srbija", "SRB");
         Drzava bosna = createDrzava(new ArrayList<NaseljenoMesto>(), "Bosna i Hercegovina", "BIH");

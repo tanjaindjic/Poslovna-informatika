@@ -37,6 +37,11 @@ mainModule.config(function($stateProvider, $urlRouterProvider) {
         url: '/upravljanjeRacunima',
         templateUrl : 'appParts/upravljanjeRacunimaComponent/upravljanjeRacunima.html',
         controller : 'upravljanjeRacunimaController'
+    })    
+    .state('izvestaji', {
+        url: '/izvestaji',
+        templateUrl : 'appParts/izvestajiComponent/izvestaji.html',
+        controller : 'izvestajiController'
     })
 
 });
