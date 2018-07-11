@@ -199,8 +199,9 @@ public class AnalitikaIzvodaService {
             //ima danasnje stanje samo azuriram
             Float trenutnoNaTeret = ds.getPrometNaTeret();
             ds.setPrometNaTeret(trenutnoNaTeret + nalogZaPrenos.getIznos());
-            ds.setPrethodnoStanje(ds.getNovoStanje());
-            ds.setNovoStanje(ds.getPrethodnoStanje()-nalogZaPrenos.getIznos());
+            //ds.setPrethodnoStanje(ds.getNovoStanje());
+            Float prethodno = ds.getNovoStanje();
+            ds.setNovoStanje(prethodno-nalogZaPrenos.getIznos());
             ds.getIzvodi().add(nalogZaPrenos);
             dnevnoStanjeService.updateDS(ds);
             racunService.saveRacun(saRacuna);

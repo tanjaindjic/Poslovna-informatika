@@ -67,16 +67,16 @@ public class DnevnoStanjeService {
 
     private void azurirajDnevnoStanje(AnalitikaIzvoda a, Racun r, DnevnoStanje poslednje) {
 
-        poslednje.setPrethodnoStanje(poslednje.getNovoStanje());
+        Float prethodno = poslednje.getNovoStanje();
         //u slucaju da obradjujem nalogodavca, njemu skidam pare
         if(a.getRacunNalogodavca().equals(r.getBrojRacuna())){
             Float trenutno = poslednje.getPrometNaTeret();
             poslednje.setPrometNaTeret(trenutno + a.getIznos());
-            poslednje.setNovoStanje(poslednje.getPrethodnoStanje()-a.getIznos());
+            poslednje.setNovoStanje(prethodno-a.getIznos());
         }else{ //u ovom slucaju je primalac i njemu dodajem pare
             Float trenutno = poslednje.getPrometUKorist();
             poslednje.setPrometUKorist(trenutno + a.getKonvertovaniIznos());
-            poslednje.setNovoStanje(poslednje.getPrethodnoStanje()+a.getKonvertovaniIznos());
+            poslednje.setNovoStanje(prethodno+a.getKonvertovaniIznos());
         }
         poslednje.getIzvodi().add(a);
         dnevnoStanjeRepository.save(poslednje);
