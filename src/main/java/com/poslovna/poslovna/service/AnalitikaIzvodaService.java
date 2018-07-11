@@ -180,11 +180,11 @@ public class AnalitikaIzvodaService {
 
         analitikaIzvodaRepository.save(a);
         //ovde pozivam da se prebace odmah sredstva ako je prenos unutar banke
-        if(!a.isMedjubankarski()){
+        if(!a.isMedjubankarski() || a.isHitno()){
             Date odbraniDatum = dto.getDatumPlacanja();
             Date danas = new Date(System.currentTimeMillis());
             //SAMO AKO DANAS ZELI DA SE IZVRSI INTERNO PREBACIVANJE ONDA, INACE CEKA KLIRING ZA ODABRANI DAN
-            if(danas.getYear()==odbraniDatum.getYear() && danas.getMonth()==odbraniDatum.getMonth() && danas.getDay()==odbraniDatum.getDay() )
+            if((danas.getYear()==odbraniDatum.getYear() && danas.getMonth()==odbraniDatum.getMonth() && danas.getDay()==odbraniDatum.getDay()) || a.isHitno())
                 prebaciSredstva(saRacuna, naRacun, a);
         }
         return a;
