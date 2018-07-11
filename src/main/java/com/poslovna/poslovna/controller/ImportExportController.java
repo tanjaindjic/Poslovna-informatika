@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.poslovna.poslovna.model.AnalitikaIzvoda;
+import com.poslovna.poslovna.repository.AnalitikaIzvodaRepository;
 import com.poslovna.poslovna.service.AnalitikaIzvodaService;
 import com.poslovna.poslovna.service.ImportExportService;
 
@@ -23,6 +24,7 @@ public class ImportExportController {
 	@Autowired
 	private AnalitikaIzvodaService analitikaIzvodaService;
 	
+	
 	@RequestMapping(value = "/exportAnalitikaIzvoda/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> exoprtAnalitikaIzvoda(@PathVariable long id){
 		
@@ -35,6 +37,18 @@ public class ImportExportController {
 		boolean retVal = importExportService.exoprtAnalitikaIzvoda(nalog);
 		
 		return new ResponseEntity<Boolean>(retVal, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/importAnalitikaIzvoda/{filepath}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<AnalitikaIzvoda> exoprtAnalitikaIzvoda(@PathVariable String filepath){
+		
+		AnalitikaIzvoda nalog = importExportService.importAnalitikaIzvoda(filepath);
+		
+		if(nalog == null) {
+			return new ResponseEntity<AnalitikaIzvoda>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<AnalitikaIzvoda>(nalog, HttpStatus.OK);
 	}
 	
 }

@@ -1,13 +1,17 @@
 package com.poslovna.poslovna.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @XmlRootElement(name="Drzava")
@@ -34,11 +38,12 @@ public class Drzava {
         return naseljenaMesta;
     }
 
+    @XmlTransient
     public void setNaseljenaMesta(List<NaseljenoMesto> naseljenaMesta) {
         this.naseljenaMesta = naseljenaMesta;
     }
 
-    @XmlElement
+    @XmlElement(name="Id")
     public long getId() {
         return id;
     }
@@ -47,7 +52,7 @@ public class Drzava {
         this.id = id;
     }
 
-    @XmlElement
+    @XmlElement(name="SifraDrzave")
     public String getSifra_drzave() {
         return sifra_drzave;
     }
@@ -56,7 +61,7 @@ public class Drzava {
         this.sifra_drzave = sifra_drzave;
     }
 
-    @XmlElement
+    @XmlElement(name="Naziv")
     public String getNaziv() {
         return naziv;
     }
