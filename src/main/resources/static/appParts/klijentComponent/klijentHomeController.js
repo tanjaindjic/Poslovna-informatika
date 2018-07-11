@@ -2,6 +2,10 @@ mainModule.controller('klijentHomeController', ['$scope', '$window', 'userServic
     function($scope, $window, userService, $location, $http){
 
         $scope.logovaniKorisnik = {};
+        $scope.oznakaBanke;
+        $scope.racunPt2;
+        $scope.racunPt3;
+
 
         $scope.initKlijent = function(){
             $scope.logovaniKorisnik = userService.parsirajToken();
@@ -33,6 +37,48 @@ mainModule.controller('klijentHomeController', ['$scope', '$window', 'userServic
             }else{
                  $window.location('/home');
             }
+        }
+
+        $scope.showDelete = function(id){
+            document.getElementById(id).style.visibility='visible';
+        }
+        $scope.cancelDelete = function(id){
+            document.getElementById(id).style.visibility='hidden';
+        }
+        $scope.deleteRacun = function(racun){
+            if($scope.oznakaBanke==null || $scope.oznakaBanke=="" || $scope.oznakaBanke.trim().length!=3){
+                alert("Racun primaoca nije ispravan.")
+                return;
+             }
+             if($scope.racunPt2==null || $scope.racunPt2=="" || $scope.racunPt2.trim().length<1 || $scope.racunPt2.trim().length>13){
+                alert("Racun primaoca nije ispravan.")
+                return;
+             }
+             if($scope.racunPt3==null || $scope.racunPt3=="" || $scope.racunPt3.trim().length!=2){
+                alert("Racun primaoca nije ispravan.")
+                return;
+             }
+
+            $scope.ceoRacun = $scope.oznakaBanke + $scope.racunPt2 + $scope.racunPt3;
+            if(!(/^\d+$/.test($scope.ceoRacun))){
+                alert("Racun primaoca se mora sastojati samo iz brojeva.")
+                return;
+            }
+
+            $http({
+                method: 'POST',
+                url: 'http://localhost:8096/racun/gasenje/'+$scope.ceoRacun,
+                headers: {'token' : $window.localStorage.getItem('token')},
+                data: racun
+            }).then(function successCallback(response) {
+
+                $scope.initKlijent();
+
+
+            }, function errorCallback(response) {
+                alert("Error occured check connection");
+
+            });
         }
     }
 ]);

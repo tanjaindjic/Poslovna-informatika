@@ -65,8 +65,17 @@ public class AnalitikaIzvodaService {
         return analitikaIzvodaRepository.findByRacunNalogodavca(brRacuna);
     }
 
+    public List<AnalitikaIzvoda> getEvidentiraniIzvodiPosaljioc(String brRacuna) {
+        return analitikaIzvodaRepository.findByRacunNalogodavcaAndStatus(brRacuna, Status.E);
+    }
+
+
     private List<AnalitikaIzvoda> getIzvodiPrimalac(String brRacuna) {
         return analitikaIzvodaRepository.findByRacunPrimaoca(brRacuna);
+    }
+
+    public List<AnalitikaIzvoda> getEvidentiraniIzvodiPrimalac(String brRacuna) {
+        return analitikaIzvodaRepository.findByRacunPrimaocaAndStatus(brRacuna, Status.E);
     }
     
     public AnalitikaIzvoda getOne(long id){

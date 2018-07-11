@@ -10,4 +10,5 @@ public interface AnalitikaIzvodaRepository extends JpaRepository<AnalitikaIzvoda
     List<AnalitikaIzvoda> findByRacunNalogodavca(String brRacuna);
     List<AnalitikaIzvoda> findByRacunNalogodavcaAndStatus(String brRacuna, Status status);
     List<AnalitikaIzvoda> findByRacunPrimaoca(String brRacuna);
+    List<AnalitikaIzvoda> findByRacunPrimaocaAndStatus(String brRacuna, Status status);
 }

@@ -1,7 +1,15 @@
 package com.poslovna.poslovna.controller;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
+import com.poslovna.poslovna.dto.AnalitikaIzvodaDTO;
+import com.poslovna.poslovna.exception.NedovoljnoSredstavaException;
+import com.poslovna.poslovna.exception.NemaNalogodavcaException;
+import com.poslovna.poslovna.exception.NemaRacunaException;
+import com.poslovna.poslovna.model.DnevnoStanje;
+import com.poslovna.poslovna.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,10 +26,6 @@ import com.poslovna.poslovna.dto.RacunDTO;
 import com.poslovna.poslovna.model.Klijent;
 import com.poslovna.poslovna.model.Racun;
 import com.poslovna.poslovna.model.Valuta;
-import com.poslovna.poslovna.service.BankaService;
-import com.poslovna.poslovna.service.KlijentService;
-import com.poslovna.poslovna.service.RacunService;
-import com.poslovna.poslovna.service.ValutaService;
 
 @RestController
 @RequestMapping(value="/racun")
@@ -32,6 +36,12 @@ public class RacunController {
     
     @Autowired
     private KlijentService klijentService;
+
+    @Autowired
+	private DnevnoStanjeService dnevnoStanjeService;
+
+    @Autowired
+	private AnalitikaIzvodaService analitikaIzvodaService;
     
     @Autowired
     private ValutaService valutaService;
@@ -96,4 +106,23 @@ public class RacunController {
     	
     	return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
+
+	@RequestMapping(value = "/gasenje/{brojRacunaZaPrenos}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void ugasi(@PathVariable String brojRacunaZaPrenos, @RequestBody Racun zaGasenje) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
+    	//kliring da se odradi za taj racun
+		dnevnoStanjeService.pojedinacniKliring(zaGasenje);
+		DnevnoStanje zadnje = Collections.max(zaGasenje.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
+		AnalitikaIzvodaDTO nalog = new AnalitikaIzvodaDTO();
+		nalog.setDatumPlacanja(new java.sql.Date(System.currentTimeMillis()));
+		nalog.setHitno(true);
+		nalog.setIznos(zadnje.getNovoStanje());
+		nalog.setKlijentId(klijentService.findKlijentByRacun(zaGasenje.getBrojRacuna()).getId());
+		nalog.setModelOdobrenja(97);
+		nalog.setModelZaduzenja(97);
+		nalog.setRacunNalogodavca(zaGasenje.getBrojRacuna());
+		nalog.setSvrhaPlacanja("Gasenje racuna - prenos sredstava");
+		nalog.setRacunPrimaoca(brojRacunaZaPrenos);
+		analitikaIzvodaService.createIzvod(nalog);
+
+	}
 }
