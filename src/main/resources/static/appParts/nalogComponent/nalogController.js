@@ -178,12 +178,12 @@ mainModule.controller('nalogController', ['$scope', '$window', 'userService','$l
                 headers: {'token' : $window.localStorage.getItem('token')},
                 data: data
             }).then(function successCallback(response) {
-
-                $location.path("/racuni")
+                alert(response.data)
+                if(response.data=="Nalog uspesno kreiran.")
+                    $location.path("/racuni")
 
             }, function errorCallback(response) {
-                alert("Nalog nije uspeo. Proverite raspoloziva sredstva.")
-                $location.path("/racuni")
+                alert(response.data)
             });
         }
     }

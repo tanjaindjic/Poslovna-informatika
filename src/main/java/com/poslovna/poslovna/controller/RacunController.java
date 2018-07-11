@@ -125,7 +125,6 @@ public class RacunController {
 		nalog.setRacunNalogodavca(zaGasenje.getBrojRacuna());
 		nalog.setSvrhaPlacanja("Gasenje racuna - prenos sredstava");
 		nalog.setRacunPrimaoca(brojRacunaZaPrenos);
-		AnalitikaIzvoda izvrsen = analitikaIzvodaService.createIzvod(nalog);
 		Racun update = racunService.findRacunByBroj(zaGasenje.getBrojRacuna());
 		update.setVazeci(false);
 		racunService.saveRacun(update);

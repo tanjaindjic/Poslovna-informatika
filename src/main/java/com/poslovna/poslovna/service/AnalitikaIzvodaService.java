@@ -85,7 +85,7 @@ public class AnalitikaIzvodaService {
     
     @SuppressWarnings("unchecked")
     @Transactional(readOnly = false, rollbackFor = Exception.class, propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
-    public AnalitikaIzvoda createIzvod(AnalitikaIzvodaDTO dto) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
+    public String createIzvod(AnalitikaIzvodaDTO dto) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
 
         AnalitikaIzvoda a = new AnalitikaIzvoda();
         Klijent nalogodavac = klijentService.getOne(dto.getKlijentId());
@@ -95,29 +95,29 @@ public class AnalitikaIzvodaService {
         if(nalogodavac==null){
             System.out.println("Nalogodavac nije nadjen u sistemu! linija 96");
             //throw new NemaNalogodavcaException("Nalogodavac nije nadjen u sistemu!");
-            return null;
+            return "Nalogodavac nije nadjen u sistemu.";
         }
         if(saRacuna==null){
             System.out.println("Racun nije nadjen u sistemu linija 100!");
             //throw new NemaRacunaException("Racun nije nadjen u sistemu!");
-            return null;
+            return "Racun nije nadjen u sistemu.";
 
         }
         if(naRacun!=null && !naRacun.isVazeci()){
             System.out.println("Racun nije aktivan! linija 104");
             //throw new NemaRacunaException("Racun nije aktivan!");
-            return null;
+            return "Racun primaoca nije aktivan.";
         }
         if(!saRacuna.isVazeci()){
             System.out.println("Racun nije aktivan! linija 108");
             //throw new NemaRacunaException("Racun nije aktivan!");
-            return null;
+            return "Racun nalogodavca nije aktivan.";
         }
         DnevnoStanje trenutno = Collections.max(saRacuna.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
         if(trenutno.getNovoStanje()-dto.getIznos()<0){
             System.out.println("Nedovoljno sredstava! linija 113");
             //throw new NedovoljnoSredstavaException("Nedovoljno sredstava!");
-            return null;
+            return "Nedovoljno sredstava.";
         }
         List<AnalitikaIzvoda> rezervisanaSredstva = analitikaIzvodaRepository.findByRacunNalogodavcaAndStatus(dto.getRacunNalogodavca(), Status.E);
         Float rezervisanoIznos = 0F;
@@ -127,7 +127,7 @@ public class AnalitikaIzvodaService {
         if(trenutno.getNovoStanje()-rezervisanoIznos-dto.getIznos()<0){
             System.out.println("Nedovoljno sredstava! linija 122");
             //throw new NedovoljnoSredstavaException("Nedovoljno sredstava!");
-            return null;
+            return "Nedovoljno sredstava.";
         }
 
         a.setNalogodavac(dto.getNalogodavac());
@@ -180,14 +180,14 @@ public class AnalitikaIzvodaService {
 
         analitikaIzvodaRepository.save(a);
         //ovde pozivam da se prebace odmah sredstva ako je prenos unutar banke
-        if(!a.isMedjubankarski()){
+        if(!a.isMedjubankarski() || a.isHitno()){
             Date odbraniDatum = dto.getDatumPlacanja();
             Date danas = new Date(System.currentTimeMillis());
             //SAMO AKO DANAS ZELI DA SE IZVRSI INTERNO PREBACIVANJE ONDA, INACE CEKA KLIRING ZA ODABRANI DAN
-            if(danas.getYear()==odbraniDatum.getYear() && danas.getMonth()==odbraniDatum.getMonth() && danas.getDay()==odbraniDatum.getDay() )
+            if((danas.getYear()==odbraniDatum.getYear() && danas.getMonth()==odbraniDatum.getMonth() && danas.getDay()==odbraniDatum.getDay()) || a.isHitno())
                 prebaciSredstva(saRacuna, naRacun, a);
         }
-        return a;
+        return "Nalog uspesno kreiran.";
     }
 
     public void prebaciSredstva(Racun saRacuna, Racun naRacun, AnalitikaIzvoda nalogZaPrenos){
@@ -199,8 +199,9 @@ public class AnalitikaIzvodaService {
             //ima danasnje stanje samo azuriram
             Float trenutnoNaTeret = ds.getPrometNaTeret();
             ds.setPrometNaTeret(trenutnoNaTeret + nalogZaPrenos.getIznos());
-            ds.setPrethodnoStanje(ds.getNovoStanje());
-            ds.setNovoStanje(ds.getPrethodnoStanje()-nalogZaPrenos.getIznos());
+            //ds.setPrethodnoStanje(ds.getNovoStanje());
+            Float prethodno = ds.getNovoStanje();
+            ds.setNovoStanje(prethodno-nalogZaPrenos.getIznos());
             ds.getIzvodi().add(nalogZaPrenos);
             dnevnoStanjeService.updateDS(ds);
             racunService.saveRacun(saRacuna);
@@ -228,8 +229,9 @@ public class AnalitikaIzvodaService {
             //ima danasnje stanje samo azuriram
             Float trenutnoUKorist = ds2.getPrometUKorist();
             ds2.setPrometUKorist(trenutnoUKorist + nalogZaPrenos.getKonvertovaniIznos());
-            ds2.setPrethodnoStanje(ds2.getNovoStanje());
-            ds2.setNovoStanje(ds2.getPrethodnoStanje()+nalogZaPrenos.getKonvertovaniIznos());
+            Float prethodno = ds2.getNovoStanje();
+            //ds2.setPrethodnoStanje(ds2.getNovoStanje());
+            ds2.setNovoStanje(prethodno+nalogZaPrenos.getKonvertovaniIznos());
             ds2.getIzvodi().add(nalogZaPrenos);
             dnevnoStanjeService.updateDS(ds2);
             racunService.saveRacun(naRacun);
