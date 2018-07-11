@@ -2,17 +2,29 @@ package com.poslovna.poslovna.model;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
+@XmlRootElement(name="Racun")
 public class Racun {
 
     @Id
@@ -61,6 +73,7 @@ public class Racun {
         this.dnevnaStanja = dnevnaStanja;
     }
 
+    @XmlElement(name = "Id")
     public long getId() {
         return id;
     }
@@ -69,6 +82,7 @@ public class Racun {
         this.id = id;
     }
 
+    @XmlElement(name = "BrojRacuna")
     public String getBrojRacuna() {
         return brojRacuna;
     }
@@ -77,6 +91,7 @@ public class Racun {
         this.brojRacuna = brojRacuna;
     }
 
+    @XmlElement(name = "DatumOtvaranja")
     public Date getDatumOtvaranja() {
         return datumOtvaranja;
     }
@@ -85,10 +100,12 @@ public class Racun {
         this.datumOtvaranja = datumOtvaranja;
     }
 
+   
     public boolean isVazeci() {
         return vazeci;
     }
 
+    @XmlTransient
     public void setVazeci(boolean vazeci) {
         this.vazeci = vazeci;
     }
@@ -97,6 +114,7 @@ public class Racun {
         return vlasnik;
     }
 
+    @XmlTransient
     public void setVlasnik(Klijent vlasnik) {
         this.vlasnik = vlasnik;
     }
@@ -105,6 +123,7 @@ public class Racun {
         return poslovnaBanka;
     }
 
+    @XmlTransient
     public void setPoslovnaBanka(Banka poslovnaBanka) {
         this.poslovnaBanka = poslovnaBanka;
     }
@@ -113,10 +132,12 @@ public class Racun {
         return ukidanje;
     }
 
+    @XmlTransient
     public void setUkidanje(List<Ukidanje> ukidanje) {
         this.ukidanje = ukidanje;
     }
 
+    @XmlElement(name = "Valuta")
     public Valuta getValuta() {
         return valuta;
     }
@@ -129,6 +150,7 @@ public class Racun {
         return dnevnaStanja;
     }
 
+    @XmlTransient
     public void setDnevnaStanja(List<DnevnoStanje> dnevnaStanja) {
         this.dnevnaStanja = dnevnaStanja;
     }

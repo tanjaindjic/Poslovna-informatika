@@ -15,7 +15,7 @@ import com.poslovna.poslovna.model.AnalitikaIzvoda;
 @Service
 public class ImportExportService {
 	
-	public boolean exoprtAnalitikaIzvoda(AnalitikaIzvoda nalog) {
+	public boolean exportObjectToXml(Object nalog, Class classType, long id) {
 		
 		try {
 			
@@ -26,10 +26,10 @@ public class ImportExportService {
 		    if (!dir.exists()) 
 		    	dir.mkdirs();
 			
-			JAXBContext jContext = JAXBContext.newInstance(AnalitikaIzvoda.class);
+			JAXBContext jContext = JAXBContext.newInstance(classType);
 			Marshaller marshaller = jContext.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			marshaller.marshal(nalog, new File(folderPath+"nalog_id"+nalog.getId()+"_"+uniquetime+".xml"));
+			marshaller.marshal(nalog, new File(folderPath+"nalog_id"+id+"_"+uniquetime+".xml"));
 			
 			return true;
 			

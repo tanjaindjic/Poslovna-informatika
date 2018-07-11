@@ -3,11 +3,15 @@ package com.poslovna.poslovna.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@XmlRootElement(name="DnevnoStanje")
 public class DnevnoStanje {
 
     @Id
@@ -38,10 +42,12 @@ public class DnevnoStanje {
         return id;
     }
 
+    @XmlTransient
     public void setId(long id) {
         this.id = id;
     }
 
+    @XmlElement(name = "DatumPrometa")
     public Date getDatumPrometa() {
         return datumPrometa;
     }
@@ -50,6 +56,7 @@ public class DnevnoStanje {
         this.datumPrometa = datumPrometa;
     }
 
+    @XmlElement(name = "PrethodnoStanje")
     public Float getPrethodnoStanje() {
         return prethodnoStanje;
     }
@@ -58,6 +65,7 @@ public class DnevnoStanje {
         this.prethodnoStanje = prethodnoStanje;
     }
 
+    @XmlElement(name = "PrometUKorist")
     public Float getPrometUKorist() {
         return prometUKorist;
     }
@@ -66,6 +74,7 @@ public class DnevnoStanje {
         this.prometUKorist = prometUKorist;
     }
 
+    @XmlElement(name = "PrometNaTeret")
     public Float getPrometNaTeret() {
         return prometNaTeret;
     }
@@ -74,6 +83,7 @@ public class DnevnoStanje {
         this.prometNaTeret = prometNaTeret;
     }
 
+    @XmlElement(name = "NovoStanje")
     public Float getNovoStanje() {
         return novoStanje;
     }
@@ -82,6 +92,7 @@ public class DnevnoStanje {
         this.novoStanje = novoStanje;
     }
 
+    @XmlElement(name = "Racun")
     public Racun getZaRacun() {
         return zaRacun;
     }
@@ -90,6 +101,7 @@ public class DnevnoStanje {
         this.zaRacun = zaRacun;
     }
 
+    @XmlElement(name = "Izvodi")
     public List<AnalitikaIzvoda> getIzvodi() {
         return izvodi;
     }

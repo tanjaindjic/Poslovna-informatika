@@ -1,5 +1,5 @@
-mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userService','$location', '$http','$timeout',
-    function($scope, $window, userService, $location, $http, $timeout){
+mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userService','$location', '$http','$timeout', 'exportService',
+    function($scope, $window, userService, $location, $http, $timeout, exportService){
 
         $scope.logovaniKorisnik = {};
         $scope.nalozi = [];
@@ -157,6 +157,38 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
                 }
             }
             $timeout(function(){ $scope.$apply(); }, 150);
+        }
+
+        $scope.eksportujIzvestaj = function(idIzvestaja){
+            console.log(idIzvestaja)
+            exportService.eksportujIzvestaj(idIzvestaja).then(
+                function (response){
+                    if(response.data == true){
+                        alert('Uspesno eksportovan izvestaj dnevnog stanja.');
+                    }else{
+                        alert('Nespesno eksportovan izvestaj dnevnog stanja, pokusajte kasnije');
+                    }
+                },
+                function (error){
+                    alert("Greska prilikom eksporta izvestaja dnevnog stanja.");
+                }
+            );
+        }
+
+        $scope.eksportujNalog = function(idNaloga){
+            
+            exportService.eksportujNalog(idNaloga).then(
+                function (response){
+                    if(response.data == true){
+                        alert('Uspesno eksportovan izabrani nalog.');
+                    }else{
+                        alert('Nespesno eksportovan izabrani nalog, pokusajte kasnije');
+                    }
+                },
+                function (error){
+                    alert("Greska prilikom eksporta naloga.");
+                }
+            );
         }
     }
 ]);
