@@ -25,13 +25,13 @@ public class KlijentService {
 
     
     public Klijent getKlijent(Long id) {
-        Korisnik k = korisnikRepository.findOne(id);
-        return klijentRepository.findOne(k.getKlijent().getId());
+        Korisnik k = korisnikRepository.findById(id).get();
+        return klijentRepository.findById(k.getKlijent().getId()).get();
     }
 
     public Klijent getKlijentPrekoKorisnikID(Long id) {
         
-        return klijentRepository.findOne(id.longValue());
+        return klijentRepository.findById(id.longValue()).get() ;
     }
  
     public Klijent getOne(long id) {

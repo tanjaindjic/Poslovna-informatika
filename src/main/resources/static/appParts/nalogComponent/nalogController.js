@@ -182,6 +182,7 @@ mainModule.controller('nalogController', ['$scope', '$window', 'userService','$l
                 $location.path("/racuni")
 
             }, function errorCallback(response) {
+                alert("Nalog nije uspeo. Proverite raspoloziva sredstva.")
                 $location.path("/racuni")
             });
         }

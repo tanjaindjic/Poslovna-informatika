@@ -32,7 +32,7 @@ public class AnalitikaIzvodaController {
     }
 
     @PostMapping
-    public String createIzvod(@RequestBody AnalitikaIzvodaDTO dto) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
+    public AnalitikaIzvoda createIzvod(@RequestBody AnalitikaIzvodaDTO dto) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
         return analitikaIzvodaService.createIzvod(dto);
     }
 }

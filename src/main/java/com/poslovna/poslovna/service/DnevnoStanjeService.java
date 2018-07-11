@@ -3,7 +3,9 @@ package com.poslovna.poslovna.service;
 import com.poslovna.poslovna.model.AnalitikaIzvoda;
 import com.poslovna.poslovna.model.DnevnoStanje;
 import com.poslovna.poslovna.model.Racun;
+import com.poslovna.poslovna.model.enums.Status;
 import com.poslovna.poslovna.repository.DnevnoStanjeRepository;
+import com.sun.org.apache.bcel.internal.generic.DNEG;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,39 +28,92 @@ public class DnevnoStanjeService {
     }
 
     public void kliring(){
-        for(Racun r: racunService.getAllRacuni()){
-            pojedinacniKliring(r);
+        for(AnalitikaIzvoda a: analitikaIzvodaService.getAllEvidentirani()){
+            pojedinacniKliring(a);
+            a.setStatus(Status.I);
+            analitikaIzvodaService.update(a);
         }
     }
 
-    public void pojedinacniKliring(Racun r) {
-        //analitike izvoda treba izmeniti status kad je obavljen prenos i kod primaoca i kod posiljaoca
-        List<AnalitikaIzvoda> prim = analitikaIzvodaService.getEvidentiraniIzvodiPrimalac(r.getBrojRacuna());
-        List<AnalitikaIzvoda> pos = analitikaIzvodaService.getEvidentiraniIzvodiPosaljioc(r.getBrojRacuna());
 
-        DnevnoStanje poslednje = Collections.max(r.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
+    public void pojedinacniKliring(AnalitikaIzvoda a) {
+        Racun r = racunService.findRacunByBroj(a.getRacunNalogodavca());
+        if(r!=null){
+            Date danas = new Date(System.currentTimeMillis());
+            DnevnoStanje poslednje = Collections.max(r.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
+            if(danas.getYear()==poslednje.getDatumPrometa().getYear() && danas.getMonth()==poslednje.getDatumPrometa().getMonth() && danas.getDay()==poslednje.getDatumPrometa().getDay())
+                azurirajDnevnoStanje(a, r, poslednje);
+            else kreirajDnevnoStanje(a, r, poslednje);
+
+        }
+        //proverim ako je primalac postoji azuriram kod njega, ako ne onda je to za narodnu banku
+        Racun primalac = racunService.findRacunByBroj(a.getRacunPrimaoca());
+        if(primalac!=null) {
+            Date danas = new Date(System.currentTimeMillis());
+            DnevnoStanje poslednje = Collections.max(primalac.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
+            if (danas.getYear() == poslednje.getDatumPrometa().getYear() && danas.getMonth() == poslednje.getDatumPrometa().getMonth() && danas.getDay() == poslednje.getDatumPrometa().getDay())
+                azurirajDnevnoStanje(a, primalac, poslednje);
+            else kreirajDnevnoStanje(a, primalac, poslednje);
+        }
+
+
+    }
+
+    private void azurirajDnevnoStanje(AnalitikaIzvoda a, Racun r, DnevnoStanje poslednje) {
+
+        poslednje.setPrethodnoStanje(poslednje.getNovoStanje());
+        //u slucaju da obradjujem nalogodavca, njemu skidam pare
+        if(a.getRacunNalogodavca().equals(r.getBrojRacuna())){
+            Float trenutno = poslednje.getPrometNaTeret();
+            poslednje.setPrometNaTeret(trenutno + a.getIznos());
+            poslednje.setNovoStanje(poslednje.getPrethodnoStanje()-a.getIznos());
+        }else{ //u ovom slucaju je primalac i njemu dodajem pare
+            Float trenutno = poslednje.getPrometUKorist();
+            poslednje.setPrometUKorist(trenutno + a.getKonvertovaniIznos());
+            poslednje.setNovoStanje(poslednje.getPrethodnoStanje()+a.getKonvertovaniIznos());
+        }
+        poslednje.getIzvodi().add(a);
+        dnevnoStanjeRepository.save(poslednje);
+    }
+
+    private void kreirajDnevnoStanje(AnalitikaIzvoda a, Racun r, DnevnoStanje poslednje) {
+        //kreiranje novog dnevnog stanja za racun nalogodavca i eventualno za racun primaoca ako je iz nase banke
         DnevnoStanje novo = new DnevnoStanje();
         novo.setDatumPrometa(new Date(System.currentTimeMillis()));
         novo.setPrethodnoStanje(poslednje.getNovoStanje());
-        Float uKorist = 0F;
-        for(AnalitikaIzvoda i : prim){
-            uKorist=+i.getKonvertovaniIznos();
+        //u slucaju da obradjujem nalogodavca, njemu skidam pare
+        if(a.getRacunNalogodavca().equals(r.getBrojRacuna())){
+            novo.setPrometUKorist(0F);
+            novo.setPrometNaTeret(a.getIznos());
+            novo.setNovoStanje(poslednje.getNovoStanje()-a.getIznos());
+        }else{ //u ovom slucaju je primalac i njemu dodajem pare
+            novo.setPrometUKorist(a.getKonvertovaniIznos());
+            novo.setPrometNaTeret(0F);
+            novo.setNovoStanje(poslednje.getNovoStanje()+a.getKonvertovaniIznos());
         }
-        novo.setPrometUKorist(uKorist);
-        Float naTeret = 0F;
-        for(AnalitikaIzvoda i : pos){
-            naTeret=+i.getKonvertovaniIznos();
-        }
-        novo.setPrometNaTeret(naTeret);
-        novo.setNovoStanje(poslednje.getNovoStanje()+uKorist-naTeret);
+
         novo.setIzvodi(new ArrayList<>());
+        novo.getIzvodi().add(a);
         novo.setZaRacun(r);
         dnevnoStanjeRepository.save(novo);
         r.getDnevnaStanja().add(novo);
         racunService.saveRacun(r);
+
     }
 
     public void updateDS(DnevnoStanje ds) {
         dnevnoStanjeRepository.save(ds);
+    }
+
+    public void kliringZaGasenje(Racun r) {
+        List<AnalitikaIzvoda> zaOdbijanje = analitikaIzvodaService.getEvidentiraniIzvodiPrimalac(r.getBrojRacuna());
+        zaOdbijanje.addAll(analitikaIzvodaService.getEvidentiraniIzvodiPosaljioc(r.getBrojRacuna()));
+        //ovde cu da obradim sve zahteve tako da prodje samo za racun za gasenje a da ostane u bazi neobradjeni kad se radi kliring za ostale racune
+        //jer kad se bude radio kliring i trebal da se prebaci na nepostojeci racun samo ce se to preskociti a bice odradjeno za onaj drugi racun
+        for(AnalitikaIzvoda a : zaOdbijanje){
+            a.setStatus(Status.O);
+            analitikaIzvodaService.update(a);
+        }
+
     }
 }

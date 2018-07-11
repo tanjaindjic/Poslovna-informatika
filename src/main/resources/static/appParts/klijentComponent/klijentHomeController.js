@@ -39,6 +39,24 @@ mainModule.controller('klijentHomeController', ['$scope', '$window', 'userServic
             }
         }
 
+        //SAMO ZA TEST
+        $scope.kliring = function(){
+             $http({
+                            method: 'GET',
+                            url: 'http://localhost:8096/dnevnoStanje/kliring',
+                            headers: {'token' : $window.localStorage.getItem('token')}
+
+                        }).then(function successCallback(response) {
+
+                            alert("PROSAO KLIRING")
+
+
+                        }, function errorCallback(response) {
+                            alert("Error occured check connection");
+
+                        });
+        }
+
         $scope.showDelete = function(id){
             document.getElementById(id).style.visibility='visible';
         }
@@ -46,28 +64,28 @@ mainModule.controller('klijentHomeController', ['$scope', '$window', 'userServic
             document.getElementById(id).style.visibility='hidden';
         }
         $scope.deleteRacun = function(racun){
-            if($scope.oznakaBanke==null || $scope.oznakaBanke=="" || $scope.oznakaBanke.trim().length!=3){
-                alert("Racun primaoca nije ispravan.")
+            if(this.oznakaBanke==null || this.oznakaBanke=="" || this.oznakaBanke.trim().length!=3){
+                alert("Racun primaoca nije ispravan.1 " + this.oznakaBanke)
                 return;
              }
-             if($scope.racunPt2==null || $scope.racunPt2=="" || $scope.racunPt2.trim().length<1 || $scope.racunPt2.trim().length>13){
-                alert("Racun primaoca nije ispravan.")
+             if(this.racunPt2==null || this.racunPt2=="" || this.racunPt2.trim().length<1 || this.racunPt2.trim().length>13){
+                alert("Racun primaoca nije ispravan.2" + this.racunPt2)
                 return;
              }
-             if($scope.racunPt3==null || $scope.racunPt3=="" || $scope.racunPt3.trim().length!=2){
-                alert("Racun primaoca nije ispravan.")
+             if(this.racunPt3==null || this.racunPt3=="" || this.racunPt3.trim().length!=2){
+                alert("Racun primaoca nije ispravan.3" + this.racunPt3)
                 return;
              }
 
-            $scope.ceoRacun = $scope.oznakaBanke + $scope.racunPt2 + $scope.racunPt3;
-            if(!(/^\d+$/.test($scope.ceoRacun))){
+            this.ceoRacun = this.oznakaBanke + this.racunPt2 + this.racunPt3;
+            if(!(/^\d+$/.test(this.ceoRacun))){
                 alert("Racun primaoca se mora sastojati samo iz brojeva.")
                 return;
             }
 
             $http({
                 method: 'POST',
-                url: 'http://localhost:8096/racun/gasenje/'+$scope.ceoRacun,
+                url: 'http://localhost:8096/racun/gasenje/'+this.ceoRacun,
                 headers: {'token' : $window.localStorage.getItem('token')},
                 data: racun
             }).then(function successCallback(response) {

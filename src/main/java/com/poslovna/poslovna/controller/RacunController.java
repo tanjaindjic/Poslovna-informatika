@@ -8,7 +8,8 @@ import com.poslovna.poslovna.dto.AnalitikaIzvodaDTO;
 import com.poslovna.poslovna.exception.NedovoljnoSredstavaException;
 import com.poslovna.poslovna.exception.NemaNalogodavcaException;
 import com.poslovna.poslovna.exception.NemaRacunaException;
-import com.poslovna.poslovna.model.DnevnoStanje;
+import com.poslovna.poslovna.model.*;
+import com.poslovna.poslovna.model.enums.Status;
 import com.poslovna.poslovna.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,9 +24,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.poslovna.poslovna.dto.RacunDTO;
-import com.poslovna.poslovna.model.Klijent;
-import com.poslovna.poslovna.model.Racun;
-import com.poslovna.poslovna.model.Valuta;
 
 @RestController
 @RequestMapping(value="/racun")
@@ -110,7 +108,7 @@ public class RacunController {
 	@RequestMapping(value = "/gasenje/{brojRacunaZaPrenos}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void ugasi(@PathVariable String brojRacunaZaPrenos, @RequestBody Racun zaGasenje) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
     	//kliring da se odradi za taj racun
-		dnevnoStanjeService.pojedinacniKliring(zaGasenje);
+		dnevnoStanjeService.kliringZaGasenje(zaGasenje);
 		DnevnoStanje zadnje = Collections.max(zaGasenje.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
 		AnalitikaIzvodaDTO nalog = new AnalitikaIzvodaDTO();
 		nalog.setDatumPlacanja(new java.sql.Date(System.currentTimeMillis()));
@@ -122,7 +120,10 @@ public class RacunController {
 		nalog.setRacunNalogodavca(zaGasenje.getBrojRacuna());
 		nalog.setSvrhaPlacanja("Gasenje racuna - prenos sredstava");
 		nalog.setRacunPrimaoca(brojRacunaZaPrenos);
-		analitikaIzvodaService.createIzvod(nalog);
+		AnalitikaIzvoda izvrsen = analitikaIzvodaService.createIzvod(nalog);
+		Racun update = racunService.findRacunByBroj(zaGasenje.getBrojRacuna());
+		update.setVazeci(false);
+		racunService.saveRacun(update);
 
 	}
 }

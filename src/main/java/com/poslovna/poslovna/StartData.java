@@ -144,13 +144,21 @@ public class StartData {
         createRacun("400000003", klijent4, vojvodjanskaBanka, euro);
 
         i = 0;
+        //MIKA upl ZIKA 1000din
         AnalitikaIzvoda a = createNalog(klijent, beograd, dinar, klijent2, 1000F);
+        //MIKA upl ANA 1500din
         AnalitikaIzvoda a2 = createNalog(klijent, beograd, dinar, klijent3, 1500F);
+        //ZIKA upl MARKO 500din
         AnalitikaIzvoda a3 = createNalog(klijent2, beograd, dinar, klijent4, 500F);
-        AnalitikaIzvoda a4 = createNalog(klijent4, beograd, dinar, klijent3, 81F);
+        //MARKO upl ANA 100din
+        AnalitikaIzvoda a4 = createNalog(klijent4, beograd, dinar, klijent3, 100F);
+        //MARKO upl MIKA 230din
         AnalitikaIzvoda a5 = createNalog(klijent4, beograd, dinar, klijent, 230F);
+        //MIKA upl ZIKA 150din
         AnalitikaIzvoda a6 = createNalog(klijent, beograd, dinar, klijent2, 150F);
+        //ANA upl MIKA 50din
         AnalitikaIzvoda a7 = createNalog(klijent3, beograd, dinar, klijent, 50F);
+        //ZIKA upl MARKO 9000din
         AnalitikaIzvoda a8 = createNalog(klijent2, beograd, dinar, klijent4, 9000F);
 
         klijentRepository.save(klijent);
