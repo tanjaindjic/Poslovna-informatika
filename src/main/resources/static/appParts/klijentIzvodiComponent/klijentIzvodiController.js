@@ -16,7 +16,7 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
 
         $scope.initKlijent = function(){
             $scope.logovaniKorisnik = userService.parsirajToken();
-
+            $scope.izvestaj={};
             $http({
                 method: 'GET',
                 url: 'http://localhost:8096/klijent/'+$scope.logovaniKorisnik.id,
@@ -140,7 +140,7 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
             $timeout(function(){ $scope.$apply(); }, 150);
 
         }
-
+        
         $scope.samoIsplate = function(){
             var checkBox = document.getElementById("ispl");
             if (checkBox.checked == true){
@@ -157,6 +157,41 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
                 }
             }
             $timeout(function(){ $scope.$apply(); }, 150);
+        }
+        $scope.skiniIzvestaj = function(){
+        	if($scope.izvestaj.datumOd=="" || $scope.izvestaj.datumDo=="" || $scope.odabranRacun==undefined)
+        		return;
+        	var data = {
+        			"datumOd" : $scope.izvestaj.datumOd,
+        			"datumDo" : $scope.izvestaj.datumDo,
+        			"username": $scope.logovaniKorisnik.korisnickoIme,
+        			"brojRacuna" : $scope.odabranRacun
+        	}
+        	$http({
+                method: 'POST',
+                url: 'http://localhost:8096/izvestaj/izvodKlijenta',
+                data: data,
+                headers: {'token' : $window.localStorage.getItem('token')}
+            }).then(function successCallback(response) {
+            	alert("Uspesno napravljen izvod. Smesten u 'D:\\nalozi'");
+            }, function errorCallback(response) {
+            	alert("Greska u zahtevu!");
+            });
+        	
+        }
+        $scope.setMinDatumDo = function(){
+        	var today = new Date($scope.izvestaj.datumOd);
+        	var dd = today.getDate();
+        	var mm = today.getMonth()+1; //January is 0!
+        	var yyyy = today.getFullYear();
+        	 if(dd<10){
+        	        dd='0'+dd
+        	    } 
+        	    if(mm<10){
+        	        mm='0'+mm
+        	    } 
+
+        	$scope.minDatumDo = yyyy+'-'+mm+'-'+dd; 
         }
     }
 ]);

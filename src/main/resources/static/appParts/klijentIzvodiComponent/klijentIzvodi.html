@@ -20,6 +20,13 @@
             <p>Raspoloziva sredstva: {{trenutnoStanje.novoStanje-rezervisanaSredstva}},00</p>
             <p>Rezervisana sredstva: {{rezervisanaSredstva-0}},00 </p>
         </span>
+        <span  style="display: inline-block; float:right">
+            <p >Izvod za racun u vremenskom intervalu(.pdf):</p>
+            <p>
+                od: <input type="date" ng-model='izvestaj.datumOd' ng-change='setMinDatumDo()'/>
+                do: <input type="date" ng-model='izvestaj.datumDo' min="{{minDatumDo}}"/></p>
+            <p ><button ng-click='skiniIzvestaj()' style="float:right"> skini pdf</button></p>
+        </span>
         </span>
         <br>
         <p><b>Promene stanja:</b></p>
