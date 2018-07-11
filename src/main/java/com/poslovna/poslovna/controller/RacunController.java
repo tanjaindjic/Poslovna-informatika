@@ -108,6 +108,11 @@ public class RacunController {
 	@RequestMapping(value = "/gasenje/{brojRacunaZaPrenos}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void ugasi(@PathVariable String brojRacunaZaPrenos, @RequestBody Racun zaGasenje) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
     	//kliring da se odradi za taj racun
+        Racun primalac = racunService.findRacunByBroj(brojRacunaZaPrenos);
+        if(primalac!=null && !primalac.isVazeci()){
+            System.out.println("nevazeci racun!");
+            return;
+        }
 		dnevnoStanjeService.kliringZaGasenje(zaGasenje);
 		DnevnoStanje zadnje = Collections.max(zaGasenje.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
 		AnalitikaIzvodaDTO nalog = new AnalitikaIzvodaDTO();

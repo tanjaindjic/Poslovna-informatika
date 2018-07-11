@@ -200,7 +200,7 @@ public class StartData {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.DAY_OF_MONTH, -i);
         AnalitikaIzvoda a = new AnalitikaIzvoda(nalogodavac.getIme() + nalogodavac.getPrezime(), "Uplata na racun",
-                primalac.getIme() + primalac.getPrezime(), new Date(now.getTimeInMillis()), null, new Date(now.getTimeInMillis()),
+                primalac.getIme() + primalac.getPrezime(), new Date(System.currentTimeMillis()), null, new Date(now.getTimeInMillis()),
                 nalogodavac.getRacuni().get(0).getBrojRacuna(), 97, "123-2050531-2", primalac.getRacuni().get(0).getBrojRacuna(), 97, false, iznos, 0, Status.E, VrstaPlacanja.GOTOVINSKO, false, mesto, valuta, iznos, primalac.getRacuni().get(0).getValuta());
         a.setDatumPrijema(new Date(now.getTimeInMillis()));
         analitikaIzvodaRepository.save(a);

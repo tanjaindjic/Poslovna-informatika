@@ -29,9 +29,15 @@ public class DnevnoStanjeService {
 
     public void kliring(){
         for(AnalitikaIzvoda a: analitikaIzvodaService.getAllEvidentirani()){
-            pojedinacniKliring(a);
-            a.setStatus(Status.I);
-            analitikaIzvodaService.update(a);
+            Date danas = new Date(System.currentTimeMillis());
+            //ako je klijent stavio da se pare prenesu negde u buducnosti onda to sad ne diramo, stoje kao rezervisana sredstva
+            if(a.getDatumPlacanja().getYear()<=danas.getYear() && a.getDatumPlacanja().getMonth()<=danas.getMonth() && a.getDatumPlacanja().getDay()<=danas.getDay()){
+                pojedinacniKliring(a);
+                a.setDatumObrade(danas);
+                a.setStatus(Status.I);
+                analitikaIzvodaService.update(a);
+            }
+
         }
     }
 
