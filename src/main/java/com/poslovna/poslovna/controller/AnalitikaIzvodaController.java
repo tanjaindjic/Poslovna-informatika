@@ -36,4 +36,8 @@ public class AnalitikaIzvodaController {
     public String createIzvod(@RequestBody AnalitikaIzvodaDTO dto) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
         return analitikaIzvodaService.createIzvod(dto);
     }
+    @PostMapping(value = "/uplata", produces = MediaType.TEXT_PLAIN_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String createUplata(@RequestBody AnalitikaIzvodaDTO dto) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
+        return analitikaIzvodaService.createUplata(dto);
+    }
 }

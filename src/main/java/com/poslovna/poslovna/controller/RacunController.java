@@ -118,6 +118,15 @@ public class RacunController {
     	
     	return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
+	@RequestMapping(value = "/brojRacuna/{brojRacuna}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Klijent> vratiVlasnika1(@PathVariable String brojRacuna){
+    	Klijent k = klijentService.findKlijentByRacun(brojRacuna);
+		if(k == null) {
+			return new ResponseEntity<Klijent>(new Klijent(), HttpStatus.BAD_REQUEST);
+		}
+    	
+    	return new ResponseEntity<Klijent>(k, HttpStatus.OK);
+    }
 
 	@RequestMapping(value = "/gasenje/{brojRacunaZaPrenos}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void ugasi(@PathVariable String brojRacunaZaPrenos, @RequestBody Racun zaGasenje) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
