@@ -511,4 +511,9 @@ public class AnalitikaIzvodaService {
 
 
 	}
+	
+	public List<AnalitikaIzvoda> findAnalitikeForRacun(String brojRacuna){
+		
+		return analitikaIzvodaRepository.findByRacunNalogodavcaOrRacunPrimaoca(brojRacuna, brojRacuna);
+	}
 }

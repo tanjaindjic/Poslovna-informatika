@@ -36,7 +36,7 @@ public class IzvestajService {
 		System.out.println(izvodDTO.getUsername()+"--"+izvodDTO.getDatumOd()+"--"+izvodDTO.getDatumDo()+"--"+izvodDTO.getBrojRacuna());
 		try {
 			String path = System.getProperty("user.dir");
-			Connection con=(Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/poslovnaInformatika","root","root");
+			Connection con=(Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/poslovnaInformatika","mjok","hangalamangala");
 			JasperReport jasperReport = JasperCompileManager.compileReport(path+"\\izvodKlijenta.jrxml");
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
 			JasperExportManager.exportReportToPdfFile(jasperPrint, "D:\\nalozi\\izvod_"+izvodDTO.getBrojRacuna()+".pdf");
@@ -53,7 +53,7 @@ public class IzvestajService {
 	
 		try {
 			String path = System.getProperty("user.dir");
-			Connection con=(Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/poslovnaInformatika","root","root");
+			Connection con=(Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/poslovnaInformatika", "mjok","hangalamangala");
 			JasperReport jasperReport = JasperCompileManager.compileReport(path+"\\spisakRacuna.jrxml");
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
 			JasperExportManager.exportReportToPdfFile(jasperPrint, "D:\\nalozi\\izvod_"+bankaRepo.getOne(id).getNaziv()+".pdf");

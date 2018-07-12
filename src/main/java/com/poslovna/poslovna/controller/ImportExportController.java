@@ -1,5 +1,7 @@
 package com.poslovna.poslovna.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.poslovna.poslovna.dto.AnalitikaIzvodaDTO;
+import com.poslovna.poslovna.dto.IzvodKlijentaDTO;
+import com.poslovna.poslovna.exportBeans.AnalitikaIzvodaExport;
 import com.poslovna.poslovna.model.AnalitikaIzvoda;
 import com.poslovna.poslovna.model.DnevnoStanje;
 import com.poslovna.poslovna.model.Racun;
@@ -88,6 +91,24 @@ public class ImportExportController {
 		}
 		
 		boolean retVal = importExportService.exportObjectToXml(dnevnoStanje, DnevnoStanje.class, "dnevno_"+dnevnoStanje.getId());
+		
+		return new ResponseEntity<Boolean>(retVal, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/exportZaDatume", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,  produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> exoprtZaDatume(@RequestBody IzvodKlijentaDTO parametri){
+		
+		Racun racun = racunService.findRacunByBroj(parametri.getBrojRacuna());
+		
+		if(racun == null) {
+			new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		List<AnalitikaIzvoda> analitike = analitikaIzvodaService.findAnalitikeForRacun(racun.getBrojRacuna());
+		
+		AnalitikaIzvodaExport zaExport = new AnalitikaIzvodaExport(parametri.getBrojRacuna(), parametri.getDatumOd(), parametri.getDatumDo(), analitike);
+		
+		boolean retVal = importExportService.exportObjectToXml(zaExport, AnalitikaIzvodaExport.class, "racun_"+racun.getBrojRacuna());
 		
 		return new ResponseEntity<Boolean>(retVal, HttpStatus.OK);
 	}

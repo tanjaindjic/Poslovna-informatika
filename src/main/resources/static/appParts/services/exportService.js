@@ -37,5 +37,23 @@ mainModule.service('exportService', [ '$http', '$window','$localStorage',
             return $http(req);
         }
 
+        this.eksportujZaDatume = function(datumOd, datumDo, racun){
+
+            var theData = {
+                "datumOd" : datumOd,
+                "datumDo" : datumDo,
+                "username": "",
+                "brojRacuna" : racun
+            }
+
+            var req = {
+                method: 'POST',
+                url: rootUrl+'impexp/exportZaDatume',
+                data: theData,
+                headers: {'token' : $window.localStorage.getItem('token')}
+            }
+            return $http(req);
+        }
+
     }
 ]);

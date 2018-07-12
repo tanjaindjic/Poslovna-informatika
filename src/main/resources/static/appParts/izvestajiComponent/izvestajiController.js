@@ -1,5 +1,5 @@
-mainModule.controller('izvestajiController', ['$scope', '$window','$location', '$http','$timeout', 'userService',
-      function($scope, $window, $location, $http, $timeout, userService){
+mainModule.controller('izvestajiController', ['$scope', '$window','$location', '$http','$timeout', 'userService', 'exportService',
+      function($scope, $window, $location, $http, $timeout, userService, exportService){
 
         $scope.logovaniKorisnik = {};
         $scope.odabranRacun;
@@ -148,6 +148,21 @@ mainModule.controller('izvestajiController', ['$scope', '$window','$location', '
         	    } 
 
         	$scope.minDatumDo = yyyy+'-'+mm+'-'+dd; 
+        }
+
+        $scope.izvestajXml = function(){
+
+        	if($scope.izvestaj.datumOd == "" || $scope.izvestaj.datumDo == "" || $scope.odabranRacun == undefined)
+                return;
+            
+        	exportService.eksportujZaDatume($scope.izvestaj.datumOd, $scope.izvestaj.datumDo, $scope.odabranRacun).then(
+                function(response){
+                    alert("Vas izvestaj je uspesno exportovan u .xml format.")
+                },
+                function(error){
+                    alert("Greska prilikom exporta izvestaja u .xml format.")
+                }
+            );
         }
 
         

@@ -11,6 +11,8 @@ import com.poslovna.poslovna.model.AnalitikaIzvoda;
 @XmlRootElement(name="IzvodKlijenta")
 public class AnalitikaIzvodaExport {
 
+	private String brojRacuna;
+	
 	private Date pocetniDatum;
 	
 	private Date krajnjiDatum;
@@ -21,8 +23,9 @@ public class AnalitikaIzvodaExport {
 		
 	}
 
-	public AnalitikaIzvodaExport(Date pocetniDatum, Date krajnjiDatum, List<AnalitikaIzvoda> analitikeIzvoda) {
+	public AnalitikaIzvodaExport(String brojRacuna, Date pocetniDatum, Date krajnjiDatum, List<AnalitikaIzvoda> analitikeIzvoda) {
 		super();
+		this.brojRacuna = brojRacuna;
 		this.pocetniDatum = pocetniDatum;
 		this.krajnjiDatum = krajnjiDatum;
 		this.analitikeIzvoda = analitikeIzvoda;
@@ -53,6 +56,15 @@ public class AnalitikaIzvodaExport {
 
 	public void setAnalitikeIzvoda(List<AnalitikaIzvoda> analitikeIzvoda) {
 		this.analitikeIzvoda = analitikeIzvoda;
+	}
+
+	@XmlElement(name = "BrojRacuna")
+	public String getBrojRacuna() {
+		return brojRacuna;
+	}
+
+	public void setBrojRacuna(String brojRacuna) {
+		this.brojRacuna = brojRacuna;
 	}
 	
 	
