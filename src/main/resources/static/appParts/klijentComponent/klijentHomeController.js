@@ -94,7 +94,7 @@ mainModule.controller('klijentHomeController', ['$scope', '$window', 'userServic
 
 
             }, function errorCallback(response) {
-                alert("Error occured check connection");
+                alert(response.data.message)
 
             });
         }

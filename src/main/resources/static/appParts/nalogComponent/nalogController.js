@@ -154,6 +154,11 @@ mainModule.controller('nalogController', ['$scope', '$window', 'userService','$l
                 return;
             }
 
+            if(!(/^\d+$/.test($scope.modelOdobrenja))){
+                alert("Model odobrenja se mora sastojati samo iz brojeva.")
+                return;
+            }
+
 
 
             var data = {
@@ -170,7 +175,7 @@ mainModule.controller('nalogController', ['$scope', '$window', 'userService','$l
                 "iznos": $scope.iznos,
                 "klijentId": $scope.klijent.id
             };
-            console.log("datum: " + $scope.date)
+            console.log("data: " + data)
 
             $http({
                 method: 'POST',
@@ -183,6 +188,7 @@ mainModule.controller('nalogController', ['$scope', '$window', 'userService','$l
                     $location.path("/racuni")
 
             }, function errorCallback(response) {
+                console.log(response)
                 alert(response.data)
             });
         }
