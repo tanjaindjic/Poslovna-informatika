@@ -195,12 +195,12 @@
                                 <table style="width: 100%; border-collapse: collapse" cellpadding="3">
                                     <tbody><tr>
                                         <td>
-                                            <span>Naziv isplatioca</span>
+                                            <span>Platilac</span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <textarea ng-model="isplata.nazivUplatioca" rows="3" cols="40" style="width: 340px"></textarea>
+                                            <textarea ng-model="isplata.tekst" rows="3" cols="40" style="width: 340px" disabled></textarea>
                                         </td>
                                     </tr>
                                     <tr>
@@ -210,10 +210,18 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <textarea ng-model="isplata.svrhaPlacanja" rows="3" cols="40" style="width: 340px">na zahtev klijenta</textarea>
+                                            <textarea ng-model="isplata.svrhaIsplate" rows="3" cols="40" style="width: 340px">na zahtev klijenta</textarea>
+                                        </td>
+                                    </tr><tr>
+                                        <td>
+                                            <span>Primalac</span>
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td>
+                                            <textarea ng-model="isplata.primalac" rows="3" cols="40" style="width: 340px"></textarea>
+                                        </td>
+                                    </tr>
                                     </tbody></table>
                             </td>
                             <td style="width: 10px">&nbsp;</td>
@@ -262,7 +270,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="5" style="padding-top: 10px">
-                                            <span>Sa racuna</span>
+                                            <span>Racun platioca</span>
                                         </td>
                                     </tr>
                                     <tr>
