@@ -1,0 +1,29 @@
+<div class="row gap-top-md" ng-init="initUpravljanjeRacunima()">
+
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+        
+        <div class="pozadina-plava card card-block bg-faded">
+            
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="naslov-zuti-centar">Izberite .xml file za import</h3>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <span class="btn btn-info btn-file">
+                            Browse&hellip; <input id="f1" type="file" accept=".xml" single onchange="angular.element(this).scope().setFile(this)" />
+                        </span>
+                    </span>
+                    <input type="text" class="form-control" readonly>
+                </div>
+
+                <div class="top-bottomn-margin-xs">
+                    <button type="button" class="logregBtn btn btn-md btn-info col-lg-12" name="importDugme" ng-disabled="putanja.length == 0" ng-click="importuj()" >Importuj</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

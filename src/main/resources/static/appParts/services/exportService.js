@@ -23,7 +23,19 @@ mainModule.service('exportService', [ '$http', '$window','$localStorage',
             return $http(req);
         }
 
-        
+        this.importujNalog = function(putanja){
+
+            var req = {
+                method: 'POST',
+                url: rootUrl+'impexp/importAnalitikaIzvoda',
+                data: putanja,
+                headers: {
+                    'token' : $window.localStorage.getItem('token'), 
+                    'Content-Type': 'text/plain'
+                }
+            }
+            return $http(req);
+        }
 
     }
 ]);

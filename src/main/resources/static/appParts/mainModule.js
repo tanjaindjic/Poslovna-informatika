@@ -43,5 +43,10 @@ mainModule.config(function($stateProvider, $urlRouterProvider) {
         templateUrl : 'appParts/izvestajiComponent/izvestaji.html',
         controller : 'izvestajiController'
     })
+    .state('importNaloga', {
+        url: '/importNaloga',
+        templateUrl : 'appParts/importComponent/importComponent.html',
+        controller : 'importController'
+    })
 
 });

@@ -24,4 +24,8 @@ public class BankaService {
 		return bankaReposiotry.findAll();
 	}
 	
+	public Banka getOurBank() {
+		
+		return bankaReposiotry.findByBanka(true).get(0);
+	}
 }
