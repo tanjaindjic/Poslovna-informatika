@@ -65,7 +65,7 @@ public class StartData {
 
     private int i ;
 
- //   @PostConstruct
+//    @PostConstruct
     private void init(){
         Drzava srbija = createDrzava(new ArrayList<NaseljenoMesto>(), "Srbija", "SRB");
         Drzava bosna = createDrzava(new ArrayList<NaseljenoMesto>(), "Bosna i Hercegovina", "BIH");
@@ -117,6 +117,7 @@ public class StartData {
         Valuta euro  = createValulta("EUR", "Evro", false, null);
 
         KursnaLista k = createKursnaLista(srpskaBanka);
+        createKursnaLista(vojvodjanskaBanka);
 
         k.getKursevi().add(createKursUValuti(dinar, dinar, 1F, k));
         k.getKursevi().add(createKursUValuti(euro, euro, 1F, k));

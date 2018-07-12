@@ -21,11 +21,15 @@
             <p>Rezervisana sredstva: {{rezervisanaSredstva-0  | number:0}}.00 </p>
         </span>
         <span  style="display: inline-block; float:right">
-            <p >Izvod za racun u vremenskom intervalu(.pdf):</p>
+            <p >Izvod za racun u vremenskom intervalu:</p>
             <p>
-                od: <input type="date" ng-model='izvestaj.datumOd' ng-change='setMinDatumDo()'/>
-                do: <input type="date" ng-model='izvestaj.datumDo' min="{{minDatumDo}}"/></p>
-            <p ><button ng-click='skiniIzvestaj()' style="float:right"> skini pdf</button></p>
+                Od: <input type="date" ng-model='izvestaj.datumOd' ng-change='setMinDatumDo()'/>
+                 Do: <input type="date" ng-model='izvestaj.datumDo' min="{{minDatumDo}}"/>
+                <button style="display:inline-block; padding: 0;margin-bottom: 0; margin-top:-5px; overflow:hidden; float:right; border: none; margin-bottom: 5px; background: none;" ng-click='skiniIzvestaj()'>
+                    <img class="clearDelete" src="../../../assets/images/pdf.png" width="40" height="40" title="Skini pdf" alt="Skini pdf" />
+                </button>
+                </p>
+
         </span>
         </span>
         <br>
