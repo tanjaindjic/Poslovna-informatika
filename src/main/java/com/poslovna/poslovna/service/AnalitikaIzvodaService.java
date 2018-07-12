@@ -4,6 +4,7 @@ import com.poslovna.poslovna.dto.AnalitikaIzvodaDTO;
 import com.poslovna.poslovna.exception.NedovoljnoSredstavaException;
 import com.poslovna.poslovna.exception.NemaNalogodavcaException;
 import com.poslovna.poslovna.exception.NemaRacunaException;
+import com.poslovna.poslovna.exception.NevalidanIznosNovca;
 import com.poslovna.poslovna.model.*;
 import com.poslovna.poslovna.model.enums.Status;
 import com.poslovna.poslovna.model.enums.VrstaPlacanja;
@@ -86,7 +87,7 @@ public class AnalitikaIzvodaService {
     
     @SuppressWarnings("unchecked")
     @Transactional(readOnly = false, rollbackFor = Exception.class, propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
-    public String createIzvod(AnalitikaIzvodaDTO dto) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
+    public String createIzvod(AnalitikaIzvodaDTO dto) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException, NevalidanIznosNovca {
 
         AnalitikaIzvoda a = new AnalitikaIzvoda();
         Klijent nalogodavac = klijentService.getOne(dto.getKlijentId());
@@ -108,6 +109,9 @@ public class AnalitikaIzvodaService {
         if(!saRacuna.isVazeci()) {
             throw new NemaRacunaException("Racun nije aktivan!");
         }
+
+        if(dto.getIznos()<=0)
+            throw new NevalidanIznosNovca("Iznos nije validan!");
         
         DnevnoStanje trenutno = Collections.max(saRacuna.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
         if(trenutno.getNovoStanje()-dto.getIznos()<0){
@@ -124,6 +128,8 @@ public class AnalitikaIzvodaService {
         if(trenutno.getNovoStanje()-rezervisanoIznos-dto.getIznos()<0){
             throw new NedovoljnoSredstavaException("Nedovoljno sredstava!");
         }
+
+
 
         a.setNalogodavac(dto.getNalogodavac());
         a.setSvrhaPlacanja(dto.getSvrhaPlacanja());

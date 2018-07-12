@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import com.poslovna.poslovna.exception.NevalidanIznosNovca;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -129,28 +130,8 @@ public class RacunController {
     }
 
 	@RequestMapping(value = "/gasenje/{brojRacunaZaPrenos}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void ugasi(@PathVariable String brojRacunaZaPrenos, @RequestBody Racun zaGasenje) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
+	public void ugasi(@PathVariable String brojRacunaZaPrenos, @RequestBody Racun zaGasenje) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException, NevalidanIznosNovca {
     	//kliring da se odradi za taj racun
-        Racun primalac = racunService.findRacunByBroj(brojRacunaZaPrenos);
-        if(primalac!=null && !primalac.isVazeci()){
-            System.out.println("nevazeci racun!");
-            return;
-        }
-		dnevnoStanjeService.kliringZaGasenje(zaGasenje);
-		DnevnoStanje zadnje = Collections.max(zaGasenje.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
-		AnalitikaIzvodaDTO nalog = new AnalitikaIzvodaDTO();
-		nalog.setDatumPlacanja(new java.sql.Date(System.currentTimeMillis()));
-		nalog.setHitno(true);
-		nalog.setIznos(zadnje.getNovoStanje());
-		nalog.setKlijentId(klijentService.findKlijentByRacun(zaGasenje.getBrojRacuna()).getId());
-		nalog.setModelOdobrenja(97);
-		nalog.setModelZaduzenja(97);
-		nalog.setRacunNalogodavca(zaGasenje.getBrojRacuna());
-		nalog.setSvrhaPlacanja("Gasenje racuna - prenos sredstava");
-		nalog.setRacunPrimaoca(brojRacunaZaPrenos);
-		Racun update = racunService.findRacunByBroj(zaGasenje.getBrojRacuna());
-		update.setVazeci(false);
-		racunService.saveRacun(update);
-
+       dnevnoStanjeService.kliringZaGasenje(zaGasenje, brojRacunaZaPrenos);
 	}
 }
