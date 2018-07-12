@@ -317,4 +317,5 @@ public class AnalitikaIzvoda {
     public void setDatumPlacanja(Date datumPlacanja) {
         this.datumPlacanja = datumPlacanja;
     }
+    
 }

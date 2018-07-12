@@ -34,6 +34,8 @@
 	<script type="text/javascript" src="appParts/kreirajRacunComponent/kreirajRacunController.js"></script>
 	<script type="text/javascript" src="appParts/nalogComponent/nalogController.js"></script>
 	<script type="text/javascript" src="appParts/upravljanjeRacunimaComponent/upravljanjeRacunimaController.js"></script>
+	<script type="text/javascript" src="appParts/importComponent/importController.js"></script>
+	<script type="text/javascript" src="appParts/izvestajiComponent/izvestajiController.js"></script>
 
 </head>
 <body>
@@ -73,9 +75,10 @@
 					</a>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" id="dropdownCombo">
 						<a class="dropdown-item" ui-sref="klijent">Moj profil</a>
-						<a class="dropdown-item" >Izvestaji</a>
+						<a class="dropdown-item" ui-sref="izvestaji">Izvestaji</a>
 						<a class="dropdown-item" ui-sref="noviRacun">Otvori novi racun</a>
 						<a class="dropdown-item" ui-sref="upravljanjeRacunima">Upravljanje racunima</a>
+						<a class="dropdown-item" ui-sref="importNaloga">Import naloga</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" ng-click="odjaviSe()">Odjavite se</a>
 					</div>

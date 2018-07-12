@@ -34,6 +34,15 @@ public class AnalitikaIzvodaController {
 
     @PostMapping(produces = MediaType.TEXT_PLAIN_VALUE)
     public String createIzvod(@RequestBody AnalitikaIzvodaDTO dto) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
-        return analitikaIzvodaService.createIzvod(dto);
+        
+    	String retVal = "Vasa uplata je uspesno zabelezena.";
+    	
+    	try {
+    		analitikaIzvodaService.createIzvod(dto);
+    	}catch(Exception e) {
+    		retVal = e.getMessage();
+    	}
+    	
+    	return retVal;
     }
 }

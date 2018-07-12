@@ -18,6 +18,8 @@ public class DnevnoStanje {
     @GeneratedValue
     private long id;
 
+    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date datumPrometa;
 
     private Float prethodnoStanje;
@@ -37,8 +39,19 @@ public class DnevnoStanje {
 
     public DnevnoStanje() {
     }
+    
+    public DnevnoStanje(Date datumPrometa, Float prethodnoStanje, Float prometUKorist, Float prometNaTeret,
+			Float novoStanje, Racun zaRacun) {
+		super();
+		this.datumPrometa = datumPrometa;
+		this.prethodnoStanje = prethodnoStanje;
+		this.prometUKorist = prometUKorist;
+		this.prometNaTeret = prometNaTeret;
+		this.novoStanje = novoStanje;
+		this.zaRacun = zaRacun;
+	}
 
-    public long getId() {
+	public long getId() {
         return id;
     }
 

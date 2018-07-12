@@ -93,41 +93,35 @@ public class AnalitikaIzvodaService {
         Racun naRacun = racunService.findRacunByBroj(dto.getRacunPrimaoca());
 
         if(nalogodavac==null){
-            System.out.println("Nalogodavac nije nadjen u sistemu! linija 96");
-            //throw new NemaNalogodavcaException("Nalogodavac nije nadjen u sistemu!");
-            return "Nalogodavac nije nadjen u sistemu.";
+            throw new NemaNalogodavcaException("Nalogodavac nije nadjen u sistemu!");
         }
+        
         if(saRacuna==null){
-            System.out.println("Racun nije nadjen u sistemu linija 100!");
-            //throw new NemaRacunaException("Racun nije nadjen u sistemu!");
-            return "Racun nije nadjen u sistemu.";
-
+            throw new NemaRacunaException("Racun nije nadjen u sistemu!");
         }
+        
         if(naRacun!=null && !naRacun.isVazeci()){
-            System.out.println("Racun nije aktivan! linija 104");
-            //throw new NemaRacunaException("Racun nije aktivan!");
-            return "Racun primaoca nije aktivan.";
+            throw new NemaRacunaException("Racun nije aktivan!");
         }
-        if(!saRacuna.isVazeci()){
-            System.out.println("Racun nije aktivan! linija 108");
-            //throw new NemaRacunaException("Racun nije aktivan!");
-            return "Racun nalogodavca nije aktivan.";
+        
+        if(!saRacuna.isVazeci()) {
+            throw new NemaRacunaException("Racun nije aktivan!");
         }
+        
         DnevnoStanje trenutno = Collections.max(saRacuna.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
         if(trenutno.getNovoStanje()-dto.getIznos()<0){
             System.out.println("Nedovoljno sredstava! linija 113");
-            //throw new NedovoljnoSredstavaException("Nedovoljno sredstava!");
-            return "Nedovoljno sredstava.";
+            throw new NedovoljnoSredstavaException("Nedovoljno sredstava!");
         }
+        
         List<AnalitikaIzvoda> rezervisanaSredstva = analitikaIzvodaRepository.findByRacunNalogodavcaAndStatus(dto.getRacunNalogodavca(), Status.E);
         Float rezervisanoIznos = 0F;
         for(AnalitikaIzvoda aiz: rezervisanaSredstva)
             rezervisanoIznos+=aiz.getIznos();
         System.out.println("Rezervisano: " + rezervisanoIznos);
+        
         if(trenutno.getNovoStanje()-rezervisanoIznos-dto.getIznos()<0){
-            System.out.println("Nedovoljno sredstava! linija 122");
-            //throw new NedovoljnoSredstavaException("Nedovoljno sredstava!");
-            return "Nedovoljno sredstava.";
+            throw new NedovoljnoSredstavaException("Nedovoljno sredstava!");
         }
 
         a.setNalogodavac(dto.getNalogodavac());

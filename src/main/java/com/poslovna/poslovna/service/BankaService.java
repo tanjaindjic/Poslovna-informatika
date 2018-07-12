@@ -1,5 +1,7 @@
 package com.poslovna.poslovna.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,16 @@ public class BankaService {
 	public Banka getFirst() {
 		
 		return bankaReposiotry.findAll().get(0);
+	}
+
+	public List<Banka> vratiBanke() {
+		// TODO Auto-generated method stub
+		return bankaReposiotry.findAll();
+	}
+	
+	public Banka getOurBank() {
+		
+		return bankaReposiotry.findByBanka(true).get(0);
 	}
 	
 }
