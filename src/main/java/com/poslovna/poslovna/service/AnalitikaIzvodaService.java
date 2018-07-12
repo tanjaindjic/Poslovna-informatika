@@ -184,7 +184,8 @@ public class AnalitikaIzvodaService {
         //ni ovo ne znam kad sta
         a.setVrstaPlacanja(VrstaPlacanja.GOTOVINSKO);
         if(saRacuna.getPoslovnaBanka().getSifraBanke().equals(dto.getRacunPrimaoca().substring(0,3)))
-            a.setMedjubankarski(false);
+            if(naRacun!=null)
+                a.setMedjubankarski(false);
         else a.setMedjubankarski(true);
         a.setMestoPrijema(saRacuna.getPoslovnaBanka().getNaseljenoMesto());
 
