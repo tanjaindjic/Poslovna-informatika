@@ -47,7 +47,7 @@ mainModule.controller('importController', [ '$scope','$window','$localStorage','
                     alert('Vas import je uspesno zabelezen.');
                 },
                 function(error){
-                    alert('Vas import NIJE uspesno zabelezen, pokusajte ponovo.');
+                    alert('Vas import NIJE uspesno zabelezen, potencijalni problem u formatu ili stanju na racunu uplatioca.');
                 }
             );
 

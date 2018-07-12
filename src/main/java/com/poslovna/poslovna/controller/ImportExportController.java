@@ -14,6 +14,7 @@ import com.poslovna.poslovna.dto.AnalitikaIzvodaDTO;
 import com.poslovna.poslovna.model.AnalitikaIzvoda;
 import com.poslovna.poslovna.model.DnevnoStanje;
 import com.poslovna.poslovna.model.Racun;
+import com.poslovna.poslovna.repository.KursUValutiRepository;
 import com.poslovna.poslovna.service.AnalitikaIzvodaService;
 import com.poslovna.poslovna.service.DnevnoStanjeService;
 import com.poslovna.poslovna.service.ImportExportService;
@@ -38,6 +39,9 @@ public class ImportExportController {
 	
 	@Autowired
 	private RacunService racunService;
+	
+	@Autowired
+	private KursUValutiRepository kursUValutiRepository;
 	
 	
 	@RequestMapping(value = "/exportAnalitikaIzvoda/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

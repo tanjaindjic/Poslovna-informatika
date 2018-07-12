@@ -61,6 +61,8 @@ public class RacunController {
     	
     	Klijent vlasnik = klijentService.getOne(racunDTO.getVlasnikId());
     	
+    	racunDTO.setBrojRacuna(racunDTO.getBrojRacuna().replace("-", ""));
+    	
     	if(!racunService.checkIfUnique(racunDTO.getBrojRacuna())) {
     		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
     	}
@@ -113,12 +115,18 @@ public class RacunController {
 	@RequestMapping(value = "/deaktiviraj/{naRacun}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> deaktivirajRacun(@PathVariable String naRacun, @RequestBody Racun racun){
     	
-		if(racunService.deaktiviraj(racun, naRacun) == null) {
-			return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
+		naRacun = naRacun.replace("-", "");
+		
+		try {
+			racunService.deaktiviraj(racun, naRacun);
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
     	
     	return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
+	
 	@RequestMapping(value = "/brojRacuna/{brojRacuna}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Klijent> vratiVlasnika1(@PathVariable String brojRacuna){
     	Klijent k = klijentService.findKlijentByRacun(brojRacuna);
