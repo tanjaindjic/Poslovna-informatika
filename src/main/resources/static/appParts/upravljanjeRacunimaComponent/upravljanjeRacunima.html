@@ -186,6 +186,127 @@
                         </tr>
                         </tbody></table>
         </div>
+        <div class="gap-top-md pozadina-plava card card-block bg-faded" ng-show="isIsplata">
+            <h3 class="naslov-zuti-centar">Isplata sa racuna:</h3>
+            <table style="border: 1px solid #ddd;" cellpadding="0" cellspacing="0">
+                        <tbody><tr>
+                            <td style="width: 10px">&nbsp;</td>
+                            <td style="width: 350px">
+                                <table style="width: 100%; border-collapse: collapse" cellpadding="3">
+                                    <tbody><tr>
+                                        <td>
+                                            <span>Naziv isplatioca</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <textarea ng-model="isplata.nazivUplatioca" rows="3" cols="40" style="width: 340px"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-top: 10px">
+                                            <span>Svrha isplate</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <textarea ng-model="isplata.svrhaPlacanja" rows="3" cols="40" style="width: 340px">na zahtev klijenta</textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    </tbody></table>
+                            </td>
+                            <td style="width: 10px">&nbsp;</td>
+                            <td style="width: 1px; border-right: 1px solid #ddd">&nbsp;</td>
+                            <td style="width: 10px">&nbsp;</td>
+                            <td style="width: 250px" valign="top">
+                                <table style="width: 100%; border-collapse: collapse" cellpadding="3">
+                                    <tbody><tr>
+                                        <td style="text-align: left">
+                                            <span >Sifra placanja</span>
+                                        </td>
+                                        <td rowspan="2">
+                                        </td>
+                                        <td>
+                                            <span >Valuta</span>
+                                        </td>
+                                        <td rowspan="2">
+                                        </td>
+                                        <td style="text-align: right">
+                                            <span >Iznos</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 400px">
+
+                                                        <select required>
+                                                            <option>266 – isplata gotovine</option>
+                                                        </select>
+
+                                        </td>
+                                        <td nowrap="nowrap" style="width:40px">
+                                            <input type="text"  id="isplata.valuta" disabled="true" style="width:40px">
+                                        </td>
+                                        <td style="text-align: right">
+                                            <input required ng-model="isplata.iznos" type="text" style="text-align:right; width: 100px"  maxlength="16">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            <span ></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="padding-top: 10px">
+                                            <span>Sa racuna</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" nowrap="nowrap">
+                                            <input required ng-model="isplata.racun.brojRacuna" disabled type="text" size="13" maxlength="13">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            <span>Model i poziv na broj (odobrenja)</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" nowrap="nowrap">
+                                            <input required ng-model="isplata.modelOdobrenja" type="text" size="2" maxlength="2">
+                                            <input ng-model="isplata.pozivNaBroj" type="text" size="27" maxlength="25">
+                                        </td>
+                                    </tr>
+                                    <tr >
+                                        <td colspan="5">
+                                            <table>
+                                                <tbody>
+                                                <tr>
+                                                    <td>Datum placanja</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><input required type="date" name="date" id="projDate" ng-model="isplata.date" min="currentDate"></td>
+                                                    <td colspan="5">
+                                                     </td>
+                                                </tr>
+                                                </tbody></table>
+                                        </td>
+                                    </tr>
+									<tr>
+									</tr>
+                                    </tbody></table>
+                                    	<br>
+										<button ng-click="finalnaIsplata()">izvrsi isplatu</button>
+                            </td>
+                            <td style="width: 10px">&nbsp;</td>
+                            
+                        </tr>
+                        </tbody></table>
+        </div>
     </div>
 
 </div>

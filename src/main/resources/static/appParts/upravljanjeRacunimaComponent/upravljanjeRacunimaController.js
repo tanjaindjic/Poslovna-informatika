@@ -11,6 +11,7 @@ mainModule.controller('upravljanjeRacunimaController', [ '$scope','$window','$lo
         $scope.initUpravljanjeRacunima = function(){
             $scope.dobaviRacune();
             $scope.isUplata=false;
+            $scope.isIsplata=true;
         }
 
         $scope.dobaviRacune = function(){
