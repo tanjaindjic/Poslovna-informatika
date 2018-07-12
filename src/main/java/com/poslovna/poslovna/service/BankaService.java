@@ -28,5 +28,4 @@ public class BankaService {
 		
 		return bankaReposiotry.findByBanka(true).get(0);
 	}
-	
 }

@@ -3,14 +3,8 @@ package com.poslovna.poslovna.controller;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
-import com.poslovna.poslovna.dto.AnalitikaIzvodaDTO;
-import com.poslovna.poslovna.exception.NedovoljnoSredstavaException;
-import com.poslovna.poslovna.exception.NemaNalogodavcaException;
-import com.poslovna.poslovna.exception.NemaRacunaException;
-import com.poslovna.poslovna.model.*;
-import com.poslovna.poslovna.model.enums.Status;
-import com.poslovna.poslovna.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +17,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.poslovna.poslovna.dto.AnalitikaIzvodaDTO;
 import com.poslovna.poslovna.dto.RacunDTO;
+import com.poslovna.poslovna.exception.NedovoljnoSredstavaException;
+import com.poslovna.poslovna.exception.NemaNalogodavcaException;
+import com.poslovna.poslovna.exception.NemaRacunaException;
+import com.poslovna.poslovna.model.DnevnoStanje;
+import com.poslovna.poslovna.model.Klijent;
+import com.poslovna.poslovna.model.Racun;
+import com.poslovna.poslovna.model.Valuta;
+import com.poslovna.poslovna.service.AnalitikaIzvodaService;
+import com.poslovna.poslovna.service.BankaService;
+import com.poslovna.poslovna.service.DnevnoStanjeService;
+import com.poslovna.poslovna.service.KlijentService;
+import com.poslovna.poslovna.service.RacunService;
+import com.poslovna.poslovna.service.ValutaService;
 
 @RestController
 @RequestMapping(value="/racun")
@@ -83,6 +91,12 @@ public class RacunController {
     	}
     	
     	return new ResponseEntity<Page<Racun>>(racunService.getRacuniByPage(new PageRequest(pagenum-1, 5)), HttpStatus.OK);
+    }
+
+	@RequestMapping(value = "/svi", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Racun>> vratiRacune(){
+    	
+    	return new ResponseEntity<List<Racun>>(racunService.vratiRacune(), HttpStatus.OK);
     }
     
     @RequestMapping(value = "/aktiviraj", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

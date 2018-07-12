@@ -14,8 +14,8 @@
 b.iznos_za_prenos, b.datum_placanja, b.poziv_na_broj, 
 b.svrha_placanja, b.id, IF(a.broj_racuna=b.racun_nalogodavca, 'isplata', 'uplata') AS upl_ispl
 from (SELECT distinct klijent.ime, klijent.prezime, klijent.adresa, klijent.email, klijent.telefon, racun.broj_racuna, klijent.id
-FROM korisnik join klijent join klijent_racuni join racun
-WHERE korisnik.korisnicko_ime=$P{korisnicko_ime} and racun.broj_racuna=$P{broj_racuna} and korisnik.id=klijent.id and racun.vlasnik_id=korisnik.id
+FROM klijent join racun
+WHERE racun.broj_racuna=$P{broj_racuna} and racun.vlasnik_id=klijent.id
 ) a join (select * from analitika_izvoda
 where datum_placanja>$P{datum_od} and datum_placanja<$P{datum_do}) b
 where a.broj_racuna=b.racun_nalogodavca or a.broj_racuna=b.racun_primaoca 
