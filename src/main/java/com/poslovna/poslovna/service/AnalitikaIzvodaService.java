@@ -1,25 +1,34 @@
 package com.poslovna.poslovna.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.poslovna.poslovna.dto.AnalitikaIzvodaDTO;
 import com.poslovna.poslovna.exception.NedovoljnoSredstavaException;
 import com.poslovna.poslovna.exception.NemaNalogodavcaException;
 import com.poslovna.poslovna.exception.NemaRacunaException;
 import com.poslovna.poslovna.exception.NevalidanIznosNovca;
 import com.poslovna.poslovna.model.*;
+import com.poslovna.poslovna.model.AnalitikaIzvoda;
+import com.poslovna.poslovna.model.DnevnoStanje;
+import com.poslovna.poslovna.model.Klijent;
+import com.poslovna.poslovna.model.KursUValuti;
+import com.poslovna.poslovna.model.KursnaLista;
+import com.poslovna.poslovna.model.Racun;
+import com.poslovna.poslovna.model.Valuta;
 import com.poslovna.poslovna.model.enums.Status;
 import com.poslovna.poslovna.model.enums.VrstaPlacanja;
 import com.poslovna.poslovna.repository.AnalitikaIzvodaRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class AnalitikaIzvodaService {
@@ -112,7 +121,7 @@ public class AnalitikaIzvodaService {
 
         if(dto.getIznos()<=0)
             throw new NevalidanIznosNovca("Iznos nije validan!");
-        
+
         DnevnoStanje trenutno = Collections.max(saRacuna.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
         if(trenutno.getNovoStanje()-dto.getIznos()<0){
             System.out.println("Nedovoljno sredstava! linija 113");
@@ -376,6 +385,128 @@ public class AnalitikaIzvodaService {
 	        a.setStatus(Status.I);
 	        a.setDatumObrade(danas);
 	        analitikaIzvodaRepository.save(a);
+
+
+	}
+
+	public String createIsplata(AnalitikaIzvodaDTO dto) {
+		AnalitikaIzvoda a = new AnalitikaIzvoda();
+        Klijent nalogodavac = klijentService.getOne(dto.getKlijentId());
+        Racun saRacuna = racunService.findRacunByBroj(dto.getRacunNalogodavca());
+
+        if(saRacuna!=null || !saRacuna.isVazeci()){
+           // throw new NemaRacunaException("Racun nije aktivan!");
+        }
+
+
+        DnevnoStanje trenutno = Collections.max(saRacuna.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
+        if(trenutno.getNovoStanje()-dto.getIznos()<0){
+            System.out.println("Nedovoljno sredstava! linija 113");
+       //     throw new NedovoljnoSredstavaException("Nedovoljno sredstava!");
+            return "Nema dovoljno sredstava za isplatu";
+        }
+
+        List<AnalitikaIzvoda> rezervisanaSredstva = analitikaIzvodaRepository.findByRacunNalogodavcaAndStatus(dto.getRacunNalogodavca(), Status.E);
+        Float rezervisanoIznos = 0F;
+        for(AnalitikaIzvoda aiz: rezervisanaSredstva)
+            rezervisanoIznos+=aiz.getIznos();
+        System.out.println("Rezervisano: " + rezervisanoIznos);
+
+        if(trenutno.getNovoStanje()-rezervisanoIznos-dto.getIznos()<0){
+        //    throw new NedovoljnoSredstavaException("Nedovoljno sredstava!");
+        }
+
+        a.setNalogodavac(dto.getNalogodavac());
+        a.setSvrhaPlacanja(dto.getSvrhaPlacanja());
+        a.setPrimalac(dto.getPrimalac());
+        a.setDatumPrijema(new Date(System.currentTimeMillis()));
+        a.setDatumPlacanja(dto.getDatumPlacanja());
+        a.setDatumObrade(null);
+
+        Valuta od = saRacuna.getValuta();
+        Valuta ka;
+        ka=saRacuna.getValuta();
+        a.setValuta(od);
+        a.setKrajnjaValuta(ka);
+        //ovoliko se umanjuje nalogodavcu
+        a.setIznos(dto.getIznos());
+
+        KursUValuti kurs  = null;
+        KursnaLista zadnja = kursnaListaService.getLatest();
+        for(KursUValuti k : zadnja.getKursevi()){
+            if(k.getOsnovna().getZvanicnaSifra().equals(od.getZvanicnaSifra()) && k.getPrema().getZvanicnaSifra().equals(ka.getZvanicnaSifra())){
+                System.out.println("nasao kurs u valuti: " + k.getOsnovna() + " prema " + k.getPrema());
+                kurs = k;
+                break;
+            }
+        }
+        Float krajnjiIznos = dto.getIznos()*kurs.getOdnos();
+        //ovoliko se dodaje primaocu u zavisnosti od valute koja mu je za taj racun
+        a.setKonvertovaniIznos(krajnjiIznos);
+        a.setDatumValute(zadnja.getDatum());
+        a.setRacunNalogodavca(saRacuna.getBrojRacuna());
+        a.setModelZaduzenja(dto.getModelZaduzenja());
+        a.setPozivNaBroj(dto.getPozivNaBroj());
+        a.setRacunPrimaoca(dto.getRacunPrimaoca());
+        a.setModelOdobrenja(dto.getModelOdobrenja());
+        if(dto.getIznos()>250000F)
+            a.setHitno(true);
+        else a.setHitno(dto.isHitno());
+        //ovo ne znam za gresku
+        a.setTipGreske(0);
+        a.setStatus(Status.E);
+        //ni ovo ne znam kad sta
+        a.setVrstaPlacanja(VrstaPlacanja.GOTOVINSKO);
+        a.setMedjubankarski(false);
+        a.setMestoPrijema(saRacuna.getPoslovnaBanka().getNaseljenoMesto());
+
+        analitikaIzvodaRepository.save(a);
+        //ovde pozivam da se prebace odmah sredstva ako je prenos unutar banke
+        if(!a.isMedjubankarski() || a.isHitno()){
+            Date odbraniDatum = dto.getDatumPlacanja();
+            Date danas = new Date(System.currentTimeMillis());
+            //SAMO AKO DANAS ZELI DA SE IZVRSI INTERNO PREBACIVANJE ONDA, INACE CEKA KLIRING ZA ODABRANI DAN
+            if((danas.getYear()==odbraniDatum.getYear() && danas.getMonth()==odbraniDatum.getMonth() && danas.getDay()==odbraniDatum.getDay()) || a.isHitno())
+                skiniSredstva(saRacuna, a);
+        }
+        return "Ispata uspesno izvrsena.";
+	}
+
+	private void skiniSredstva(Racun saRacuna, AnalitikaIzvoda a) {
+		//prvo azuriram ili kreiram novo dnevno stanje raucna sa kojeg skidam
+        DnevnoStanje ds = Collections.max(saRacuna.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
+        Date datumDS = ds.getDatumPrometa();
+        Date danas = new Date(System.currentTimeMillis());
+        if(datumDS.getYear()==danas.getYear() && datumDS.getMonth()==danas.getMonth() && datumDS.getDay()==danas.getDay()){
+            //ima danasnje stanje samo azuriram
+            Float trenutnoNaTeret = ds.getPrometNaTeret();
+            ds.setPrometNaTeret(trenutnoNaTeret + a.getIznos());
+            //ds.setPrethodnoStanje(ds.getNovoStanje());
+            Float prethodno = ds.getNovoStanje();
+            ds.setNovoStanje(prethodno-a.getIznos());
+            ds.getIzvodi().add(a);
+            dnevnoStanjeService.updateDS(ds);
+            racunService.saveRacun(saRacuna);
+        }else{
+            DnevnoStanje novo = new DnevnoStanje();
+            novo.setPrethodnoStanje(ds.getNovoStanje());
+            Float trenutnoNaTeret = ds.getPrometNaTeret();
+            novo.setPrometNaTeret(trenutnoNaTeret + a.getIznos());
+            novo.setPrometUKorist(ds.getPrometUKorist());
+            novo.setNovoStanje(ds.getNovoStanje()-a.getIznos());
+            novo.setIzvodi(new ArrayList<>());
+            novo.setZaRacun(ds.getZaRacun());
+            novo.setDatumPrometa(danas);
+            novo.getIzvodi().add(a);
+            dnevnoStanjeService.updateDS(novo);
+            saRacuna.getDnevnaStanja().add(novo);
+            racunService.saveRacun(saRacuna);
+            System.out.println(saRacuna.getDnevnaStanja().size());
+        }
+
+        a.setStatus(Status.I);
+        a.setDatumObrade(danas);
+        analitikaIzvodaRepository.save(a);
 
 
 	}

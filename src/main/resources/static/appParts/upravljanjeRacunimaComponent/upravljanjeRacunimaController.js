@@ -11,6 +11,7 @@ mainModule.controller('upravljanjeRacunimaController', [ '$scope','$window','$lo
         $scope.initUpravljanjeRacunima = function(){
             $scope.dobaviRacune();
             $scope.isUplata=false;
+            $scope.isIsplata=false;
         }
 
         $scope.dobaviRacune = function(){
@@ -87,6 +88,7 @@ mainModule.controller('upravljanjeRacunimaController', [ '$scope','$window','$lo
         $scope.izvrsiUplatu = function(racun){
         	$scope.isUplata=true;
         	$scope.isPrenos=false;
+            $scope.isIsplata=false;
         	$scope.uplata = {};
         	$scope.uplata.racun = racun;
         	$scope.uplata.tekst = "";
@@ -102,11 +104,29 @@ mainModule.controller('upravljanjeRacunimaController', [ '$scope','$window','$lo
             });
         	
         }
+        $scope.izvrsiIsplatu = function(racun){
+        	$scope.isUplata=false;
+        	$scope.isPrenos=false;
+            $scope.isIsplata=true;
+        	$scope.isplata = {};
+        	$scope.isplata.racun = racun;
+        	$scope.isplata.tekst = "";
+        	$http({
+                method: 'GET',
+                url: 'http://localhost:8096/racun/brojRacuna/'+racun.brojRacuna,
+                headers: {'token' : $window.localStorage.getItem('token')}
+            }).then(function successCallback(response) {
+            	$scope.isplata.klijent = response.data;
+            	$scope.isplata.tekst = response.data.ime+" "+response.data.prezime+" "+response.data.adresa;
+            }, function errorCallback(response) {
+            });
+        	
+        }
         $scope.finalnaUplata = function(){
-        	if($scope.uplata.date==undefined || $scope.uplata.hitno==undefined || $scope.uplata.modelOdobrenja==undefined ||
-        			$scope.uplata.pozivNaBroj==undefined || $scope.uplata.svrhaPlacanja==undefined ||
-        			$scope.uplata.date=="" || $scope.uplata.hitno=="" || $scope.uplata.modelOdobrenja=="" ||
-        			$scope.uplata.pozivNaBroj=="" || $scope.uplata.svrhaPlacanja==""){
+        	if($scope.uplata.modelOdobrenja=="" || $scope.uplata.pozivNaBroj=="" || $scope.uplata.svrhaPlacanja==""
+        		|| $scope.uplata.date==""  || $scope.uplata.date==undefined || $scope.uplata.hitno==undefined
+        		|| $scope.uplata.modelOdobrenja==undefined || $scope.uplata.pozivNaBroj==undefined
+        		|| $scope.uplata.svrhaPlacanja==undefined){
         		alert("potrebno uneti sve podatke u polja");
         		return;
         	}
@@ -122,7 +142,7 @@ mainModule.controller('upravljanjeRacunimaController', [ '$scope','$window','$lo
         	        "modelOdobrenja" : $scope.uplata.modelOdobrenja,
         	        "hitno" : $scope.uplata.hitno,
         	        "iznos" : $scope.uplata.iznos,
-        	        "klijentId" : 0
+        	        "klijentId" : $scope.uplata.klijent.id
         	};
         	$http({
                 method: 'POST',
@@ -133,6 +153,39 @@ mainModule.controller('upravljanjeRacunimaController', [ '$scope','$window','$lo
             	alert(response.data);
             	$scope.isUplata=false;
             	$scope.uplata = {};
+            }, function errorCallback(response) {
+            });
+        }
+        $scope.finalnaIsplata = function(){
+        	if($scope.isplata.modelOdobrenja=="" || $scope.isplata.pozivNaBroj=="" || $scope.isplata.svrhaIsplate==""
+        		|| $scope.isplata.date==""  || $scope.isplata.date==undefined || $scope.isplata.modelOdobrenja==undefined
+        		|| $scope.isplata.pozivNaBroj==undefined || $scope.isplata.svrhaIsplate==undefined){
+        		alert("potrebno uneti sve podatke u polja");
+        		return;
+        	}
+        	var data = {
+        			"nalogodavac": "",
+        	        "svrhaPlacanja": $scope.isplata.svrhaIsplate, 
+        	        "primalac": $scope.isplata.primalac,
+        	        "datumPlacanja": $scope.isplata.date,
+        	        "racunNalogodavca": $scope.isplata.racun.brojRacuna,
+        	        "modelZaduzenja" : 0,
+        	        "pozivNaBroj" : $scope.isplata.pozivNaBroj,
+        	        "racunPrimaoca" : "000000",
+        	        "modelOdobrenja" : $scope.isplata.modelOdobrenja,
+        	        "hitno" : false,
+        	        "iznos" : $scope.isplata.iznos,
+        	        "klijentId" : $scope.isplata.klijent.id
+        	};
+        	$http({
+                method: 'POST',
+                url: 'http://localhost:8096/analitikaIzvoda/isplata',
+                data: data,
+                headers: {'token' : $window.localStorage.getItem('token')}
+            }).then(function successCallback(response) {
+            	alert(response.data);
+            	$scope.isIsplata=false;
+            	$scope.isplata = {};
             }, function errorCallback(response) {
             });
         }
