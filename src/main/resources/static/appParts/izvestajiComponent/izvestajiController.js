@@ -4,26 +4,15 @@ mainModule.controller('izvestajiController', ['$scope', '$window','$location', '
         $scope.logovaniKorisnik = {};
         $scope.odabranRacun;
 
-
+    
 
         $scope.initIzvestaji = function(){
             $scope.logovaniKorisnik = userService.parsirajToken();
-            $scope.izvestaji={};
-            $http({
-                method: 'GET',
-                url: 'http://localhost:8096/klijent/'+$scope.logovaniKorisnik.id,
-                headers: {'token' : $window.localStorage.getItem('token')}
-            }).then(function successCallback(response) {
-                if(response.data ==null)
-                    $location.path('/login');
-
-                $scope.sluzbenik = response.data;
-
-            }, function errorCallback(response) {
-                alert("Error occured check connection");
-                $location.path('/home');
-            });
+            $scope.izvestaj={};
+            $scope.odabranaBanka={};
             $scope.racuni = [];
+            
+            
             $http({
                 method: 'GET',
                 url: 'http://localhost:8096/racun/svi',
@@ -61,7 +50,7 @@ mainModule.controller('izvestajiController', ['$scope', '$window','$location', '
 
         $scope.initIzvestaji();
 
-        
+      
 
         $scope.profil = function(){
             var tempUser = parsirajToken();
@@ -97,27 +86,19 @@ mainModule.controller('izvestajiController', ['$scope', '$window','$location', '
             $scope.trenutnoStanje = $scope.trenutniRacun.dnevnaStanja[$scope.trenutniRacun.dnevnaStanja.length-1];
         }
 
-        var setRezervisanaSredstva = function(){
-            $scope.rezervisanaSredstva = 0;
-            var i;
-            for(i=0; i < $scope.nalozi.length; i++){
-                if($scope.nalozi[i].status=='E' && $scope.nalozi[i].racunNalogodavca == $scope.odabranRacun)
-                    $scope.rezervisanaSredstva+=$scope.nalozi[i].iznos;
 
-            }
-        }
+      
         
         $scope.odabirRacuna = function(odabranRacun){
             $scope.odabranRacun = odabranRacun;
             setTrenutniRacun();
-            $scope.nalozi = [];
-            setNalozi();
             $scope.dnevnaStanja = [];
             setDnevnaStanja();
             setTrenutnoStanje();
-            setRezervisanaSredstva();
         }
-
+        $scope.odaberiBanku = function(odabranaBanka){ 	
+        	$scope.odabranaBanka = odabranaBanka;
+       	}
        
         $scope.skiniIzvestaj = function(){
         	if($scope.izvestaj.datumOd=="" || $scope.izvestaj.datumDo=="" || $scope.odabranRacun==undefined)
@@ -126,7 +107,7 @@ mainModule.controller('izvestajiController', ['$scope', '$window','$location', '
         			"datumOd" : $scope.izvestaj.datumOd,
         			"datumDo" : $scope.izvestaj.datumDo,
         			"username": "",
-        			"brojRacuna" : $scope.odabranRacun.brojRacuna
+        			"brojRacuna" : $scope.odabranRacun
         	}
         	$http({
                 method: 'POST',

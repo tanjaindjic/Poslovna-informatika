@@ -17,8 +17,7 @@
         </span>
         <span>       </span>
         <span style="display: inline-block">
-            <p>Raspoloziva sredstva: {{trenutnoStanje.novoStanje-rezervisanaSredstva}},00</p>
-            <p>Rezervisana sredstva: {{rezervisanaSredstva-0}},00 </p>
+            <p>Raspoloziva sredstva: {{trenutnoStanje.novoStanje}},00</p>
         </span>
         <span  style="display: inline-block; float:right">
             <p >Izvod za racun u vremenskom intervalu(.pdf):</p>
@@ -42,8 +41,8 @@
 -->
         <span  style="display: inline-block">
             <p >Banka
-                <select  ng-model="odabranaBanka">
-                    <option ng-repeat="banka in banke">{{banka.naziv}}</option>
+                <select  ng-options="banka as banka.naziv for banka in banke" 
+  						 ng-model="selectedItem" ng-change="odaberiBanku(selectedItem)">
                 </select>
             </p>
         </span>

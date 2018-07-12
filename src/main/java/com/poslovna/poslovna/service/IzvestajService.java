@@ -33,7 +33,7 @@ public class IzvestajService {
 		params.put("datum_od", izvodDTO.getDatumOd());
 		params.put("broj_racuna", izvodDTO.getBrojRacuna());
 		params.put("datum_do", izvodDTO.getDatumDo());
-	
+		System.out.println(izvodDTO.getUsername()+"--"+izvodDTO.getDatumOd()+"--"+izvodDTO.getDatumDo()+"--"+izvodDTO.getBrojRacuna());
 		try {
 			String path = System.getProperty("user.dir");
 			Connection con=(Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/poslovnaInformatika","root","root");
@@ -47,7 +47,7 @@ public class IzvestajService {
 		return false;
 	}
 
-	public boolean getIzvodBanke(int id) {
+	public boolean getIzvodBanke(Long id) {
 		HashMap<String, Object> params = new HashMap<>();
 		params.put("banka_id", id);
 	
@@ -56,7 +56,7 @@ public class IzvestajService {
 			Connection con=(Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/poslovnaInformatika","root","root");
 			JasperReport jasperReport = JasperCompileManager.compileReport(path+"\\spisakRacuna.jrxml");
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
-			JasperExportManager.exportReportToPdfFile(jasperPrint, "D:\\nalozi\\izvod_"+bankaRepo.getOne(new Long(id)).getNaziv()+".pdf");
+			JasperExportManager.exportReportToPdfFile(jasperPrint, "D:\\nalozi\\izvod_"+bankaRepo.getOne(id).getNaziv()+".pdf");
 			return true;
 		}catch (Exception ex) {
 				ex.printStackTrace();

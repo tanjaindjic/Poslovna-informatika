@@ -32,7 +32,7 @@ public class IzvestajController {
     }
 	
 	@RequestMapping(value = "/izvodBanke/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Integer> getizvodBanke(@PathVariable int id){
+    public ResponseEntity<Long> getizvodBanke(@PathVariable Long id){
     	
     	boolean file = izvestajService.getIzvodBanke(id);
     	if(file)
