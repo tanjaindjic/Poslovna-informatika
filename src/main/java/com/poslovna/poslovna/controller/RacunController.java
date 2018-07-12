@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import com.poslovna.poslovna.exception.NevalidanIznosNovca;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -60,6 +61,8 @@ public class RacunController {
     	
     	Klijent vlasnik = klijentService.getOne(racunDTO.getVlasnikId());
     	
+    	racunDTO.setBrojRacuna(racunDTO.getBrojRacuna().replace("-", ""));
+    	
     	if(!racunService.checkIfUnique(racunDTO.getBrojRacuna())) {
     		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
     	}
@@ -112,36 +115,31 @@ public class RacunController {
 	@RequestMapping(value = "/deaktiviraj/{naRacun}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> deaktivirajRacun(@PathVariable String naRacun, @RequestBody Racun racun){
     	
-		if(racunService.deaktiviraj(racun, naRacun) == null) {
-			return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
+		naRacun = naRacun.replace("-", "");
+		
+		try {
+			racunService.deaktiviraj(racun, naRacun);
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
     	
     	return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
+	
+	@RequestMapping(value = "/brojRacuna/{brojRacuna}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Klijent> vratiVlasnika1(@PathVariable String brojRacuna){
+    	Klijent k = klijentService.findKlijentByRacun(brojRacuna);
+		if(k == null) {
+			return new ResponseEntity<Klijent>(new Klijent(), HttpStatus.BAD_REQUEST);
+		}
+    	
+    	return new ResponseEntity<Klijent>(k, HttpStatus.OK);
+    }
 
 	@RequestMapping(value = "/gasenje/{brojRacunaZaPrenos}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void ugasi(@PathVariable String brojRacunaZaPrenos, @RequestBody Racun zaGasenje) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException {
+	public void ugasi(@PathVariable String brojRacunaZaPrenos, @RequestBody Racun zaGasenje) throws NedovoljnoSredstavaException, NemaNalogodavcaException, NemaRacunaException, NevalidanIznosNovca {
     	//kliring da se odradi za taj racun
-        Racun primalac = racunService.findRacunByBroj(brojRacunaZaPrenos);
-        if(primalac!=null && !primalac.isVazeci()){
-            System.out.println("nevazeci racun!");
-            return;
-        }
-		dnevnoStanjeService.kliringZaGasenje(zaGasenje);
-		DnevnoStanje zadnje = Collections.max(zaGasenje.getDnevnaStanja(), Comparator.comparing(c -> c.getDatumPrometa()));
-		AnalitikaIzvodaDTO nalog = new AnalitikaIzvodaDTO();
-		nalog.setDatumPlacanja(new java.sql.Date(System.currentTimeMillis()));
-		nalog.setHitno(true);
-		nalog.setIznos(zadnje.getNovoStanje());
-		nalog.setKlijentId(klijentService.findKlijentByRacun(zaGasenje.getBrojRacuna()).getId());
-		nalog.setModelOdobrenja(97);
-		nalog.setModelZaduzenja(97);
-		nalog.setRacunNalogodavca(zaGasenje.getBrojRacuna());
-		nalog.setSvrhaPlacanja("Gasenje racuna - prenos sredstava");
-		nalog.setRacunPrimaoca(brojRacunaZaPrenos);
-		Racun update = racunService.findRacunByBroj(zaGasenje.getBrojRacuna());
-		update.setVazeci(false);
-		racunService.saveRacun(update);
-
+       dnevnoStanjeService.kliringZaGasenje(zaGasenje, brojRacunaZaPrenos);
 	}
 }
