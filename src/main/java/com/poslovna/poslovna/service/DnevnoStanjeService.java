@@ -39,13 +39,16 @@ public class DnevnoStanjeService {
         return dnevnoStanjeRepository.findTopByOrderByDatumPrometaDesc();
     }
 
-    @Transactional(readOnly = false, rollbackFor = Exception.class, propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
-    public void kliring() throws NemaNalogodavcaException, NedovoljnoSredstavaException, NevalidanIznosNovca, NemaRacunaException {
+    public void kliring(){
         for(AnalitikaIzvoda a: analitikaIzvodaService.getAllEvidentirani()){
             Date danas = new Date(System.currentTimeMillis());
             //ako je klijent stavio da se pare prenesu negde u buducnosti onda to sad ne diramo, stoje kao rezervisana sredstva
             if(a.getDatumPlacanja().getYear()<=danas.getYear() && a.getDatumPlacanja().getMonth()<=danas.getMonth() && a.getDatumPlacanja().getDay()<=danas.getDay()){
-                pojedinacniKliring(a);
+            	try{
+            		pojedinacniKliring(a);
+            	}catch(Exception e) {
+            		continue;
+            	}
                 a.setDatumObrade(danas);
                 a.setStatus(Status.I);
                 analitikaIzvodaService.update(a);
@@ -54,7 +57,7 @@ public class DnevnoStanjeService {
         }
     }
 
-
+    @Transactional(readOnly = false, rollbackFor = Exception.class, propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     public void pojedinacniKliring(AnalitikaIzvoda a) throws NemaNalogodavcaException, NedovoljnoSredstavaException, NevalidanIznosNovca, NemaRacunaException {
 
         if(a.getIznos()<=0)

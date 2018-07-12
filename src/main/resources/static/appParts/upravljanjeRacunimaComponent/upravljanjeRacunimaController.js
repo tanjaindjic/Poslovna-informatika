@@ -7,6 +7,7 @@ mainModule.controller('upravljanjeRacunimaController', [ '$scope','$window','$lo
         $scope.pageNum = 1;
         $scope.maxPages = -1;
         $scope.tempRacun = {};
+        $scope.selRacun = -1;
 
         $scope.initUpravljanjeRacunima = function(){
             $scope.dobaviRacune();
@@ -55,6 +56,9 @@ mainModule.controller('upravljanjeRacunimaController', [ '$scope','$window','$lo
             $scope.isPrenos = !$scope.isPrenos;
             $scope.tempRacun = $scope.racuni[idx];
             $scope.naRacun = null;
+            $scope.isUplata=false;
+            $scope.isIsplata=false;
+            $scope.selRacun = $scope.racuni[idx].id;
         }
 
         $scope.aktiviraj = function(idx){
@@ -86,13 +90,15 @@ mainModule.controller('upravljanjeRacunimaController', [ '$scope','$window','$lo
             
         }
         $scope.izvrsiUplatu = function(racun){
-        	$scope.isUplata=true;
+        	$scope.isUplata=!$scope.isUplata;
         	$scope.isPrenos=false;
             $scope.isIsplata=false;
         	$scope.uplata = {};
         	$scope.uplata.racun = racun;
         	$scope.uplata.tekst = "";
-        	$scope.uplata.hitno=false;
+            $scope.uplata.hitno=false;
+            $scope.selRacun = racun.id;
+
         	$http({
                 method: 'GET',
                 url: 'http://localhost:8096/racun/brojRacuna/'+racun.brojRacuna,
@@ -107,10 +113,12 @@ mainModule.controller('upravljanjeRacunimaController', [ '$scope','$window','$lo
         $scope.izvrsiIsplatu = function(racun){
         	$scope.isUplata=false;
         	$scope.isPrenos=false;
-            $scope.isIsplata=true;
+            $scope.isIsplata=!$scope.isIsplata;
         	$scope.isplata = {};
         	$scope.isplata.racun = racun;
-        	$scope.isplata.tekst = "";
+            $scope.isplata.tekst = "";
+            $scope.selRacun = racun.id;
+
         	$http({
                 method: 'GET',
                 url: 'http://localhost:8096/racun/brojRacuna/'+racun.brojRacuna,

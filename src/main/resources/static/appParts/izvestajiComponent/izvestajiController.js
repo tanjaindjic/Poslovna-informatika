@@ -154,7 +154,7 @@ mainModule.controller('izvestajiController', ['$scope', '$window','$location', '
 
         	if($scope.izvestaj.datumOd == "" || $scope.izvestaj.datumDo == "" || $scope.odabranRacun == undefined)
                 return;
-            
+                
         	exportService.eksportujZaDatume($scope.izvestaj.datumOd, $scope.izvestaj.datumDo, $scope.odabranRacun).then(
                 function(response){
                     alert("Vas izvestaj je uspesno exportovan u .xml format.")

@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,6 +57,7 @@ public class RacunController {
     @Autowired
     private BankaService bankaService;
     
+    @PreAuthorize("hasAuthority('SLUZBENIK')")
     @RequestMapping(value = "/saveRacun", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> sacuvajRacun(@RequestBody RacunDTO racunDTO){
     	
@@ -102,6 +104,7 @@ public class RacunController {
     	return new ResponseEntity<List<Racun>>(racunService.vratiRacune(), HttpStatus.OK);
     }
     
+	@PreAuthorize("hasAuthority('SLUZBENIK')")
     @RequestMapping(value = "/aktiviraj", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> aktivirajRacun(@RequestBody Racun racun){
     	
@@ -112,6 +115,7 @@ public class RacunController {
     	return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
     
+	@PreAuthorize("hasAuthority('SLUZBENIK')")
 	@RequestMapping(value = "/deaktiviraj/{naRacun}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> deaktivirajRacun(@PathVariable String naRacun, @RequestBody Racun racun){
     	

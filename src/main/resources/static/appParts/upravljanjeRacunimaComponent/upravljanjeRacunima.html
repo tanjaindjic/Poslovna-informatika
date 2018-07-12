@@ -23,7 +23,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="racun in racuni" ng-class="{'racun-neaktivan': !racun.vazeci}">
+                        <tr ng-repeat="racun in racuni" ng-class="{'racun-neaktivan': !racun.vazeci, 'selektovan-red': racun.id == selRacun}">
                             <td class="col-lg-2">{{racun.brojRacuna}}</td>
                             <td class="col-lg-1">{{racun.valuta.zvanicnaSifra}}</td>
                             <td class="col-lg-2">{{racun.poslovnaBanka.naziv}}</td>

@@ -516,4 +516,9 @@ public class AnalitikaIzvodaService {
 		
 		return analitikaIzvodaRepository.findByRacunNalogodavcaOrRacunPrimaoca(brojRacuna, brojRacuna);
 	}
+	
+	public List<AnalitikaIzvoda> analitikeZaMedjubankarski(){
+		
+		return analitikaIzvodaRepository.findByMedjubankarskiAndStatus(true,  Status.E);
+	}
 }

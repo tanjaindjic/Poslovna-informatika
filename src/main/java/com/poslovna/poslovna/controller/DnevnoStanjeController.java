@@ -19,7 +19,7 @@ public class DnevnoStanjeController {
     private DnevnoStanjeService dnevnoStanjeService;
 
     @GetMapping(value="/kliring")
-    private void obaviKliring() throws NemaNalogodavcaException, NedovoljnoSredstavaException, NevalidanIznosNovca, NemaRacunaException {
+    private void obaviKliring() {
         dnevnoStanjeService.kliring();
     }
 }
