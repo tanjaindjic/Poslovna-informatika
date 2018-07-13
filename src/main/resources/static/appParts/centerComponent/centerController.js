@@ -1,5 +1,5 @@
-mainModule.controller('centerController', ['$scope', '$window', 'userService',
-    function($scope, $window, userService){
+mainModule.controller('centerController', ['$scope', '$window', '$location',  'userService',
+    function($scope, $window, $location, userService){
 
         $scope.logovaniKorisnik = {};
 
@@ -16,7 +16,7 @@ mainModule.controller('centerController', ['$scope', '$window', 'userService',
         $scope.odjaviSe = function(){
             $window.localStorage.removeItem('token');
             $scope.logovaniKorisnik = {};
-            $window.location.reload();
+            $location.path('/home');
         }
 
 

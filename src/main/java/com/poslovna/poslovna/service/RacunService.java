@@ -181,7 +181,7 @@ public class RacunService {
 			if(!racun.isVazeci()) {
 				throw new NemaRacunaException("Racun nije vazeci.");
 			}else{
-				DnevnoStanje danasnje = dnevnoStanjeRepository.findByDatumPrometaAndZaRacun(new Date(System.currentTimeMillis()), racun);
+				DnevnoStanje danasnje = dnevnoStanjeRepository.findByDatumPrometaAndZaRacun(new Date(System.currentTimeMillis()), racun).get(0);
 				
 				if(danasnje == null){
 					DnevnoStanje prethodno = dnevnoStanjeRepository.findTopByZaRacunOrderByDatumPrometaDesc(racun);

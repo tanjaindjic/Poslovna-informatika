@@ -177,14 +177,10 @@ public class ImportExportService {
 				throw new NemaRacunaException("Racun nije vazeci.");
 			}else{
 				
-				DnevnoStanje danasnje = null;
-			
-				try {
-					danasnje = dnevnoStanjeRepository.findByDatumPrometaAndZaRacun(new Date(System.currentTimeMillis()), racun);
-				}catch(Exception e) {
-					danasnje = null;
-				}
+				List<DnevnoStanje> dnevnaStanja = dnevnoStanjeRepository.findByDatumPrometaAndZaRacun(new Date(System.currentTimeMillis()), racun);
 				
+				DnevnoStanje danasnje = dnevnaStanja.isEmpty() ? null : dnevnaStanja.get(0); 
+			
 				if(danasnje == null){
 					DnevnoStanje prethodno = dnevnoStanjeRepository.findTopByZaRacunOrderByDatumPrometaDesc(racun);
 					return dnevnoStanjeRepository.save(new DnevnoStanje(new Date(System.currentTimeMillis()), new Float(prethodno.getNovoStanje()), new Float(0.00), new Float(0.00), new Float(prethodno.getNovoStanje()), racun));
