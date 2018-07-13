@@ -108,7 +108,7 @@ public class ImportExportService {
 		DnevnoStanje dsN = null;
 		DnevnoStanje dsP = null;
 		float iznos = nalog.getIznos();
-		nalog.setDatumPlacanja(null);
+		nalog.setDatumPlacanja(new Date(System.currentTimeMillis()));
 		
 		// Interni Prenos
 		if(racunNalogodavca != null && racunPrimaoca != null) {
@@ -129,11 +129,16 @@ public class ImportExportService {
 				dsP.setPrometUKorist(dsP.getPrometUKorist()+konvertujUValutu(racunNalogodavca, racunPrimaoca, iznos));
 				dsP.setNovoStanje(dsP.getNovoStanje()+konvertujUValutu(racunNalogodavca, racunPrimaoca, iznos));
 				
-				dnevnoStanjeRepository.save(dsN);
-				dnevnoStanjeRepository.save(dsP);
+				dsN.getIzvodi().add(nalog);
+				dsP.getIzvodi().add(nalog);
 				
 				nalog.setDatumValute(new Date(System.currentTimeMillis()));
 				nalog.setDatumObrade(new Date(System.currentTimeMillis()));
+				
+				nalog = analitikaIzvodaRepository.save(nalog);
+				
+				dnevnoStanjeRepository.save(dsN);
+				dnevnoStanjeRepository.save(dsP);
 			}else{
 				
 				throw new NedovoljnoSredstavaException("Nalogodavac nema dovoljno sredstava na racunu.");
@@ -155,6 +160,9 @@ public class ImportExportService {
 					dsN.setNovoStanje(dsN.getNovoStanje()-iznos);
 					nalog.setStatus(Status.I);
 					nalog.setDatumObrade(new Date(System.currentTimeMillis()));
+					dsN.getIzvodi().add(nalog);
+					nalog = analitikaIzvodaRepository.save(nalog);
+					dnevnoStanjeRepository.save(dsN);
 				}
 				
 				return analitikaIzvodaRepository.save(nalog);
