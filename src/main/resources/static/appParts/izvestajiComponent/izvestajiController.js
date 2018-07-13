@@ -165,6 +165,18 @@ mainModule.controller('izvestajiController', ['$scope', '$window','$location', '
             );
         }
 
+        $scope.medjubankarskiXml = function(){
+
+            exportService.eksportujMedjubankarski().then(
+                function(response){
+                    alert('Export naloga za medjubankarski prenos je uspesno izvrsen.');
+                },
+                function(error){
+                    alert('Export naloga za medjubankarski prenos NIJE uspesno izvrsen.');
+                }
+            );
+        }
+
         
     }
 ]);

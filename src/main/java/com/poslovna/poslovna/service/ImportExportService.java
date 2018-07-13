@@ -108,12 +108,14 @@ public class ImportExportService {
 		DnevnoStanje dsN = null;
 		DnevnoStanje dsP = null;
 		float iznos = nalog.getIznos();
+		nalog.setDatumPlacanja(null);
 		
 		// Interni Prenos
 		if(racunNalogodavca != null && racunPrimaoca != null) {
 			
 			nalog.setMedjubankarski(false);
 			nalog.setStatus(Status.I);
+			nalog.setDatumPrijema(new Date(System.currentTimeMillis()));
 			
 			dsN = kreirajDnevnoStanje(racunNalogodavca);
 			dsP = kreirajDnevnoStanje(racunPrimaoca);
@@ -124,12 +126,13 @@ public class ImportExportService {
 				dsN.setPrometNaTeret(dsN.getPrometNaTeret()+iznos);
 				dsN.setNovoStanje(dsN.getNovoStanje()-iznos);
 				
-				dsP.setPrometUKorist(dsP.getPrometUKorist()+iznos);
-				dsP.setNovoStanje(dsP.getNovoStanje()+iznos);
+				dsP.setPrometUKorist(dsP.getPrometUKorist()+konvertujUValutu(racunNalogodavca, racunPrimaoca, iznos));
+				dsP.setNovoStanje(dsP.getNovoStanje()+konvertujUValutu(racunNalogodavca, racunPrimaoca, iznos));
 				
 				dnevnoStanjeRepository.save(dsN);
 				dnevnoStanjeRepository.save(dsP);
 				
+				nalog.setDatumValute(new Date(System.currentTimeMillis()));
 				nalog.setDatumObrade(new Date(System.currentTimeMillis()));
 			}else{
 				
@@ -146,6 +149,14 @@ public class ImportExportService {
 			dsN = kreirajDnevnoStanje(racunNalogodavca);
 			
 			if(proveriSredstva(dsN, racunNalogodavca, iznos)) {
+				
+				if(nalog.isHitno()) {
+					dsN.setPrometNaTeret(dsN.getPrometNaTeret()+iznos);
+					dsN.setNovoStanje(dsN.getNovoStanje()-iznos);
+					nalog.setStatus(Status.I);
+					nalog.setDatumObrade(new Date(System.currentTimeMillis()));
+				}
+				
 				return analitikaIzvodaRepository.save(nalog);
 			}else{
 				throw new NedovoljnoSredstavaException("Nalogodavac nema dovoljno sredstava na racunu.");
@@ -165,7 +176,14 @@ public class ImportExportService {
 			if(!racun.isVazeci()) {
 				throw new NemaRacunaException("Racun nije vazeci.");
 			}else{
-				DnevnoStanje danasnje = dnevnoStanjeRepository.findByDatumPrometaAndZaRacun(new Date(System.currentTimeMillis()), racun);
+				
+				DnevnoStanje danasnje = null;
+			
+				try {
+					danasnje = dnevnoStanjeRepository.findByDatumPrometaAndZaRacun(new Date(System.currentTimeMillis()), racun);
+				}catch(Exception e) {
+					danasnje = null;
+				}
 				
 				if(danasnje == null){
 					DnevnoStanje prethodno = dnevnoStanjeRepository.findTopByZaRacunOrderByDatumPrometaDesc(racun);

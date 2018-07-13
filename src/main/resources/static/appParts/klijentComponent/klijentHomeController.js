@@ -39,24 +39,6 @@ mainModule.controller('klijentHomeController', ['$scope', '$window', 'userServic
             }
         }
 
-        //SAMO ZA TEST
-        $scope.kliring = function(){
-             $http({
-                            method: 'GET',
-                            url: 'http://localhost:8096/dnevnoStanje/kliring',
-                            headers: {'token' : $window.localStorage.getItem('token')}
-
-                        }).then(function successCallback(response) {
-
-                            alert("PROSAO KLIRING")
-
-
-                        }, function errorCallback(response) {
-                            alert("Error occured check connection");
-
-                        });
-        }
-
         $scope.showDelete = function(id){
             document.getElementById(id).style.visibility='visible';
         }

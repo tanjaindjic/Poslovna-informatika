@@ -55,5 +55,15 @@ mainModule.service('exportService', [ '$http', '$window','$localStorage',
             return $http(req);
         }
 
+        this.eksportujMedjubankarski = function(){
+            
+            var req = {
+                method: 'GET',
+                url: rootUrl+'impexp/exportMedjubankarski',
+                headers: {'token' : $window.localStorage.getItem('token')}
+            }
+            return $http(req);
+        }
+
     }
 ]);

@@ -111,15 +111,15 @@ public class RacunService {
 			
 			nalog = new AnalitikaIzvoda(zaGasenje.getVlasnik().getIme()+" "+zaGasenje.getVlasnik().getPrezime(), "Uplata prilikom gasenja racuna.", zaUplatu.getVlasnik().getIme()+" "+zaUplatu.getVlasnik().getPrezime(), 
 					new Date(System.currentTimeMillis()), null, new Date(System.currentTimeMillis()), zaGasenje.getBrojRacuna(), 97, null, zaUplatu.getBrojRacuna(), 97, sredstva > 250000f ? true : false, 
-							sredstva, 0, Status.E, VrstaPlacanja.GOTOVINSKO, false, banka.getNaseljenoMesto(), zaGasenje.getValuta(), konvertujUValutu(zaGasenje, zaUplatu, sredstva), zaUplatu.getValuta());
+							sredstva, 0, Status.I, VrstaPlacanja.GOTOVINSKO, false, banka.getNaseljenoMesto(), zaGasenje.getValuta(), sredstva, zaUplatu.getValuta());
 			
 			DnevnoStanje dnevnoStanjePrimaoca = kreirajDnevnoStanje(zaUplatu);
 			
 			dnevno.setPrometNaTeret(dnevno.getPrometNaTeret()+sredstva);
 			dnevno.setNovoStanje(dnevno.getNovoStanje()-sredstva);
 			
-			dnevnoStanjePrimaoca.setPrometUKorist(dnevnoStanjePrimaoca.getPrometUKorist()+sredstva);
-			dnevnoStanjePrimaoca.setNovoStanje(dnevnoStanjePrimaoca.getNovoStanje()+sredstva);
+			dnevnoStanjePrimaoca.setPrometUKorist(dnevnoStanjePrimaoca.getPrometUKorist()+konvertujUValutu(zaGasenje, zaUplatu, sredstva));
+			dnevnoStanjePrimaoca.setNovoStanje(dnevnoStanjePrimaoca.getNovoStanje()+konvertujUValutu(zaGasenje, zaUplatu, sredstva));
 			
 			dnevnoStanjeRepository.save(dnevno);
 			dnevnoStanjeRepository.save(dnevnoStanjePrimaoca);

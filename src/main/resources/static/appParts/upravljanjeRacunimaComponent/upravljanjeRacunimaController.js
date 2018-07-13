@@ -198,5 +198,18 @@ mainModule.controller('upravljanjeRacunimaController', [ '$scope','$window','$lo
             });
         }
 
+        $scope.kliring = function(){
+            $http({
+                method: 'GET',
+                url: 'http://localhost:8096/dnevnoStanje/kliring',
+                headers: {'token' : $window.localStorage.getItem('token')}
+
+            }).then(function successCallback(response) {
+                alert("PROSAO KLIRING")
+            }, function errorCallback(response) {
+                alert("Error occured check connection");
+            });
+        }
+
     }
 ]);

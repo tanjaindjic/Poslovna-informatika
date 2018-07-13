@@ -225,5 +225,20 @@ mainModule.controller('klijentIzvodiController', ['$scope', '$window', 'userServ
                 }
             );
         }
+
+        $scope.izvestajXml = function(){
+
+        	if($scope.izvestaj.datumOd == "" || $scope.izvestaj.datumDo == "" || $scope.odabranRacun == undefined)
+                return;
+                
+        	exportService.eksportujZaDatume($scope.izvestaj.datumOd, $scope.izvestaj.datumDo, $scope.odabranRacun).then(
+                function(response){
+                    alert("Vas izvestaj je uspesno exportovan u .xml format.")
+                },
+                function(error){
+                    alert("Greska prilikom exporta izvestaja u .xml format.")
+                }
+            );
+        }
     }
 ]);

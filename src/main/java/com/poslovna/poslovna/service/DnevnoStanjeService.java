@@ -47,6 +47,9 @@ public class DnevnoStanjeService {
             	try{
             		pojedinacniKliring(a);
             	}catch(Exception e) {
+            		a.setDatumObrade(danas);
+                    a.setStatus(Status.O);
+                    analitikaIzvodaService.update(a);
             		continue;
             	}
                 a.setDatumObrade(danas);
